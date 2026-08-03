@@ -1,0 +1,90 @@
+{
+  "colors": [
+    {
+      "value": "#212529",
+      "elements": 446
+    },
+    {
+      "value": "#FFFFFF",
+      "elements": 178
+    },
+    {
+      "value": "#590167",
+      "elements": 150
+    },
+    {
+      "value": "#000000",
+      "elements": 68
+    },
+    {
+      "value": "#696969",
+      "elements": 32
+    },
+    {
+      "value": "#0C2341",
+      "elements": 31
+    },
+    {
+      "value": "#191E52",
+      "elements": 29
+    },
+    {
+      "value": "#006496",
+      "elements": 25
+    },
+    {
+      "value": "#555555",
+      "elements": 14
+    },
+    {
+      "value": "#3860BE",
+      "elements": 13
+    },
+    {
+      "value": "#27455C",
+      "elements": 8
+    },
+    {
+      "value": "#313131",
+      "elements": 7
+    },
+    {
+      "value": "#666666",
+      "elements": 6
+    },
+    {
+      "value": "#0B3952",
+      "elements": 5
+    },
+    {
+      "value": "#8684E2",
+      "elements": 4
+    },
+    {
+      "value": "#4386C6",
+      "elements": 4
+    },
+    {
+      "value": "#E9E9E9",
+      "elements": 4
+    },
+    {
+      "value": "#5696CB",
+      "elements": 3
+    },
+    {
+      "value": "#FFEECC",
+      "elements": 3
+    },
+    {
+      "value": "#0D6EFD",
+      "elements": 3
+    }
+  ],
+  "fonts": [
+    {
+      "value": "Roboto, sans-serif",
+      "elements": 945
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "analytics_found": [
+    "GA4 / Google Tag Manager",
+    "LinkedIn Insight Tag"
+  ],
+  "analytics_missing": [
+    "Meta Pixel"
+  ],
+  "ctas": [
+    {
+      "tag": "a",
+      "text": "Register",
+      "href": "#",
+      "status": null,
+      "ok": false
+    },
+    {
+      "tag": "a",
+      "text": "Book Online Now",
+      "href": "https://www.idga.org/events-veteransaffairshealthcare/srspricing",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "tag": "a",
+      "text": "2026 Registration",
+      "href": "https://www.idga.org/events-veteransaffairshealthcare/srspricing",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "tag": "a",
+      "text": "Register Now",
+      "href": "https://www.idga.org/events-veteransaffairshealthcare/srspricing",
+      "status": 200,
+      "ok": true
+    }
+  ],
+  "utm_propagation": "not_tested",
+  "issues": [
+    {
+      "severity": "major",
+      "code": "MISSING_PIXEL",
+      "detail": "Meta Pixel not detected — conversions from this page cannot be measured/attributed for that channel."
+    },
+    {
+      "severity": "critical",
+      "code": "DEAD_CTA",
+      "detail": "CTA \"Register\" has no destination (href=\"#\")."
+    }
+  ]
+}

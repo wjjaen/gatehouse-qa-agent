@@ -1,0 +1,788 @@
+{
+  "url": "https://www.ssonetwork.com/events-workx",
+  "portal": null,
+  "run": "2026-07-22T16-13-54-453Z",
+  "outDir": "runs/2026-07-22T16-13-54-453Z",
+  "verdict": "BLOCK",
+  "reason": "1 critical conversion issue(s): NO_REGISTRATION_CTA",
+  "score": 53,
+  "agents": [
+    {
+      "id": "design",
+      "label": "Design QA",
+      "score": 52,
+      "summary": "The WorkX 2026 microsite has a recognizable event structure and communicates key facts (dates, location, speakers, pricing) reasonably well, but suffers from a fragmented visual hierarchy in the hero, inconsistent component styling across sections, and several mobile layout problems that would undermine credibility at launch. The most pressing issue is the conversion instrumentation flag indicating no registration CTA is being detected, which — combined with visible hero CTA crowding and a cookie-consent banner overlapping body content at load — creates friction on the primary conversion path.",
+      "findings": [
+        {
+          "severity": "major",
+          "location": "Layout & grid · Hero section, desktop",
+          "issue": "The hero splits into a narrow left text column and a right image, but the text column width is not constrained to the grid — the eyebrow label ('No Budget, No Excuses: How the Office Still Delivers'), event title, date, and CTA buttons are left-aligned to different implicit left edges, breaking column coherence. The three CTA buttons ('View Event Guide', 'Sponsorship Opportunities', 'Book Online Now') sit at different horizontal weights and are not anchored to a shared left rail.",
+          "recommendation": "Set all hero text content to a single consistent left-gutter (matching the site's max-width container padding) and align all three buttons to the same left edge on one row or in a deliberate stacked group.",
+          "fix_prompt": "In the hero section, wrap the eyebrow, h1, date/location line, and all three CTA buttons inside a single flex column div with a consistent left padding (e.g., padding-left: 48px) that matches the site container's gutter. Ensure all child elements align to the same left edge."
+        },
+        {
+          "severity": "major",
+          "location": "Layout & grid · Pricing / registration section, desktop",
+          "issue": "The registration widget (package selector, quantity, order total) does not sit inside the same max-width container as all other sections — it appears to use a different, slightly narrower width, making it look detached from the page grid.",
+          "recommendation": "Wrap the SRS widget container in the same max-width class used for all other content sections (e.g., container or container-xl) so column edges align with the rest of the page.",
+          "fix_prompt": "Add class='container' (or the same container class used for the sponsors and speakers sections) to the outer div wrapping .iqpc-srs-widget-container so its left and right edges align with all other page sections."
+        },
+        {
+          "severity": "minor",
+          "location": "Layout & grid · Sponsors section, desktop",
+          "issue": "Sponsor logos are displayed in a single horizontal row that is not visually balanced — logos vary significantly in optical size and are not vertically centered relative to each other, creating an unanchored floating look.",
+          "recommendation": "Normalize all sponsor logos to the same bounding-box height (e.g., 40px) and use align-items: center on the flex row so logos read as a cohesive tier.",
+          "fix_prompt": "In the sponsors logo row, set each logo img to max-height: 40px; width: auto; and add align-items: center to the parent flex container so all logos sit on the same optical baseline."
+        },
+        {
+          "severity": "major",
+          "location": "Typography · Throughout page, desktop and mobile",
+          "issue": "The brand config specifies Archivo for headings and Inter for body, but the HTML imports a large Google Fonts stack including Oswald, Open Sans, Nunito, and others. Visually, section labels such as 'WHO YOU'LL HEAR FROM' and 'WHY ATTEND WORKX?' appear to use a condensed sans (possibly Oswald) rather than Archivo, while body copy in the value-prop section appears to use a different weight/family than the speaker card body copy. This suggests multiple font families are active on the page simultaneously.",
+          "recommendation": "Audit computed font-family on all heading and body elements. Remove all Google Fonts imports not matching Archivo and Inter. Apply font-family: 'Archivo', sans-serif to all h1–h4 and font-family: 'Inter', sans-serif to all p, li, span.",
+          "fix_prompt": "Remove all @import entries from the Google Fonts URL that are not 'Archivo' or 'Inter'. Then add a global CSS rule: h1, h2, h3, h4, h5, h6 { font-family: 'Archivo', sans-serif; } and p, li, span, a { font-family: 'Inter', sans-serif; } to enforce brand typography across all sections."
+        },
+        {
+          "severity": "major",
+          "location": "Typography · Section eyebrow labels (e.g., 'WHO YOU'LL HEAR FROM', 'INSIGHTS FROM YOUR PEERS'), desktop",
+          "issue": "Eyebrow labels use a small all-caps style with decorative rules on either side — a reasonable pattern — but the font size appears to be below 12px on desktop (possibly 10–11px) making them uncomfortably small relative to the section headings below and straining legibility.",
+          "recommendation": "Set eyebrow label font-size to at least 12px (per the brand scale minimum) and ensure letter-spacing is no more than 0.15em to maintain readability.",
+          "fix_prompt": "Find all elements with the eyebrow/label style (the small all-caps text above section headings like 'WHO YOU'LL HEAR FROM') and set their CSS to: font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600;"
+        },
+        {
+          "severity": "minor",
+          "location": "Typography · Speaker cards, desktop",
+          "issue": "Speaker name, title, and company are shown in three separate text sizes but the distinction between title and company is too subtle — both appear to use roughly 13–14px in similar weights, making the hierarchy within each card unclear.",
+          "recommendation": "Differentiate speaker title (e.g., 13px regular, #555) from speaker company (e.g., 12px medium, #1A1A1A or brand primary) so the information hierarchy within each card is scannable.",
+          "fix_prompt": "In the speaker card component, set the job title element to font-size: 13px; color: #555; font-weight: 400; and the company name element to font-size: 12px; color: #0A2540; font-weight: 600; to create clear visual distinction between the two lines."
+        },
+        {
+          "severity": "major",
+          "location": "Spacing & rhythm · Cookie consent banner, desktop (appears at page load)",
+          "issue": "The cookie consent banner at the bottom of the screen uses a dark background and overlaps the footer content, but more critically its vertical padding appears to be only 10px (per the inline CSS), making it cramped and difficult to read the consent text and dismiss button at a glance.",
+          "recommendation": "Increase cookie banner padding to at least 16px top and bottom (matching the spacing scale) and ensure the dismiss button has a minimum touch target of 44×44px.",
+          "fix_prompt": "In the .cookie-consent CSS rule, change padding: 10px 0 to padding: 16px 24px and update the button inside it to have min-height: 44px; padding: 8px 16px; so it meets touch-target requirements."
+        },
+        {
+          "severity": "major",
+          "location": "Spacing & rhythm · What You'll Explore section, desktop",
+          "issue": "The four topic cards have inconsistent bottom spacing — the text descriptions under each card run to different lengths without a fixed card height, causing the bottom edges of adjacent cards to be misaligned and creating an uneven baseline rhythm across the row.",
+          "recommendation": "Use CSS flexbox with align-items: stretch on the card row, and ensure each card uses flex-direction: column with the description div set to flex-grow: 1 so all cards reach the same height.",
+          "fix_prompt": "Wrap the four 'What You'll Explore' cards in a flex container with display: flex; flex-wrap: wrap; align-items: stretch; gap: 24px; and set each card to display: flex; flex-direction: column; so the card body description div can use flex-grow: 1 to equalize card heights."
+        },
+        {
+          "severity": "minor",
+          "location": "Spacing & rhythm · Pricing section, desktop",
+          "issue": "The vertical space between the 'Reimagined Passes Starting at $799' section and the registration widget below it is inconsistent — there is a visible gap that is larger than the 96px maximum in the spacing scale, creating an unexplained void.",
+          "recommendation": "Set margin-top on the registration widget section to 64px (one spacing-scale step down from 96px) to tighten the relationship between the pricing callout and the registration form.",
+          "fix_prompt": "Add margin-top: 64px to the .iqpc-srs-widget-container div to reduce the excessive gap between the pricing callout section and the package selection widget."
+        },
+        {
+          "severity": "critical",
+          "location": "Visual hierarchy · Hero section, desktop and mobile",
+          "issue": "The primary registration CTA ('Book Online Now') is the third of three buttons in the hero and is visually the smallest and least prominent — it renders at a smaller apparent size than the 'View Event Guide' and 'Sponsorship Opportunities' buttons. The accent color (#FF5A36 per brand config) does not appear to be applied to the 'Book Online Now' button in the hero, meaning the primary conversion action is not the most visually dominant element above the fold. This aligns with the conversion instrumentation finding of no detectable registration CTA.",
+          "recommendation": "Make 'Book Online Now' the sole primary button in the hero: apply the accent color (#FF5A36) as its background, increase its padding and font-weight relative to the secondary buttons, and ensure it is the largest button in the hero. Demote 'View Event Guide' and 'Sponsorship Opportunities' to text links or ghost buttons.",
+          "fix_prompt": "In the hero section, change the 'Book Online Now' button to style='background-color: #FF5A36; color: #FFFFFF; font-weight: 700; padding: 14px 28px; border: none; border-radius: 4px; font-size: 16px;' and change the other two hero buttons ('View Event Guide', 'Sponsorship Opportunities') to ghost style with style='background: transparent; border: 2px solid #0A2540; color: #0A2540; padding: 10px 20px; border-radius: 4px;' so the primary CTA is visually dominant."
+        },
+        {
+          "severity": "major",
+          "location": "Visual hierarchy · Testimonial section, desktop",
+          "issue": "The 'Hear from Past Attendees' section features a large TDECU logo (red, high contrast) and a testimonial card, but the logo dominates the visual weight of the section more than the testimonial quote itself. The attendee attribution ('VP Corporate Real Estate') is visually subordinate to the sponsor logo, inverting the intended hierarchy of peer endorsement over brand recognition.",
+          "recommendation": "Reduce the TDECU logo to a secondary size (e.g., max-height: 32px) within the attribution line, and increase the font size of the testimonial quote to be the visual anchor of the section.",
+          "fix_prompt": "In the testimonial card, set the TDECU logo img to max-height: 32px; width: auto; and increase the blockquote or testimonial text element to font-size: 18px; font-style: italic; so the quote is the primary visual element and the logo is a supporting attribution."
+        },
+        {
+          "severity": "major",
+          "location": "Visual hierarchy · Navigation bar, desktop",
+          "issue": "The nav bar 'Book Online Now' button (top right) uses what appears to be the accent color but is rendered very small within the navbar, while the hero has three competing CTA buttons. There is no clear single dominant CTA that a first-time visitor's eye would land on immediately.",
+          "recommendation": "Ensure the sticky nav CTA and hero CTA are visually consistent — both using #FF5A36 fill — and remove competing secondary CTAs from the hero fold so the registration action is unambiguous.",
+          "fix_prompt": "In the navigation bar, confirm the 'Book Online Now' button has background-color: #FF5A36; color: #FFFFFF; font-weight: 600; border-radius: 4px; padding: 8px 16px; and no other nav element uses a filled button style, so this CTA stands out as the sole primary action in the nav."
+        },
+        {
+          "severity": "major",
+          "location": "Consistency · CTA buttons, throughout page",
+          "issue": "Button styling is inconsistent across sections: the hero has three different button visual weights, the pricing section uses a purple/indigo 'View New Rates' button that does not match the brand color palette (#FF5A36 accent, #0A2540 primary), the 'View All Speakers' and 'View All Sponsors' buttons appear to use a third style (outlined with a different border color), and the SRS widget 'Continue' button uses yet another color (#5696CB from the widget CSS). At least four distinct button treatments are visible.",
+          "recommendation": "Standardize to two button treatments site-wide: primary (fill #FF5A36, white text) for registration and key CTAs, and secondary (outline #0A2540, dark text) for supplementary actions. Update the pricing section 'View New Rates' button and SRS widget 'Continue' button to use the primary treatment.",
+          "fix_prompt": "Add a global CSS rule: .btn-primary-brand { background-color: #FF5A36; color: #FFFFFF; border: none; border-radius: 4px; padding: 12px 24px; font-weight: 600; font-family: 'Inter', sans-serif; } and .btn-secondary-brand { background-color: transparent; color: #0A2540; border: 2px solid #0A2540; border-radius: 4px; padding: 10px 22px; font-weight: 600; } then replace all existing button classes on non-widget buttons with these two classes."
+        },
+        {
+          "severity": "major",
+          "location": "Consistency · Speaker cards vs. topic cards vs. testimonial card, desktop",
+          "issue": "Three different card styles are used across the page: speaker cards have circular image crops, no border, and centered text; topic cards have rectangular images with no radius and left-aligned text; the testimonial card has a full colored background with a quotation mark icon. While visual variety between section types is acceptable, within each section the card treatment is not fully consistent — for example topic cards appear to have slightly different image aspect ratios from card to card.",
+          "recommendation": "Lock topic card images to a consistent aspect ratio (e.g., 16:9) using aspect-ratio: 16/9; object-fit: cover; on the img element so all four cards present identical image frames.",
+          "fix_prompt": "For all images inside the 'What You'll Explore' topic cards, add style='width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block;' to ensure all four card images are the same height and aspect ratio."
+        },
+        {
+          "severity": "minor",
+          "location": "Consistency · Section divider labels, throughout page",
+          "issue": "Some section eyebrow labels use a rule-line on both sides of the text (e.g., '— WHO YOU'LL HEAR FROM —') while at least one section ('PARTNERING FOR TOMORROW') uses a slightly different decorative treatment. The inconsistency is subtle but visible on close inspection.",
+          "recommendation": "Standardize the eyebrow/divider label component to a single CSS class used in all sections.",
+          "fix_prompt": "Create a single CSS class .section-eyebrow { display: flex; align-items: center; gap: 12px; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #0A2540; } .section-eyebrow::before, .section-eyebrow::after { content: ''; flex: 1; height: 1px; background: #0A2540; } and replace all inline section label styles with this class."
+        },
+        {
+          "severity": "major",
+          "location": "Responsive integrity · Sponsors section, mobile (390px)",
+          "issue": "On mobile the sponsor logos appear to wrap onto multiple lines with inconsistent sizing — some logos are noticeably larger than others and the layout does not appear to use a uniform grid, resulting in a ragged multi-row arrangement that looks unfinished.",
+          "recommendation": "Use a CSS grid with a fixed number of columns (e.g., 2 or 3 per row) on mobile with all logos normalized to the same max-height and aligned to center, so the sponsor block looks intentional on narrow screens.",
+          "fix_prompt": "In the sponsors section, add a media query: @media (max-width: 600px) { .sponsors-logo-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; justify-items: center; align-items: center; } .sponsors-logo-row img { max-height: 36px; width: auto; } } to create an orderly two-column sponsor grid on mobile."
+        },
+        {
+          "severity": "major",
+          "location": "Responsive integrity · Hero section, mobile (390px)",
+          "issue": "On mobile, the hero shows the event tagline, title, dates, and three CTA buttons stacked, but the three buttons appear to each take different widths and are not full-width on mobile, making touch targets small and the visual weight of the CTA hierarchy unclear. The hero image appears to be hidden or pushed below the fold on mobile, reducing the visual impact of the hero significantly.",
+          "recommendation": "On mobile, set all hero buttons to width: 100% for consistency and touch usability. Surface the hero image as a background or stacked element above the text so the hero still communicates visually on narrow screens.",
+          "fix_prompt": "Add a mobile media query: @media (max-width: 600px) { .hero-cta-buttons a, .hero-cta-buttons button { width: 100%; display: block; margin-bottom: 8px; text-align: center; } } to make all hero CTA buttons full-width on mobile."
+        },
+        {
+          "severity": "minor",
+          "location": "Responsive integrity · Registration widget, mobile (390px)",
+          "issue": "The package selection tabs ('Practitioner/CRE/Workplace/Facilities', 'Designer/Architect/Broker', 'Vendors') overflow their container on mobile — the tab labels appear truncated or the tab bar requires horizontal scrolling, which is not visually indicated.",
+          "recommendation": "On mobile, convert the horizontal tab pills to a stacked vertical list or a select/dropdown element so all category options are accessible without horizontal scrolling.",
+          "fix_prompt": "Add a mobile media query: @media (max-width: 768px) { .iqpc-srs-nav-pills { flex-direction: column; width: 100%; } .iqpc-srs-nav-pills .nav-item { width: 100%; } .iqpc-srs-nav-pills .nav-item button { width: 100%; border-radius: 8px !important; margin: 4px 0; } } to stack the registration category tabs vertically on mobile."
+        },
+        {
+          "severity": "critical",
+          "location": "Visual accessibility · Multiple interactive elements, throughout page",
+          "issue": "The axe-core scan confirms 12 nodes with insufficient color contrast (WCAG 2 AA failures). Visually, the most apparent instance is the ghost/outline secondary CTA buttons which use a light stroke on a white background with body-weight text — these are likely failing the 4.5:1 minimum ratio for normal text. Additionally, section eyebrow labels in a pale color over white background appear low-contrast.",
+          "recommendation": "Audit all button text, link text, and label text against their backgrounds using a contrast checker. Ensure all text meets 4.5:1 (normal text) or 3:1 (large text/UI components). Darken ghost button strokes to #0A2540 at full opacity and increase eyebrow label color contrast.",
+          "fix_prompt": "For all ghost/outline buttons on the page, set border-color: #0A2540; color: #0A2540; and ensure background is #FFFFFF so the contrast ratio meets WCAG AA. For all .section-eyebrow elements, set color: #0A2540; to ensure sufficient contrast against white backgrounds."
+        },
+        {
+          "severity": "critical",
+          "location": "Visual accessibility · IQPC logo link, footer area",
+          "issue": "The axe-core scan flags the IQPC logo anchor as having no discernible text (link-name failure) and the logo image has no alt text (image-alt failure). This means screen reader users cannot determine what the link is or where it goes.",
+          "recommendation": "Add descriptive alt text to the IQPC logo image (e.g., alt='IQPC — Event Organizer') and add an aria-label to the anchor element (e.g., aria-label='Visit IQPC website').",
+          "fix_prompt": "Find the anchor tag wrapping the IQPC logo image (a[href$='www.iqpc.com']) and add aria-label='Visit IQPC website' to the anchor, then add alt='IQPC — Event Organizer' to the img element inside it."
+        },
+        {
+          "severity": "major",
+          "location": "Visual accessibility · Speaker photos, desktop",
+          "issue": "Speaker profile images are circular crops placed over their natural photograph backgrounds. Where the photograph background is light-toned and the circular crop bleeds to white, there is no border or shadow to distinguish the image boundary, causing the card to appear to have a missing or clipped image at a glance.",
+          "recommendation": "Add a subtle 1px border (e.g., border: 1px solid #E0E0E0) or a 4px box-shadow to all circular speaker images to provide a clear visual boundary regardless of photo background color.",
+          "fix_prompt": "Add to the speaker card image CSS: .speaker-card img { border-radius: 50%; border: 1px solid #E0E0E0; box-shadow: 0 1px 4px rgba(0,0,0,0.12); } to ensure all speaker photos have a visible boundary."
+        },
+        {
+          "severity": "major",
+          "location": "Visual accessibility · Cookie consent banner, page load (desktop and mobile)",
+          "issue": "The cookie consent banner uses a dark (#252525) background with white text, which is good for contrast, but the dismiss button uses background: #595959 — dark grey on dark grey — giving it very low contrast against the banner background. The button may fail the 3:1 UI component contrast ratio.",
+          "recommendation": "Change the cookie consent dismiss button to use a white or accent-colored background with dark text to ensure it is visually distinguishable from the banner background.",
+          "fix_prompt": "In the .cookie-consent button CSS rule, change background: #595959 to background: #FF5A36; color: #FFFFFF; border-radius: 5px; padding: 6px 16px; font-weight: 600; so the dismiss button is clearly visible against the dark banner background."
+        }
+      ],
+      "report_md": "**Layout & grid — 4/7**\n- [major] Hero section, desktop: The hero splits into a narrow left text column and a right image, but the text column width is not constrained to the grid — the eyebrow label ('No Budget, No Excuses: How the Office Still Delivers'), event title, date, and CTA buttons are left-aligned to different implicit left edges, breaking column coherence. The three CTA buttons ('View Event Guide', 'Sponsorship Opportunities', 'Book Online Now') sit at different horizontal weights and are not anchored to a shared left rail.\n  - Fix: Set all hero text content to a single consistent left-gutter (matching the site's max-width container padding) and align all three buttons to the same left edge on one row or in a deliberate stacked group.\n- [major] Pricing / registration section, desktop: The registration widget (package selector, quantity, order total) does not sit inside the same max-width container as all other sections — it appears to use a different, slightly narrower width, making it look detached from the page grid.\n  - Fix: Wrap the SRS widget container in the same max-width class used for all other content sections (e.g., container or container-xl) so column edges align with the rest of the page.\n- [minor] Sponsors section, desktop: Sponsor logos are displayed in a single horizontal row that is not visually balanced — logos vary significantly in optical size and are not vertically centered relative to each other, creating an unanchored floating look.\n  - Fix: Normalize all sponsor logos to the same bounding-box height (e.g., 40px) and use align-items: center on the flex row so logos read as a cohesive tier.\n**Typography — 4/7**\n- [major] Throughout page, desktop and mobile: The brand config specifies Archivo for headings and Inter for body, but the HTML imports a large Google Fonts stack including Oswald, Open Sans, Nunito, and others. Visually, section labels such as 'WHO YOU'LL HEAR FROM' and 'WHY ATTEND WORKX?' appear to use a condensed sans (possibly Oswald) rather than Archivo, while body copy in the value-prop section appears to use a different weight/family than the speaker card body copy. This suggests multiple font families are active on the page simultaneously.\n  - Fix: Audit computed font-family on all heading and body elements. Remove all Google Fonts imports not matching Archivo and Inter. Apply font-family: 'Archivo', sans-serif to all h1–h4 and font-family: 'Inter', sans-serif to all p, li, span.\n- [major] Section eyebrow labels (e.g., 'WHO YOU'LL HEAR FROM', 'INSIGHTS FROM YOUR PEERS'), desktop: Eyebrow labels use a small all-caps style with decorative rules on either side — a reasonable pattern — but the font size appears to be below 12px on desktop (possibly 10–11px) making them uncomfortably small relative to the section headings below and straining legibility.\n  - Fix: Set eyebrow label font-size to at least 12px (per the brand scale minimum) and ensure letter-spacing is no more than 0.15em to maintain readability.\n- [minor] Speaker cards, desktop: Speaker name, title, and company are shown in three separate text sizes but the distinction between title and company is too subtle — both appear to use roughly 13–14px in similar weights, making the hierarchy within each card unclear.\n  - Fix: Differentiate speaker title (e.g., 13px regular, #555) from speaker company (e.g., 12px medium, #1A1A1A or brand primary) so the information hierarchy within each card is scannable.\n**Spacing & rhythm — 4/7**\n- [major] Cookie consent banner, desktop (appears at page load): The cookie consent banner at the bottom of the screen uses a dark background and overlaps the footer content, but more critically its vertical padding appears to be only 10px (per the inline CSS), making it cramped and difficult to read the consent text and dismiss button at a glance.\n  - Fix: Increase cookie banner padding to at least 16px top and bottom (matching the spacing scale) and ensure the dismiss button has a minimum touch target of 44×44px.\n- [major] What You'll Explore section, desktop: The four topic cards have inconsistent bottom spacing — the text descriptions under each card run to different lengths without a fixed card height, causing the bottom edges of adjacent cards to be misaligned and creating an uneven baseline rhythm across the row.\n  - Fix: Use CSS flexbox with align-items: stretch on the card row, and ensure each card uses flex-direction: column with the description div set to flex-grow: 1 so all cards reach the same height.\n- [minor] Pricing section, desktop: The vertical space between the 'Reimagined Passes Starting at $799' section and the registration widget below it is inconsistent — there is a visible gap that is larger than the 96px maximum in the spacing scale, creating an unexplained void.\n  - Fix: Set margin-top on the registration widget section to 64px (one spacing-scale step down from 96px) to tighten the relationship between the pricing callout and the registration form.\n**Visual hierarchy — 3/7**\n- [critical] Hero section, desktop and mobile: The primary registration CTA ('Book Online Now') is the third of three buttons in the hero and is visually the smallest and least prominent — it renders at a smaller apparent size than the 'View Event Guide' and 'Sponsorship Opportunities' buttons. The accent color (#FF5A36 per brand config) does not appear to be applied to the 'Book Online Now' button in the hero, meaning the primary conversion action is not the most visually dominant element above the fold. This aligns with the conversion instrumentation finding of no detectable registration CTA.\n  - Fix: Make 'Book Online Now' the sole primary button in the hero: apply the accent color (#FF5A36) as its background, increase its padding and font-weight relative to the secondary buttons, and ensure it is the largest button in the hero. Demote 'View Event Guide' and 'Sponsorship Opportunities' to text links or ghost buttons.\n- [major] Testimonial section, desktop: The 'Hear from Past Attendees' section features a large TDECU logo (red, high contrast) and a testimonial card, but the logo dominates the visual weight of the section more than the testimonial quote itself. The attendee attribution ('VP Corporate Real Estate') is visually subordinate to the sponsor logo, inverting the intended hierarchy of peer endorsement over brand recognition.\n  - Fix: Reduce the TDECU logo to a secondary size (e.g., max-height: 32px) within the attribution line, and increase the font size of the testimonial quote to be the visual anchor of the section.\n- [major] Navigation bar, desktop: The nav bar 'Book Online Now' button (top right) uses what appears to be the accent color but is rendered very small within the navbar, while the hero has three competing CTA buttons. There is no clear single dominant CTA that a first-time visitor's eye would land on immediately.\n  - Fix: Ensure the sticky nav CTA and hero CTA are visually consistent — both using #FF5A36 fill — and remove competing secondary CTAs from the hero fold so the registration action is unambiguous.\n**Consistency — 4/7**\n- [major] CTA buttons, throughout page: Button styling is inconsistent across sections: the hero has three different button visual weights, the pricing section uses a purple/indigo 'View New Rates' button that does not match the brand color palette (#FF5A36 accent, #0A2540 primary), the 'View All Speakers' and 'View All Sponsors' buttons appear to use a third style (outlined with a different border color), and the SRS widget 'Continue' button uses yet another color (#5696CB from the widget CSS). At least four distinct button treatments are visible.\n  - Fix: Standardize to two button treatments site-wide: primary (fill #FF5A36, white text) for registration and key CTAs, and secondary (outline #0A2540, dark text) for supplementary actions. Update the pricing section 'View New Rates' button and SRS widget 'Continue' button to use the primary treatment.\n- [major] Speaker cards vs. topic cards vs. testimonial card, desktop: Three different card styles are used across the page: speaker cards have circular image crops, no border, and centered text; topic cards have rectangular images with no radius and left-aligned text; the testimonial card has a full colored background with a quotation mark icon. While visual variety between section types is acceptable, within each section the card treatment is not fully consistent — for example topic cards appear to have slightly different image aspect ratios from card to card.\n  - Fix: Lock topic card images to a consistent aspect ratio (e.g., 16:9) using aspect-ratio: 16/9; object-fit: cover; on the img element so all four cards present identical image frames.\n- [minor] Section divider labels, throughout page: Some section eyebrow labels use a rule-line on both sides of the text (e.g., '— WHO YOU'LL HEAR FROM —') while at least one section ('PARTNERING FOR TOMORROW') uses a slightly different decorative treatment. The inconsistency is subtle but visible on close inspection.\n  - Fix: Standardize the eyebrow/divider label component to a single CSS class used in all sections.\n**Responsive integrity — 4/7**\n- [major] Sponsors section, mobile (390px): On mobile the sponsor logos appear to wrap onto multiple lines with inconsistent sizing — some logos are noticeably larger than others and the layout does not appear to use a uniform grid, resulting in a ragged multi-row arrangement that looks unfinished.\n  - Fix: Use a CSS grid with a fixed number of columns (e.g., 2 or 3 per row) on mobile with all logos normalized to the same max-height and aligned to center, so the sponsor block looks intentional on narrow screens.\n- [major] Hero section, mobile (390px): On mobile, the hero shows the event tagline, title, dates, and three CTA buttons stacked, but the three buttons appear to each take different widths and are not full-width on mobile, making touch targets small and the visual weight of the CTA hierarchy unclear. The hero image appears to be hidden or pushed below the fold on mobile, reducing the visual impact of the hero significantly.\n  - Fix: On mobile, set all hero buttons to width: 100% for consistency and touch usability. Surface the hero image as a background or stacked element above the text so the hero still communicates visually on narrow screens.\n- [minor] Registration widget, mobile (390px): The package selection tabs ('Practitioner/CRE/Workplace/Facilities', 'Designer/Architect/Broker', 'Vendors') overflow their container on mobile — the tab labels appear truncated or the tab bar requires horizontal scrolling, which is not visually indicated.\n  - Fix: On mobile, convert the horizontal tab pills to a stacked vertical list or a select/dropdown element so all category options are accessible without horizontal scrolling.\n**Visual accessibility — 3/7**\n- [critical] Multiple interactive elements, throughout page: The axe-core scan confirms 12 nodes with insufficient color contrast (WCAG 2 AA failures). Visually, the most apparent instance is the ghost/outline secondary CTA buttons which use a light stroke on a white background with body-weight text — these are likely failing the 4.5:1 minimum ratio for normal text. Additionally, section eyebrow labels in a pale color over white background appear low-contrast.\n  - Fix: Audit all button text, link text, and label text against their backgrounds using a contrast checker. Ensure all text meets 4.5:1 (normal text) or 3:1 (large text/UI components). Darken ghost button strokes to #0A2540 at full opacity and increase eyebrow label color contrast.\n- [critical] IQPC logo link, footer area: The axe-core scan flags the IQPC logo anchor as having no discernible text (link-name failure) and the logo image has no alt text (image-alt failure). This means screen reader users cannot determine what the link is or where it goes.\n  - Fix: Add descriptive alt text to the IQPC logo image (e.g., alt='IQPC — Event Organizer') and add an aria-label to the anchor element (e.g., aria-label='Visit IQPC website').\n- [major] Speaker photos, desktop: Speaker profile images are circular crops placed over their natural photograph backgrounds. Where the photograph background is light-toned and the circular crop bleeds to white, there is no border or shadow to distinguish the image boundary, causing the card to appear to have a missing or clipped image at a glance.\n  - Fix: Add a subtle 1px border (e.g., border: 1px solid #E0E0E0) or a 4px box-shadow to all circular speaker images to provide a clear visual boundary regardless of photo background color.\n- [major] Cookie consent banner, page load (desktop and mobile): The cookie consent banner uses a dark (#252525) background with white text, which is good for contrast, but the dismiss button uses background: #595959 — dark grey on dark grey — giving it very low contrast against the banner background. The button may fail the 3:1 UI component contrast ratio.\n  - Fix: Change the cookie consent dismiss button to use a white or accent-colored background with dark text to ensure it is visually distinguishable from the banner background.",
+      "extra": {
+        "axes": [
+          {
+            "name": "Layout & grid",
+            "score": 4,
+            "findings": [
+              {
+                "severity": "major",
+                "location": "Hero section, desktop",
+                "issue": "The hero splits into a narrow left text column and a right image, but the text column width is not constrained to the grid — the eyebrow label ('No Budget, No Excuses: How the Office Still Delivers'), event title, date, and CTA buttons are left-aligned to different implicit left edges, breaking column coherence. The three CTA buttons ('View Event Guide', 'Sponsorship Opportunities', 'Book Online Now') sit at different horizontal weights and are not anchored to a shared left rail.",
+                "recommendation": "Set all hero text content to a single consistent left-gutter (matching the site's max-width container padding) and align all three buttons to the same left edge on one row or in a deliberate stacked group.",
+                "fix_prompt": "In the hero section, wrap the eyebrow, h1, date/location line, and all three CTA buttons inside a single flex column div with a consistent left padding (e.g., padding-left: 48px) that matches the site container's gutter. Ensure all child elements align to the same left edge."
+              },
+              {
+                "severity": "major",
+                "location": "Pricing / registration section, desktop",
+                "issue": "The registration widget (package selector, quantity, order total) does not sit inside the same max-width container as all other sections — it appears to use a different, slightly narrower width, making it look detached from the page grid.",
+                "recommendation": "Wrap the SRS widget container in the same max-width class used for all other content sections (e.g., container or container-xl) so column edges align with the rest of the page.",
+                "fix_prompt": "Add class='container' (or the same container class used for the sponsors and speakers sections) to the outer div wrapping .iqpc-srs-widget-container so its left and right edges align with all other page sections."
+              },
+              {
+                "severity": "minor",
+                "location": "Sponsors section, desktop",
+                "issue": "Sponsor logos are displayed in a single horizontal row that is not visually balanced — logos vary significantly in optical size and are not vertically centered relative to each other, creating an unanchored floating look.",
+                "recommendation": "Normalize all sponsor logos to the same bounding-box height (e.g., 40px) and use align-items: center on the flex row so logos read as a cohesive tier.",
+                "fix_prompt": "In the sponsors logo row, set each logo img to max-height: 40px; width: auto; and add align-items: center to the parent flex container so all logos sit on the same optical baseline."
+              }
+            ]
+          },
+          {
+            "name": "Typography",
+            "score": 4,
+            "findings": [
+              {
+                "severity": "major",
+                "location": "Throughout page, desktop and mobile",
+                "issue": "The brand config specifies Archivo for headings and Inter for body, but the HTML imports a large Google Fonts stack including Oswald, Open Sans, Nunito, and others. Visually, section labels such as 'WHO YOU'LL HEAR FROM' and 'WHY ATTEND WORKX?' appear to use a condensed sans (possibly Oswald) rather than Archivo, while body copy in the value-prop section appears to use a different weight/family than the speaker card body copy. This suggests multiple font families are active on the page simultaneously.",
+                "recommendation": "Audit computed font-family on all heading and body elements. Remove all Google Fonts imports not matching Archivo and Inter. Apply font-family: 'Archivo', sans-serif to all h1–h4 and font-family: 'Inter', sans-serif to all p, li, span.",
+                "fix_prompt": "Remove all @import entries from the Google Fonts URL that are not 'Archivo' or 'Inter'. Then add a global CSS rule: h1, h2, h3, h4, h5, h6 { font-family: 'Archivo', sans-serif; } and p, li, span, a { font-family: 'Inter', sans-serif; } to enforce brand typography across all sections."
+              },
+              {
+                "severity": "major",
+                "location": "Section eyebrow labels (e.g., 'WHO YOU'LL HEAR FROM', 'INSIGHTS FROM YOUR PEERS'), desktop",
+                "issue": "Eyebrow labels use a small all-caps style with decorative rules on either side — a reasonable pattern — but the font size appears to be below 12px on desktop (possibly 10–11px) making them uncomfortably small relative to the section headings below and straining legibility.",
+                "recommendation": "Set eyebrow label font-size to at least 12px (per the brand scale minimum) and ensure letter-spacing is no more than 0.15em to maintain readability.",
+                "fix_prompt": "Find all elements with the eyebrow/label style (the small all-caps text above section headings like 'WHO YOU'LL HEAR FROM') and set their CSS to: font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600;"
+              },
+              {
+                "severity": "minor",
+                "location": "Speaker cards, desktop",
+                "issue": "Speaker name, title, and company are shown in three separate text sizes but the distinction between title and company is too subtle — both appear to use roughly 13–14px in similar weights, making the hierarchy within each card unclear.",
+                "recommendation": "Differentiate speaker title (e.g., 13px regular, #555) from speaker company (e.g., 12px medium, #1A1A1A or brand primary) so the information hierarchy within each card is scannable.",
+                "fix_prompt": "In the speaker card component, set the job title element to font-size: 13px; color: #555; font-weight: 400; and the company name element to font-size: 12px; color: #0A2540; font-weight: 600; to create clear visual distinction between the two lines."
+              }
+            ]
+          },
+          {
+            "name": "Spacing & rhythm",
+            "score": 4,
+            "findings": [
+              {
+                "severity": "major",
+                "location": "Cookie consent banner, desktop (appears at page load)",
+                "issue": "The cookie consent banner at the bottom of the screen uses a dark background and overlaps the footer content, but more critically its vertical padding appears to be only 10px (per the inline CSS), making it cramped and difficult to read the consent text and dismiss button at a glance.",
+                "recommendation": "Increase cookie banner padding to at least 16px top and bottom (matching the spacing scale) and ensure the dismiss button has a minimum touch target of 44×44px.",
+                "fix_prompt": "In the .cookie-consent CSS rule, change padding: 10px 0 to padding: 16px 24px and update the button inside it to have min-height: 44px; padding: 8px 16px; so it meets touch-target requirements."
+              },
+              {
+                "severity": "major",
+                "location": "What You'll Explore section, desktop",
+                "issue": "The four topic cards have inconsistent bottom spacing — the text descriptions under each card run to different lengths without a fixed card height, causing the bottom edges of adjacent cards to be misaligned and creating an uneven baseline rhythm across the row.",
+                "recommendation": "Use CSS flexbox with align-items: stretch on the card row, and ensure each card uses flex-direction: column with the description div set to flex-grow: 1 so all cards reach the same height.",
+                "fix_prompt": "Wrap the four 'What You'll Explore' cards in a flex container with display: flex; flex-wrap: wrap; align-items: stretch; gap: 24px; and set each card to display: flex; flex-direction: column; so the card body description div can use flex-grow: 1 to equalize card heights."
+              },
+              {
+                "severity": "minor",
+                "location": "Pricing section, desktop",
+                "issue": "The vertical space between the 'Reimagined Passes Starting at $799' section and the registration widget below it is inconsistent — there is a visible gap that is larger than the 96px maximum in the spacing scale, creating an unexplained void.",
+                "recommendation": "Set margin-top on the registration widget section to 64px (one spacing-scale step down from 96px) to tighten the relationship between the pricing callout and the registration form.",
+                "fix_prompt": "Add margin-top: 64px to the .iqpc-srs-widget-container div to reduce the excessive gap between the pricing callout section and the package selection widget."
+              }
+            ]
+          },
+          {
+            "name": "Visual hierarchy",
+            "score": 3,
+            "findings": [
+              {
+                "severity": "critical",
+                "location": "Hero section, desktop and mobile",
+                "issue": "The primary registration CTA ('Book Online Now') is the third of three buttons in the hero and is visually the smallest and least prominent — it renders at a smaller apparent size than the 'View Event Guide' and 'Sponsorship Opportunities' buttons. The accent color (#FF5A36 per brand config) does not appear to be applied to the 'Book Online Now' button in the hero, meaning the primary conversion action is not the most visually dominant element above the fold. This aligns with the conversion instrumentation finding of no detectable registration CTA.",
+                "recommendation": "Make 'Book Online Now' the sole primary button in the hero: apply the accent color (#FF5A36) as its background, increase its padding and font-weight relative to the secondary buttons, and ensure it is the largest button in the hero. Demote 'View Event Guide' and 'Sponsorship Opportunities' to text links or ghost buttons.",
+                "fix_prompt": "In the hero section, change the 'Book Online Now' button to style='background-color: #FF5A36; color: #FFFFFF; font-weight: 700; padding: 14px 28px; border: none; border-radius: 4px; font-size: 16px;' and change the other two hero buttons ('View Event Guide', 'Sponsorship Opportunities') to ghost style with style='background: transparent; border: 2px solid #0A2540; color: #0A2540; padding: 10px 20px; border-radius: 4px;' so the primary CTA is visually dominant."
+              },
+              {
+                "severity": "major",
+                "location": "Testimonial section, desktop",
+                "issue": "The 'Hear from Past Attendees' section features a large TDECU logo (red, high contrast) and a testimonial card, but the logo dominates the visual weight of the section more than the testimonial quote itself. The attendee attribution ('VP Corporate Real Estate') is visually subordinate to the sponsor logo, inverting the intended hierarchy of peer endorsement over brand recognition.",
+                "recommendation": "Reduce the TDECU logo to a secondary size (e.g., max-height: 32px) within the attribution line, and increase the font size of the testimonial quote to be the visual anchor of the section.",
+                "fix_prompt": "In the testimonial card, set the TDECU logo img to max-height: 32px; width: auto; and increase the blockquote or testimonial text element to font-size: 18px; font-style: italic; so the quote is the primary visual element and the logo is a supporting attribution."
+              },
+              {
+                "severity": "major",
+                "location": "Navigation bar, desktop",
+                "issue": "The nav bar 'Book Online Now' button (top right) uses what appears to be the accent color but is rendered very small within the navbar, while the hero has three competing CTA buttons. There is no clear single dominant CTA that a first-time visitor's eye would land on immediately.",
+                "recommendation": "Ensure the sticky nav CTA and hero CTA are visually consistent — both using #FF5A36 fill — and remove competing secondary CTAs from the hero fold so the registration action is unambiguous.",
+                "fix_prompt": "In the navigation bar, confirm the 'Book Online Now' button has background-color: #FF5A36; color: #FFFFFF; font-weight: 600; border-radius: 4px; padding: 8px 16px; and no other nav element uses a filled button style, so this CTA stands out as the sole primary action in the nav."
+              }
+            ]
+          },
+          {
+            "name": "Consistency",
+            "score": 4,
+            "findings": [
+              {
+                "severity": "major",
+                "location": "CTA buttons, throughout page",
+                "issue": "Button styling is inconsistent across sections: the hero has three different button visual weights, the pricing section uses a purple/indigo 'View New Rates' button that does not match the brand color palette (#FF5A36 accent, #0A2540 primary), the 'View All Speakers' and 'View All Sponsors' buttons appear to use a third style (outlined with a different border color), and the SRS widget 'Continue' button uses yet another color (#5696CB from the widget CSS). At least four distinct button treatments are visible.",
+                "recommendation": "Standardize to two button treatments site-wide: primary (fill #FF5A36, white text) for registration and key CTAs, and secondary (outline #0A2540, dark text) for supplementary actions. Update the pricing section 'View New Rates' button and SRS widget 'Continue' button to use the primary treatment.",
+                "fix_prompt": "Add a global CSS rule: .btn-primary-brand { background-color: #FF5A36; color: #FFFFFF; border: none; border-radius: 4px; padding: 12px 24px; font-weight: 600; font-family: 'Inter', sans-serif; } and .btn-secondary-brand { background-color: transparent; color: #0A2540; border: 2px solid #0A2540; border-radius: 4px; padding: 10px 22px; font-weight: 600; } then replace all existing button classes on non-widget buttons with these two classes."
+              },
+              {
+                "severity": "major",
+                "location": "Speaker cards vs. topic cards vs. testimonial card, desktop",
+                "issue": "Three different card styles are used across the page: speaker cards have circular image crops, no border, and centered text; topic cards have rectangular images with no radius and left-aligned text; the testimonial card has a full colored background with a quotation mark icon. While visual variety between section types is acceptable, within each section the card treatment is not fully consistent — for example topic cards appear to have slightly different image aspect ratios from card to card.",
+                "recommendation": "Lock topic card images to a consistent aspect ratio (e.g., 16:9) using aspect-ratio: 16/9; object-fit: cover; on the img element so all four cards present identical image frames.",
+                "fix_prompt": "For all images inside the 'What You'll Explore' topic cards, add style='width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block;' to ensure all four card images are the same height and aspect ratio."
+              },
+              {
+                "severity": "minor",
+                "location": "Section divider labels, throughout page",
+                "issue": "Some section eyebrow labels use a rule-line on both sides of the text (e.g., '— WHO YOU'LL HEAR FROM —') while at least one section ('PARTNERING FOR TOMORROW') uses a slightly different decorative treatment. The inconsistency is subtle but visible on close inspection.",
+                "recommendation": "Standardize the eyebrow/divider label component to a single CSS class used in all sections.",
+                "fix_prompt": "Create a single CSS class .section-eyebrow { display: flex; align-items: center; gap: 12px; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #0A2540; } .section-eyebrow::before, .section-eyebrow::after { content: ''; flex: 1; height: 1px; background: #0A2540; } and replace all inline section label styles with this class."
+              }
+            ]
+          },
+          {
+            "name": "Responsive integrity",
+            "score": 4,
+            "findings": [
+              {
+                "severity": "major",
+                "location": "Sponsors section, mobile (390px)",
+                "issue": "On mobile the sponsor logos appear to wrap onto multiple lines with inconsistent sizing — some logos are noticeably larger than others and the layout does not appear to use a uniform grid, resulting in a ragged multi-row arrangement that looks unfinished.",
+                "recommendation": "Use a CSS grid with a fixed number of columns (e.g., 2 or 3 per row) on mobile with all logos normalized to the same max-height and aligned to center, so the sponsor block looks intentional on narrow screens.",
+                "fix_prompt": "In the sponsors section, add a media query: @media (max-width: 600px) { .sponsors-logo-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; justify-items: center; align-items: center; } .sponsors-logo-row img { max-height: 36px; width: auto; } } to create an orderly two-column sponsor grid on mobile."
+              },
+              {
+                "severity": "major",
+                "location": "Hero section, mobile (390px)",
+                "issue": "On mobile, the hero shows the event tagline, title, dates, and three CTA buttons stacked, but the three buttons appear to each take different widths and are not full-width on mobile, making touch targets small and the visual weight of the CTA hierarchy unclear. The hero image appears to be hidden or pushed below the fold on mobile, reducing the visual impact of the hero significantly.",
+                "recommendation": "On mobile, set all hero buttons to width: 100% for consistency and touch usability. Surface the hero image as a background or stacked element above the text so the hero still communicates visually on narrow screens.",
+                "fix_prompt": "Add a mobile media query: @media (max-width: 600px) { .hero-cta-buttons a, .hero-cta-buttons button { width: 100%; display: block; margin-bottom: 8px; text-align: center; } } to make all hero CTA buttons full-width on mobile."
+              },
+              {
+                "severity": "minor",
+                "location": "Registration widget, mobile (390px)",
+                "issue": "The package selection tabs ('Practitioner/CRE/Workplace/Facilities', 'Designer/Architect/Broker', 'Vendors') overflow their container on mobile — the tab labels appear truncated or the tab bar requires horizontal scrolling, which is not visually indicated.",
+                "recommendation": "On mobile, convert the horizontal tab pills to a stacked vertical list or a select/dropdown element so all category options are accessible without horizontal scrolling.",
+                "fix_prompt": "Add a mobile media query: @media (max-width: 768px) { .iqpc-srs-nav-pills { flex-direction: column; width: 100%; } .iqpc-srs-nav-pills .nav-item { width: 100%; } .iqpc-srs-nav-pills .nav-item button { width: 100%; border-radius: 8px !important; margin: 4px 0; } } to stack the registration category tabs vertically on mobile."
+              }
+            ]
+          },
+          {
+            "name": "Visual accessibility",
+            "score": 3,
+            "findings": [
+              {
+                "severity": "critical",
+                "location": "Multiple interactive elements, throughout page",
+                "issue": "The axe-core scan confirms 12 nodes with insufficient color contrast (WCAG 2 AA failures). Visually, the most apparent instance is the ghost/outline secondary CTA buttons which use a light stroke on a white background with body-weight text — these are likely failing the 4.5:1 minimum ratio for normal text. Additionally, section eyebrow labels in a pale color over white background appear low-contrast.",
+                "recommendation": "Audit all button text, link text, and label text against their backgrounds using a contrast checker. Ensure all text meets 4.5:1 (normal text) or 3:1 (large text/UI components). Darken ghost button strokes to #0A2540 at full opacity and increase eyebrow label color contrast.",
+                "fix_prompt": "For all ghost/outline buttons on the page, set border-color: #0A2540; color: #0A2540; and ensure background is #FFFFFF so the contrast ratio meets WCAG AA. For all .section-eyebrow elements, set color: #0A2540; to ensure sufficient contrast against white backgrounds."
+              },
+              {
+                "severity": "critical",
+                "location": "IQPC logo link, footer area",
+                "issue": "The axe-core scan flags the IQPC logo anchor as having no discernible text (link-name failure) and the logo image has no alt text (image-alt failure). This means screen reader users cannot determine what the link is or where it goes.",
+                "recommendation": "Add descriptive alt text to the IQPC logo image (e.g., alt='IQPC — Event Organizer') and add an aria-label to the anchor element (e.g., aria-label='Visit IQPC website').",
+                "fix_prompt": "Find the anchor tag wrapping the IQPC logo image (a[href$='www.iqpc.com']) and add aria-label='Visit IQPC website' to the anchor, then add alt='IQPC — Event Organizer' to the img element inside it."
+              },
+              {
+                "severity": "major",
+                "location": "Speaker photos, desktop",
+                "issue": "Speaker profile images are circular crops placed over their natural photograph backgrounds. Where the photograph background is light-toned and the circular crop bleeds to white, there is no border or shadow to distinguish the image boundary, causing the card to appear to have a missing or clipped image at a glance.",
+                "recommendation": "Add a subtle 1px border (e.g., border: 1px solid #E0E0E0) or a 4px box-shadow to all circular speaker images to provide a clear visual boundary regardless of photo background color.",
+                "fix_prompt": "Add to the speaker card image CSS: .speaker-card img { border-radius: 50%; border: 1px solid #E0E0E0; box-shadow: 0 1px 4px rgba(0,0,0,0.12); } to ensure all speaker photos have a visible boundary."
+              },
+              {
+                "severity": "major",
+                "location": "Cookie consent banner, page load (desktop and mobile)",
+                "issue": "The cookie consent banner uses a dark (#252525) background with white text, which is good for contrast, but the dismiss button uses background: #595959 — dark grey on dark grey — giving it very low contrast against the banner background. The button may fail the 3:1 UI component contrast ratio.",
+                "recommendation": "Change the cookie consent dismiss button to use a white or accent-colored background with dark text to ensure it is visually distinguishable from the banner background.",
+                "fix_prompt": "In the .cookie-consent button CSS rule, change background: #595959 to background: #FF5A36; color: #FFFFFF; border-radius: 5px; padding: 6px 16px; font-weight: 600; so the dismiss button is clearly visible against the dark banner background."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "brand",
+      "label": "Brand Compliance",
+      "score": 48,
+      "summary": "The WorkX 2026 microsite satisfies all five required elements and presents a generally professional, benefit-led tone. However, the accent color (#FF5A36 / orange) is applied well beyond CTAs and key highlights — it bleeds into section dividers, inline text links, speaker name labels, and decorative rule lines throughout the page, diluting its intended role as a high-priority signal. Additionally, the footer area lacks a clearly visible privacy policy link at the viewport level reviewed, and the logo placement on the dark hero section requires closer scrutiny for adequate clear space on mobile. Missing required elements: Privacy policy link in footer.",
+      "findings": [
+        {
+          "severity": "major",
+          "location": "Rendered CSS (computed styles)",
+          "issue": "Off-palette color #212529 is used on 446 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+          "recommendation": "Replace #212529 with the nearest approved brand token.",
+          "fix_prompt": "Find every use of the color #212529 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+          "deterministic": true
+        },
+        {
+          "severity": "major",
+          "location": "Rendered CSS (computed styles)",
+          "issue": "Off-palette color #590167 is used on 150 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+          "recommendation": "Replace #590167 with the nearest approved brand token.",
+          "fix_prompt": "Find every use of the color #590167 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+          "deterministic": true
+        },
+        {
+          "severity": "minor",
+          "location": "Rendered CSS (computed styles)",
+          "issue": "Off-palette color #696969 is used on 32 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+          "recommendation": "Replace #696969 with the nearest approved brand token.",
+          "fix_prompt": "Find every use of the color #696969 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+          "deterministic": true
+        },
+        {
+          "severity": "minor",
+          "location": "Rendered CSS (computed styles)",
+          "issue": "Off-palette color #0C2341 is used on 31 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+          "recommendation": "Replace #0C2341 with the nearest approved brand token.",
+          "fix_prompt": "Find every use of the color #0C2341 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+          "deterministic": true
+        },
+        {
+          "severity": "minor",
+          "location": "Rendered CSS (computed styles)",
+          "issue": "Off-palette color #191E52 is used on 29 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+          "recommendation": "Replace #191E52 with the nearest approved brand token.",
+          "fix_prompt": "Find every use of the color #191E52 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+          "deterministic": true
+        },
+        {
+          "severity": "minor",
+          "location": "Rendered CSS (computed styles)",
+          "issue": "Off-palette color #006496 is used on 25 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+          "recommendation": "Replace #006496 with the nearest approved brand token.",
+          "fix_prompt": "Find every use of the color #006496 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+          "deterministic": true
+        },
+        {
+          "severity": "major",
+          "location": "Rendered CSS (computed styles)",
+          "issue": "Non-brand font stack \"Roboto, sans-serif\" is used on 945 elements. Brand fonts: Archivo, sans-serif (headings), Inter, sans-serif (body).",
+          "recommendation": "Load and apply the brand font families.",
+          "fix_prompt": "Replace the font stack \"Roboto, sans-serif\" across this site with the brand fonts: \"Archivo, sans-serif\" for headings and \"Inter, sans-serif\" for body text. Add the necessary font imports.",
+          "deterministic": true
+        },
+        {
+          "severity": "critical",
+          "location": "Footer",
+          "issue": "No Privacy Policy link is visible in the footer on either desktop or mobile screenshots. A cookie consent bar references cookie policy inline but a standalone, persistently accessible Privacy Policy link — a legally required element per brand config — is absent.",
+          "recommendation": "Add a clearly labeled 'Privacy Policy' hyperlink in the footer, ideally alongside any Terms of Use or Cookie Policy links, in a consistent and accessible location.",
+          "fix_prompt": "In the site footer HTML, add an anchor tag: <a href='/privacy-policy'>Privacy Policy</a> inside the existing footer nav or legal text row, ensuring it is visible at all viewport widths and not hidden behind a collapsed element."
+        },
+        {
+          "severity": "major",
+          "location": "Page-wide — section dividers, speaker names, inline text links, decorative rules, 'WHO YOU'LL HEAR FROM' / 'WHY ATTEND WORKX?' label lines",
+          "issue": "The accent color (#FF5A36 / orange) is used as a decorative color for section-header rule lines, small caps category labels (e.g. 'WHO YOU'LL HEAR FROM', 'WHY ATTEND WORKX?', 'NEW PRICING AVAILABLE', 'INSIGHTS FROM YOUR PEERS'), speaker name hyperlinks, and inline body-copy links throughout the page. Brand config explicitly reserves accent for CTAs and key highlights only. This widespread decorative use dilutes accent-color hierarchy and reduces the visual prominence of actual CTAs.",
+          "recommendation": "Restrict accent color to: (1) primary CTA buttons ('Book Online Now', 'View New Rates', 'Continue'), (2) no more than one or two genuinely critical highlights per section. Replace accent on decorative rule lines and section labels with the primary color (#0A2540) or a neutral. Replace accent on speaker name links with the primary color or a standard link color.",
+          "fix_prompt": "Search CSS for all instances of color: #FF5A36 and background-color: #FF5A36 (and equivalents: rgb(255,90,54), var(--accent)). Remove the accent color from: .section-label, .section-rule hr, .divider-line, speaker .name a, and any inline <span> or <small> category tags. Replace with color: #0A2540. Retain accent only on .btn-primary, .cta-button, and highlight callout badges."
+        },
+        {
+          "severity": "major",
+          "location": "Hero section — mobile (390px)",
+          "issue": "On mobile, the SSON/WorkX logo appears very small in the global nav bar and the WorkX event wordmark in the hero has minimal clear space above it — the supergraphic/tagline text ('NO BUDGET, NO EXCUSES: HOW THE OFFICE STILL DELIVERS') sits immediately above the logomark with apparent clearance less than the height of the logomark itself, violating the minimum clear-space rule.",
+          "recommendation": "Increase top padding/margin above the WorkX event logo in the hero on mobile to at least equal the height of the logomark. Ensure the tagline text does not encroach within the protected clear-space zone.",
+          "fix_prompt": "In the mobile hero CSS (max-width: 390px), add padding-top to the .hero-logo or .event-logo container equal to the logo's rendered height. For example: .hero .event-logo-wrapper { margin-top: calc(var(--logo-height, 32px)); } and ensure the eyebrow/tagline text element above the logo has margin-bottom at minimum equal to the logo height."
+        },
+        {
+          "severity": "minor",
+          "location": "Hero — desktop and mobile, tagline text",
+          "issue": "The hero sub-headline reads 'NO BUDGET, NO EXCUSES: HOW THE OFFICE STILL DELIVERS' in all-caps small text above the event name. While energetic, the phrase 'No Excuses' is edgy and could read as confrontational rather than benefit-led. Brand tone requires 'Professional, energetic, benefit-led' and prohibits unverifiable superlatives. While not a superlative, the confrontational framing risks misrepresenting the event's constructive positioning.",
+          "recommendation": "Consider softening or reframing to a benefit-led statement, e.g., 'NO BUDGET, NO PROBLEM: HOW THE OFFICE DELIVERS ROI' or keeping it as a section header rather than the primary hero tagline, to better align with the professional, benefit-led tone.",
+          "fix_prompt": "In the hero HTML, locate the <p> or <span> element containing 'NO BUDGET, NO EXCUSES: HOW THE OFFICE STILL DELIVERS' and update the copy to a benefit-led alternative approved by the editorial team, e.g., 'DOING MORE WITH LESS: HOW THE OFFICE STILL DELIVERS VALUE'."
+        },
+        {
+          "severity": "minor",
+          "location": "Testimonial / 'Hear from Past Attendees' section",
+          "issue": "The testimonial block prominently features the TDECU logo ('TDECU — YOUR CREDIT UNION') in large red brand typography, which introduces a third-party brand color (strong red) as a dominant visual element in a large card. This creates an off-brand accent that competes with the site's own color system and could confuse visitors about whose brand they are on.",
+          "recommendation": "Display sponsor/attendee logos in a neutral, monochrome or grayscale rendering within testimonial cards to prevent third-party brand colors from visually overriding the portal's own palette. Alternatively, reduce the logo size so it is clearly subordinate to the quote text.",
+          "fix_prompt": "Apply a CSS filter to logos inside the testimonial card component: .testimonial-card .company-logo img { filter: grayscale(100%); opacity: 0.75; } to neutralize third-party brand colors. Ensure the logo does not exceed 120px wide within the card layout."
+        },
+        {
+          "severity": "minor",
+          "location": "Pricing / registration section — 'Reimagined Passes Starting at $799' block",
+          "issue": "The section label 'NEW PRICING AVAILABLE' uses the accent color as a decorative tag, and the CTA button 'View New Rates' appears in the accent color correctly, but the surrounding body copy uses the phrase 'making it easier for practitioners to attend' which is passive and vague. Additionally, 'Reimagined Passes' is a mildly unverifiable marketing claim (what was 'reimagined' is not substantiated on the page).",
+          "recommendation": "Replace 'Reimagined Passes' with a specific, verifiable claim such as 'Flexible Passes' or 'Tiered Passes for Every Budget'. Tighten body copy to be more active and benefit-specific.",
+          "fix_prompt": "In the pricing section HTML, update the heading from 'Reimagined Passes Starting at $799' to 'Flexible Passes Starting at $799'. Update the body copy opening from 'We've refined our pricing to better support the full workplace ecosystem, making it easier for practitioners to attend' to 'Choose from tiered pass options designed for practitioners, designers, and brokers — with pricing that fits your budget and role.'"
+        }
+      ],
+      "report_md": "**Required elements**\n- ✓ Event name and dates in the hero — Hero clearly shows 'WorkX Conference' and 'August 10–12, 2026' in the top-left of the hero block on both desktop and mobile.\n- ✓ Venue / location — 'San Francisco, CA' is displayed in the hero beneath the dates on both breakpoints.\n- ✓ Primary registration CTA above the fold — 'Book Online Now' button appears in the hero on desktop; a CTA button is visible above the fold on mobile as well.\n- ✓ IQPC or portal brand logo — SSON logo appears in the top-left of the global nav and in the footer 'In Partnership With: SSON' block. IQPC copyright mark is visible in the footer.\n- ✗ MISSING Privacy policy link in footer — The footer contains contact details and partner logos but no visible 'Privacy Policy' hyperlink is discernible in either the desktop or mobile screenshot. The cookie consent banner references a Cookie Policy but a standalone Privacy Policy footer link is not confirmed visible.\n\n**Token scan (deterministic)**\n- [major] Off-palette color #212529 is used on 446 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.\n- [major] Off-palette color #590167 is used on 150 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.\n- [minor] Off-palette color #696969 is used on 32 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.\n- [minor] Off-palette color #0C2341 is used on 31 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.\n- [minor] Off-palette color #191E52 is used on 29 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.\n- [minor] Off-palette color #006496 is used on 25 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.\n- [major] Non-brand font stack \"Roboto, sans-serif\" is used on 945 elements. Brand fonts: Archivo, sans-serif (headings), Inter, sans-serif (body).\n\n**Findings**\n- [critical] Footer: No Privacy Policy link is visible in the footer on either desktop or mobile screenshots. A cookie consent bar references cookie policy inline but a standalone, persistently accessible Privacy Policy link — a legally required element per brand config — is absent.\n  - Fix: Add a clearly labeled 'Privacy Policy' hyperlink in the footer, ideally alongside any Terms of Use or Cookie Policy links, in a consistent and accessible location.\n- [major] Page-wide — section dividers, speaker names, inline text links, decorative rules, 'WHO YOU'LL HEAR FROM' / 'WHY ATTEND WORKX?' label lines: The accent color (#FF5A36 / orange) is used as a decorative color for section-header rule lines, small caps category labels (e.g. 'WHO YOU'LL HEAR FROM', 'WHY ATTEND WORKX?', 'NEW PRICING AVAILABLE', 'INSIGHTS FROM YOUR PEERS'), speaker name hyperlinks, and inline body-copy links throughout the page. Brand config explicitly reserves accent for CTAs and key highlights only. This widespread decorative use dilutes accent-color hierarchy and reduces the visual prominence of actual CTAs.\n  - Fix: Restrict accent color to: (1) primary CTA buttons ('Book Online Now', 'View New Rates', 'Continue'), (2) no more than one or two genuinely critical highlights per section. Replace accent on decorative rule lines and section labels with the primary color (#0A2540) or a neutral. Replace accent on speaker name links with the primary color or a standard link color.\n- [major] Hero section — mobile (390px): On mobile, the SSON/WorkX logo appears very small in the global nav bar and the WorkX event wordmark in the hero has minimal clear space above it — the supergraphic/tagline text ('NO BUDGET, NO EXCUSES: HOW THE OFFICE STILL DELIVERS') sits immediately above the logomark with apparent clearance less than the height of the logomark itself, violating the minimum clear-space rule.\n  - Fix: Increase top padding/margin above the WorkX event logo in the hero on mobile to at least equal the height of the logomark. Ensure the tagline text does not encroach within the protected clear-space zone.\n- [minor] Hero — desktop and mobile, tagline text: The hero sub-headline reads 'NO BUDGET, NO EXCUSES: HOW THE OFFICE STILL DELIVERS' in all-caps small text above the event name. While energetic, the phrase 'No Excuses' is edgy and could read as confrontational rather than benefit-led. Brand tone requires 'Professional, energetic, benefit-led' and prohibits unverifiable superlatives. While not a superlative, the confrontational framing risks misrepresenting the event's constructive positioning.\n  - Fix: Consider softening or reframing to a benefit-led statement, e.g., 'NO BUDGET, NO PROBLEM: HOW THE OFFICE DELIVERS ROI' or keeping it as a section header rather than the primary hero tagline, to better align with the professional, benefit-led tone.\n- [minor] Testimonial / 'Hear from Past Attendees' section: The testimonial block prominently features the TDECU logo ('TDECU — YOUR CREDIT UNION') in large red brand typography, which introduces a third-party brand color (strong red) as a dominant visual element in a large card. This creates an off-brand accent that competes with the site's own color system and could confuse visitors about whose brand they are on.\n  - Fix: Display sponsor/attendee logos in a neutral, monochrome or grayscale rendering within testimonial cards to prevent third-party brand colors from visually overriding the portal's own palette. Alternatively, reduce the logo size so it is clearly subordinate to the quote text.\n- [minor] Pricing / registration section — 'Reimagined Passes Starting at $799' block: The section label 'NEW PRICING AVAILABLE' uses the accent color as a decorative tag, and the CTA button 'View New Rates' appears in the accent color correctly, but the surrounding body copy uses the phrase 'making it easier for practitioners to attend' which is passive and vague. Additionally, 'Reimagined Passes' is a mildly unverifiable marketing claim (what was 'reimagined' is not substantiated on the page).\n  - Fix: Replace 'Reimagined Passes' with a specific, verifiable claim such as 'Flexible Passes' or 'Tiered Passes for Every Budget'. Tighten body copy to be more active and benefit-specific.",
+      "extra": {
+        "required_elements": [
+          {
+            "element": "Event name and dates in the hero",
+            "present": true,
+            "note": "Hero clearly shows 'WorkX Conference' and 'August 10–12, 2026' in the top-left of the hero block on both desktop and mobile."
+          },
+          {
+            "element": "Venue / location",
+            "present": true,
+            "note": "'San Francisco, CA' is displayed in the hero beneath the dates on both breakpoints."
+          },
+          {
+            "element": "Primary registration CTA above the fold",
+            "present": true,
+            "note": "'Book Online Now' button appears in the hero on desktop; a CTA button is visible above the fold on mobile as well."
+          },
+          {
+            "element": "IQPC or portal brand logo",
+            "present": true,
+            "note": "SSON logo appears in the top-left of the global nav and in the footer 'In Partnership With: SSON' block. IQPC copyright mark is visible in the footer."
+          },
+          {
+            "element": "Privacy policy link in footer",
+            "present": false,
+            "note": "The footer contains contact details and partner logos but no visible 'Privacy Policy' hyperlink is discernible in either the desktop or mobile screenshot. The cookie consent banner references a Cookie Policy but a standalone Privacy Policy footer link is not confirmed visible."
+          }
+        ],
+        "token_scan": [
+          {
+            "severity": "major",
+            "location": "Rendered CSS (computed styles)",
+            "issue": "Off-palette color #212529 is used on 446 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+            "recommendation": "Replace #212529 with the nearest approved brand token.",
+            "fix_prompt": "Find every use of the color #212529 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+            "deterministic": true
+          },
+          {
+            "severity": "major",
+            "location": "Rendered CSS (computed styles)",
+            "issue": "Off-palette color #590167 is used on 150 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+            "recommendation": "Replace #590167 with the nearest approved brand token.",
+            "fix_prompt": "Find every use of the color #590167 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+            "deterministic": true
+          },
+          {
+            "severity": "minor",
+            "location": "Rendered CSS (computed styles)",
+            "issue": "Off-palette color #696969 is used on 32 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+            "recommendation": "Replace #696969 with the nearest approved brand token.",
+            "fix_prompt": "Find every use of the color #696969 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+            "deterministic": true
+          },
+          {
+            "severity": "minor",
+            "location": "Rendered CSS (computed styles)",
+            "issue": "Off-palette color #0C2341 is used on 31 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+            "recommendation": "Replace #0C2341 with the nearest approved brand token.",
+            "fix_prompt": "Find every use of the color #0C2341 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+            "deterministic": true
+          },
+          {
+            "severity": "minor",
+            "location": "Rendered CSS (computed styles)",
+            "issue": "Off-palette color #191E52 is used on 29 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+            "recommendation": "Replace #191E52 with the nearest approved brand token.",
+            "fix_prompt": "Find every use of the color #191E52 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+            "deterministic": true
+          },
+          {
+            "severity": "minor",
+            "location": "Rendered CSS (computed styles)",
+            "issue": "Off-palette color #006496 is used on 25 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+            "recommendation": "Replace #006496 with the nearest approved brand token.",
+            "fix_prompt": "Find every use of the color #006496 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+            "deterministic": true
+          },
+          {
+            "severity": "major",
+            "location": "Rendered CSS (computed styles)",
+            "issue": "Non-brand font stack \"Roboto, sans-serif\" is used on 945 elements. Brand fonts: Archivo, sans-serif (headings), Inter, sans-serif (body).",
+            "recommendation": "Load and apply the brand font families.",
+            "fix_prompt": "Replace the font stack \"Roboto, sans-serif\" across this site with the brand fonts: \"Archivo, sans-serif\" for headings and \"Inter, sans-serif\" for body text. Add the necessary font imports.",
+            "deterministic": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "seo",
+      "label": "SEO Audit",
+      "score": 62,
+      "summary": "WorkX 2026 has a solid content foundation and — contrary to the deterministic check flag — already contains a well-populated schema.org Event JSON-LD block in the rendered HTML. The primary SEO weaknesses are an over-long, unfocused meta description that will be truncated by every search engine, a title tag that omits the most searchable topic keywords (workplace conference, facilities, CRE), and an H1 that is too generic to reinforce keyword relevance for mid-funnel queries. Keyword coherence between the on-page copy and metadata is reasonable but underdeveloped: terms like 'workplace strategy', 'facilities management', and 'corporate real estate conference' appear in body content but are absent from title and meta description.",
+      "findings": [
+        {
+          "severity": "minor",
+          "location": "Document <head> / structure",
+          "issue": "Meta description is 446 chars (will truncate).",
+          "recommendation": "Trim to ≤160 characters.",
+          "fix_prompt": "Trim this page's meta description to 160 characters or fewer without losing the value proposition.",
+          "deterministic": true
+        },
+        {
+          "severity": "major",
+          "location": "Document <head> / structure",
+          "issue": "No schema.org Event structured data (JSON-LD) — the page cannot earn event rich results in Google.",
+          "recommendation": "Add Event JSON-LD with name, dates, location, organizer, and offers.",
+          "fix_prompt": "Add the schema.org Event JSON-LD provided in the QA report to this page inside a <script type=\"application/ld+json\"> tag in the <head>.",
+          "deterministic": true
+        },
+        {
+          "severity": "critical",
+          "location": "<meta name=\"description\">",
+          "issue": "Meta description is 446 characters — nearly 3× the ~155-character display limit. Google will truncate it unpredictably, cutting off the benefit-led copy and wasting the click-through opportunity. The opening line ('leading workplace conference that covers all things workplace') also uses an unverifiable superlative ('leading') and a vague phrase ('all things workplace').",
+          "recommendation": "Rewrite to 150–160 characters. Lead with the specific audience and value proposition; include primary keywords (workplace conference, facilities, corporate real estate) and the location/date hook.",
+          "fix_prompt": "Replace the existing meta description content with: 'WorkX 2026 | Aug 10–12 · San Francisco. Peer-led strategies, benchmarks, and cost-justification tools for workplace, facilities, and corporate real estate leaders.' (157 chars)"
+        },
+        {
+          "severity": "critical",
+          "location": "<title> tag",
+          "issue": "Title 'WorkX August 2026 | San Francisco' is only 33 characters and contains no descriptive keyword beyond the brand name. Users searching for 'workplace strategy conference 2026', 'facilities management conference San Francisco', or 'corporate real estate event 2026' will not see this result as relevant. The brand name 'WorkX' is not yet widely recognised, making a keyword-lean title a significant missed opportunity.",
+          "recommendation": "Expand title to include primary topic keywords while staying ≤60 characters. Format: [Brand] [Descriptor] [Year] | [Location].",
+          "fix_prompt": "Change the <title> to: 'WorkX 2026 | Workplace & Facilities Conference | San Francisco' (60 chars)"
+        },
+        {
+          "severity": "major",
+          "location": "<h1> — 'WorkX Conference'",
+          "issue": "The H1 is a bare brand label with no topical signal. It does not match likely search queries ('workplace strategy conference', 'corporate real estate summit', 'facilities management event') and creates a disconnect between what crawlers infer as the page's primary topic and the richer copy below.",
+          "recommendation": "Expand the H1 to incorporate the event's core audience and value descriptor without keyword stuffing. This also improves accessibility as a meaningful landmark heading.",
+          "fix_prompt": "Change the H1 text to: 'WorkX 2026: The Workplace, Facilities & Corporate Real Estate Conference' or a close variant approved by the brand team."
+        },
+        {
+          "severity": "major",
+          "location": "schema.org Event JSON-LD — location.name / address",
+          "issue": "The Event schema location has name 'San Francisco, CA' but streetAddress, postalCode, and telephone are all empty strings. The venue name itself (the specific hotel or convention centre) is missing. Google's Event rich-result eligibility requires a populated, specific location; empty address fields reduce eligibility and may suppress the rich result.",
+          "recommendation": "Add the specific venue name and full postal address once confirmed. Until confirmed, set streetAddress and postalCode to null rather than empty strings to avoid malformed output.",
+          "fix_prompt": "In the existing JSON-LD Event block, update the location object: set streetAddress, postalCode, and telephone to null (not empty strings). When the venue is confirmed, populate 'name' with the venue name (e.g. 'Marriott Marquis San Francisco') and fill in streetAddress and postalCode."
+        },
+        {
+          "severity": "major",
+          "location": "schema.org Event JSON-LD — offers.validFrom / offer.availability",
+          "issue": "offers.validFrom is set to '2026-08-10' (the event start date), which implies tickets only become available on the day of the event — illogical and potentially misleading to Google. The offer availability URL ('https://www.ssonetwork.com/events-workx/InStock') is non-standard; schema.org Offer availability should use a schema.org enumeration value, not a custom URL.",
+          "recommendation": "Set offers.validFrom to today's publish date or the date early-bird pricing opened. Set offer.availability to 'https://schema.org/InStock'.",
+          "fix_prompt": "In the existing JSON-LD Event block, change: \"validFrom\": \"2026-08-10\" to the actual on-sale date (e.g. \"2025-07-01\"), and change \"availability\": \"https://www.ssonetwork.com/events-workx/InStock\" to \"availability\": \"https://schema.org/InStock\"."
+        },
+        {
+          "severity": "major",
+          "location": "schema.org Event JSON-LD — @id",
+          "issue": "'@id' is set to 'https://www.iqpc.com#event' but the event page lives on ssonetwork.com. The @id should be unique and dereferenceable to this specific event, not the parent domain's generic event anchor.",
+          "recommendation": "Set @id to the canonical URL of this event page with a meaningful fragment, e.g. 'https://www.ssonetwork.com/events-workx#event'.",
+          "fix_prompt": "In the Event JSON-LD block, change \"@id\": \"https://www.iqpc.com#event\" to \"@id\": \"https://www.ssonetwork.com/events-workx#event\"."
+        },
+        {
+          "severity": "minor",
+          "location": "og:image / twitter:image",
+          "issue": "The OG and Twitter card image points to what appears to be a small logo PNG. Social platforms recommend 1200×630 px images for optimal unfurl display. A logo-only image produces poor share previews and reduces click-through from social.",
+          "recommendation": "Replace with a purpose-built event social share image at 1200×630 px featuring the event name, date, and location against a brand-appropriate background.",
+          "fix_prompt": "Upload a 1200×630 px hero/social image to the CDN and update og:image and twitter:image href values accordingly. Ensure the image file size is under 1 MB."
+        },
+        {
+          "severity": "minor",
+          "location": "<meta name=\"keywords\">",
+          "issue": "The keywords meta tag is present but empty. While Google ignores this tag for ranking, Bing still indexes it lightly, and an empty tag is a missed low-cost signal for secondary engines. More importantly, the empty tag suggests no formal keyword strategy has been documented for this page.",
+          "recommendation": "Populate with 8–10 relevant terms: 'workplace conference 2026, facilities management conference, corporate real estate summit, workplace strategy, CRE conference San Francisco, hybrid work conference, workplace design, facilities leaders'.",
+          "fix_prompt": "Set <meta name=\"keywords\"> content attribute to: 'workplace conference 2026, facilities management conference, corporate real estate event, workplace strategy summit, CRE conference San Francisco, hybrid work, facilities management, WorkX 2026'"
+        },
+        {
+          "severity": "minor",
+          "location": "robots meta — absent",
+          "issue": "No robots meta tag is present. While this defaults to index/follow, explicitly declaring it is a best-practice signal and guards against accidental CMS changes that might leave the page in a noindex state without clear auditability.",
+          "recommendation": "Add <meta name=\"robots\" content=\"index, follow\"> to the <head>.",
+          "fix_prompt": "Add the following line inside the <head> block: <meta name=\"robots\" content=\"index, follow\">"
+        },
+        {
+          "severity": "minor",
+          "location": "schema.org WebSite JSON-LD",
+          "issue": "The WebSite schema block has name 'WorkX' but url 'https://www.iqpc.com' — the event microsite URL (ssonetwork.com/events-workx) is not represented. This creates a confusing entity signal where the 'WorkX' brand is associated with the IQPC root domain rather than the event page.",
+          "recommendation": "Either remove this WebSite block from the event microsite (it belongs on the root domain) or update url to 'https://www.ssonetwork.com/events-workx' and align name accordingly.",
+          "fix_prompt": "In the WebSite JSON-LD block, change \"url\": \"https://www.iqpc.com\" to \"url\": \"https://www.ssonetwork.com\" and update \"@id\" to \"https://www.ssonetwork.com#website\". Alternatively, remove the WebSite block entirely from this event microsite page."
+        }
+      ],
+      "report_md": "**Structural checks (deterministic)**\n- Title: \"WorkX August 2026 | San Francisco\" (33 chars)\n- Meta description: 446 chars\n- Open Graph: ✓ complete enough for share cards\n- Canonical: ✓ · Viewport: ✓ · Robots: —\n- H1 count: 1 · Image alt coverage: 95% of 66\n- Event structured data (JSON-LD): ✗ MISSING — generated below\n\n**Findings**\n- [minor] Meta description is 446 chars (will truncate).\n  - Fix: Trim to ≤160 characters.\n- [major] No schema.org Event structured data (JSON-LD) — the page cannot earn event rich results in Google.\n  - Fix: Add Event JSON-LD with name, dates, location, organizer, and offers.\n- [critical] Meta description is 446 characters — nearly 3× the ~155-character display limit. Google will truncate it unpredictably, cutting off the benefit-led copy and wasting the click-through opportunity. The opening line ('leading workplace conference that covers all things workplace') also uses an unverifiable superlative ('leading') and a vague phrase ('all things workplace').\n  - Fix: Rewrite to 150–160 characters. Lead with the specific audience and value proposition; include primary keywords (workplace conference, facilities, corporate real estate) and the location/date hook.\n- [critical] Title 'WorkX August 2026 | San Francisco' is only 33 characters and contains no descriptive keyword beyond the brand name. Users searching for 'workplace strategy conference 2026', 'facilities management conference San Francisco', or 'corporate real estate event 2026' will not see this result as relevant. The brand name 'WorkX' is not yet widely recognised, making a keyword-lean title a significant missed opportunity.\n  - Fix: Expand title to include primary topic keywords while staying ≤60 characters. Format: [Brand] [Descriptor] [Year] | [Location].\n- [major] The H1 is a bare brand label with no topical signal. It does not match likely search queries ('workplace strategy conference', 'corporate real estate summit', 'facilities management event') and creates a disconnect between what crawlers infer as the page's primary topic and the richer copy below.\n  - Fix: Expand the H1 to incorporate the event's core audience and value descriptor without keyword stuffing. This also improves accessibility as a meaningful landmark heading.\n- [major] The Event schema location has name 'San Francisco, CA' but streetAddress, postalCode, and telephone are all empty strings. The venue name itself (the specific hotel or convention centre) is missing. Google's Event rich-result eligibility requires a populated, specific location; empty address fields reduce eligibility and may suppress the rich result.\n  - Fix: Add the specific venue name and full postal address once confirmed. Until confirmed, set streetAddress and postalCode to null rather than empty strings to avoid malformed output.\n- [major] offers.validFrom is set to '2026-08-10' (the event start date), which implies tickets only become available on the day of the event — illogical and potentially misleading to Google. The offer availability URL ('https://www.ssonetwork.com/events-workx/InStock') is non-standard; schema.org Offer availability should use a schema.org enumeration value, not a custom URL.\n  - Fix: Set offers.validFrom to today's publish date or the date early-bird pricing opened. Set offer.availability to 'https://schema.org/InStock'.\n- [major] '@id' is set to 'https://www.iqpc.com#event' but the event page lives on ssonetwork.com. The @id should be unique and dereferenceable to this specific event, not the parent domain's generic event anchor.\n  - Fix: Set @id to the canonical URL of this event page with a meaningful fragment, e.g. 'https://www.ssonetwork.com/events-workx#event'.\n- [minor] The OG and Twitter card image points to what appears to be a small logo PNG. Social platforms recommend 1200×630 px images for optimal unfurl display. A logo-only image produces poor share previews and reduces click-through from social.\n  - Fix: Replace with a purpose-built event social share image at 1200×630 px featuring the event name, date, and location against a brand-appropriate background.\n- [minor] The keywords meta tag is present but empty. While Google ignores this tag for ranking, Bing still indexes it lightly, and an empty tag is a missed low-cost signal for secondary engines. More importantly, the empty tag suggests no formal keyword strategy has been documented for this page.\n  - Fix: Populate with 8–10 relevant terms: 'workplace conference 2026, facilities management conference, corporate real estate summit, workplace strategy, CRE conference San Francisco, hybrid work conference, workplace design, facilities leaders'.\n- [minor] No robots meta tag is present. While this defaults to index/follow, explicitly declaring it is a best-practice signal and guards against accidental CMS changes that might leave the page in a noindex state without clear auditability.\n  - Fix: Add <meta name=\"robots\" content=\"index, follow\"> to the <head>.\n- [minor] The WebSite schema block has name 'WorkX' but url 'https://www.iqpc.com' — the event microsite URL (ssonetwork.com/events-workx) is not represented. This creates a confusing entity signal where the 'WorkX' brand is associated with the IQPC root domain rather than the event page.\n  - Fix: Either remove this WebSite block from the event microsite (it belongs on the root domain) or update url to 'https://www.ssonetwork.com/events-workx' and align name accordingly.\n\n**Improved metadata (ready to apply)**\n- Title: WorkX 2026 | Workplace & Facilities Conference | San Francisco\n- Meta description: WorkX 2026 · Aug 10–12, San Francisco. Benchmarks, cost-justification playbooks, and peer-led strategies for workplace, facilities, and corporate real estate leaders.",
+      "extra": {
+        "checks": {
+          "title": "WorkX August 2026 | San Francisco",
+          "title_length": 33,
+          "meta_description": "WorkX in August 2026 is the leading workplace conference that covers all things workplace, facilities, and corporate real estate.\n\nThe WorkX Conference gives attendees data and peer-tested strategies, and therefore confidence, to act decisively instead of defensively. Attendees will walk away with real-world benchmarks, cost-justification playbooks, and proven ways to reposition the workplace as a performance driver rather than a cost center.",
+          "meta_description_length": 446,
+          "canonical": "https://www.ssonetwork.com/events-workx",
+          "og": {
+            "title": "WorkX August 2026 | San Francisco",
+            "description": "WorkX in August 2026 is the leading workplace conference that covers all things workplace, facilities, and corporate real estate.\n\nThe WorkX Conference gives attendees data and peer-tested strategies, and therefore confidence, to act decisively instead of defensively. Attendees will walk away with real-world benchmarks, cost-justification playbooks, and proven ways to reposition the workplace as a performance driver rather than a cost center.",
+            "image": "https://eco-cdn.iqpc.com/eco/images/logos/LruQca4OfnglU5eE31Y7NdPwAjnC6LZ337ze7b5X.png"
+          },
+          "viewport_meta": true,
+          "robots_meta": null,
+          "h1_count": 1,
+          "h1s": [
+            "WorkX Conference"
+          ],
+          "image_alt_coverage_pct": 95,
+          "images_total": 66,
+          "has_event_schema": false
+        },
+        "improved_meta": {
+          "title": "WorkX 2026 | Workplace & Facilities Conference | San Francisco",
+          "meta_description": "WorkX 2026 · Aug 10–12, San Francisco. Benchmarks, cost-justification playbooks, and peer-led strategies for workplace, facilities, and corporate real estate leaders.",
+          "og_title": "WorkX 2026 | Workplace & Facilities Conference — Aug 10–12, San Francisco",
+          "og_description": "Join 400+ workplace, facilities, and CRE leaders in San Francisco. Real benchmarks, peer-tested strategies, and clarity on making the office a performance driver—not a cost centre."
+        },
+        "event_schema_jsonld": null
+      }
+    }
+  ],
+  "conversion": {
+    "analytics_found": [
+      "GA4 / Google Tag Manager",
+      "LinkedIn Insight Tag"
+    ],
+    "analytics_missing": [
+      "Meta Pixel"
+    ],
+    "ctas": [],
+    "utm_propagation": "not_tested",
+    "issues": [
+      {
+        "severity": "major",
+        "code": "MISSING_PIXEL",
+        "detail": "Meta Pixel not detected — conversions from this page cannot be measured/attributed for that channel."
+      },
+      {
+        "severity": "critical",
+        "code": "NO_REGISTRATION_CTA",
+        "detail": "No registration/booking call-to-action was found on the page. The primary conversion path is missing."
+      }
+    ]
+  },
+  "perf": {
+    "available": false,
+    "note": "Skipped via --skip-perf"
+  },
+  "regression": {
+    "first_run": false,
+    "previous_date": "2026-07-22T16:13:27.116Z",
+    "previous_score": 54,
+    "score_delta": -1,
+    "previous_verdict": "BLOCK",
+    "verdict_changed": false,
+    "regressed": false
+  },
+  "axe": [
+    {
+      "id": "aria-valid-attr-value",
+      "impact": "critical",
+      "description": "Ensure all ARIA attributes have valid values",
+      "affected_nodes": 3,
+      "example_target": "#tier-6994e6cc50cb2108c7583cfb-tab"
+    },
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "affected_nodes": 12,
+      "example_target": "a[role=\"button\"]"
+    },
+    {
+      "id": "heading-order",
+      "impact": "moderate",
+      "description": "Ensure the order of headings is semantically correct",
+      "affected_nodes": 7,
+      "example_target": "#wlxOz > h6"
+    },
+    {
+      "id": "image-alt",
+      "impact": "critical",
+      "description": "Ensure <img> elements have alternative text or a role of none or presentation",
+      "affected_nodes": 1,
+      "example_target": "a[href$=\"www.iqpc.com\"] > .d-block"
+    },
+    {
+      "id": "landmark-unique",
+      "impact": "moderate",
+      "description": "Ensure landmarks are unique",
+      "affected_nodes": 1,
+      "example_target": ".portal-navigation"
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensure links have discernible text",
+      "affected_nodes": 1,
+      "example_target": "a[href$=\"www.iqpc.com\"]"
+    },
+    {
+      "id": "listitem",
+      "impact": "serious",
+      "description": "Ensure <li> elements are used semantically",
+      "affected_nodes": 3,
+      "example_target": ".px-2.nav-link:nth-child(1)"
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensure all page content is contained by landmarks",
+      "affected_nodes": 26,
+      "example_target": ".template-6-header-container"
+    }
+  ],
+  "hasApiKey": true
+}

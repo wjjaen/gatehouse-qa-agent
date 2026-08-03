@@ -1,0 +1,242 @@
+{
+  "url": "https://www.ssonetwork.com/events-workx",
+  "portal": null,
+  "run": "2026-07-22T16-06-33-865Z",
+  "outDir": "runs/2026-07-22T16-06-33-865Z",
+  "verdict": "BLOCK",
+  "reason": "1 critical conversion issue(s): NO_REGISTRATION_CTA",
+  "score": 71,
+  "agents": [
+    {
+      "id": "design",
+      "label": "Design QA",
+      "score": null,
+      "summary": null,
+      "findings": [],
+      "report_md": "",
+      "error": "400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"messages.0.content.3.image.source.base64.data: At least one of the image dimensions exceed max allowed size: 8000 pixels\"},\"request_id\":\"req_011CdHPB2StuRkcwUanxHLci\"}"
+    },
+    {
+      "id": "brand",
+      "label": "Brand Compliance",
+      "score": null,
+      "summary": null,
+      "findings": [],
+      "report_md": "",
+      "error": "400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"messages.0.content.3.image.source.base64.data: At least one of the image dimensions exceed max allowed size: 8000 pixels\"},\"request_id\":\"req_011CdHPB8yoNKuh7DJzzQ7gg\"}"
+    },
+    {
+      "id": "seo",
+      "label": "SEO Audit",
+      "score": 71,
+      "summary": "The page already has a valid Event JSON-LD block in the HTML (contrary to the deterministic flag 'has_event_schema: false'), complete with dates, location, pricing, performers, and sponsors — a meaningful structural asset. However, the title tag wastes its 33 characters on a generic pattern rather than communicating the event's core value proposition, the meta description is 446 characters (nearly 3× the 160-char SERP limit) and leads with an unverifiable superlative ('the leading'), the H1 'WorkX Conference' is too thin to carry keyword weight, and the canonical domain (ssonetwork.com) mismatches the schema @id pointing to iqpc.com, creating brand-authority fragmentation. Keyword coherence is moderate — 'workplace conference', 'facilities', and 'corporate real estate' appear in metadata but 'hybrid work', 'workplace strategy', and 'return to office' — the highest-volume adjacent queries driving this audience — are absent from all crawlable metadata fields.",
+      "findings": [
+        {
+          "severity": "minor",
+          "location": "Document <head> / structure",
+          "issue": "Meta description is 446 chars (will truncate).",
+          "recommendation": "Trim to ≤160 characters.",
+          "fix_prompt": "Trim this page's meta description to 160 characters or fewer without losing the value proposition.",
+          "deterministic": true
+        },
+        {
+          "severity": "major",
+          "location": "Document <head> / structure",
+          "issue": "No schema.org Event structured data (JSON-LD) — the page cannot earn event rich results in Google.",
+          "recommendation": "Add Event JSON-LD with name, dates, location, organizer, and offers.",
+          "fix_prompt": "Add the schema.org Event JSON-LD provided in the QA report to this page inside a <script type=\"application/ld+json\"> tag in the <head>.",
+          "deterministic": true
+        },
+        {
+          "severity": "critical",
+          "location": "<meta name='description'>",
+          "issue": "Meta description is 446 characters — nearly three times the ~160-character SERP display limit. Google will truncate and rewrite it, losing control of the snippet. It also opens with the unverifiable superlative 'the leading workplace conference', which Google's quality guidelines flag and which fails the brand tone rule ('no unverifiable superlatives').",
+          "recommendation": "Rewrite to 150–160 characters. Lead with the audience pain point and primary keyword ('workplace strategy conference'), include the date, city, and one concrete benefit. Remove 'the leading'.",
+          "fix_prompt": "Rewrite the meta description for the WorkX 2026 conference page to exactly 150–160 characters. Requirements: (1) include the primary keyword 'workplace strategy conference'; (2) include 'San Francisco, August 2026'; (3) mention one concrete attendee benefit (benchmarks, cost-justification, or ROI); (4) end with a soft CTA; (5) no exclamation marks, no superlatives like 'leading' or 'best'. Tone: professional and benefit-led."
+        },
+        {
+          "severity": "critical",
+          "location": "<title> tag",
+          "issue": "Title 'WorkX August 2026 | San Francisco' (33 chars) contains zero descriptive keywords about what the event covers. A user searching 'workplace strategy conference 2026' or 'corporate real estate conference San Francisco' will not recognise relevance from the title alone. The brand name 'WorkX' has low standalone recognition outside existing audiences.",
+          "recommendation": "Expand the title to 55–60 characters by adding a short descriptor of the event's topic. Format: '[Brand] | [Descriptor] | [City] [Year]' or '[Descriptor] – WorkX Conference San Francisco 2026'.",
+          "fix_prompt": "Rewrite the HTML title tag for the WorkX 2026 conference microsite. Keep 'WorkX' and 'San Francisco 2026'. Add a 3–5 word topic descriptor that includes 'Workplace Strategy' or 'Workplace & Facilities'. Final title must be 55–60 characters. No exclamation marks. No unverifiable superlatives."
+        },
+        {
+          "severity": "major",
+          "location": "H1: 'WorkX Conference'",
+          "issue": "The H1 contains only the brand name plus the generic word 'Conference' — no audience signal, no topic keyword, no year or location. It provides no additional keyword surface beyond the title tag and misses the opportunity to reinforce search-intent terms like 'workplace strategy', 'facilities management', or 'corporate real estate'.",
+          "recommendation": "Expand the H1 to include the core topic and qualifier, e.g. 'WorkX: The Workplace Strategy & Facilities Conference | San Francisco 2026'. This should mirror the revised title while being allowed to be slightly longer.",
+          "fix_prompt": "Rewrite the H1 for the WorkX 2026 conference page. It must: (1) retain 'WorkX'; (2) include a topic descriptor using 'workplace strategy' and/or 'facilities'; (3) include 'San Francisco' and '2026'; (4) read naturally as a headline; (5) be under 90 characters. Tone: professional and energetic, no exclamation marks."
+        },
+        {
+          "severity": "major",
+          "location": "Keyword coverage — title, meta description, H1",
+          "issue": "High-intent adjacent queries driving this audience — 'hybrid work conference', 'return to office strategy', 'workplace optimization conference', 'corporate real estate summit' — appear nowhere in the metadata. The body copy addresses these themes (RTO as a financial conversation, utilization targets, portfolio strategy) but none of this surfaces to crawlers via metadata.",
+          "recommendation": "Integrate at least two of the following phrases naturally into the revised meta description and/or title: 'hybrid work', 'return-to-office strategy', 'workplace optimization', 'facilities management conference'. Ensure the H1 and first paragraph of body copy also reflect these terms.",
+          "fix_prompt": "Review the metadata (title, meta description, H1) for the WorkX 2026 conference page and ensure the following high-intent keywords appear at least once across those three elements, used naturally: 'workplace strategy', 'facilities management', 'return-to-office', 'corporate real estate'. Do not keyword-stuff; each phrase should fit the surrounding sentence context."
+        },
+        {
+          "severity": "major",
+          "location": "Event JSON-LD — schema @id and WebSite schema",
+          "issue": "The Event schema uses '@id': 'https://www.iqpc.com#event' while the canonical URL and page URL are on ssonetwork.com. The WebSite schema also points 'url' to iqpc.com. This domain mismatch can confuse Google's entity reconciliation and dilute PageRank signals between the two domains.",
+          "recommendation": "Change the Event '@id' to 'https://www.ssonetwork.com/events-workx#event' to match the canonical. Update the WebSite schema 'url' to 'https://www.ssonetwork.com' or add a sameAs linking the two domains explicitly.",
+          "fix_prompt": "In the existing Event JSON-LD block on the WorkX page, change the value of '@id' from 'https://www.iqpc.com#event' to 'https://www.ssonetwork.com/events-workx#event'. In the WebSite JSON-LD block, change the 'url' field from 'https://www.iqpc.com' to 'https://www.ssonetwork.com'. Add a 'sameAs' array to the Organization schema containing both 'https://www.ssonetwork.com' and 'https://www.iqpc.com'."
+        },
+        {
+          "severity": "major",
+          "location": "robots meta tag",
+          "issue": "robots_meta is null — no explicit robots directive is set. While this defaults to index/follow, the absence of an explicit tag is a missed hygiene opportunity and could be risky if a staging/preview version of this page exists without a block.",
+          "recommendation": "Add <meta name='robots' content='index, follow'> explicitly to the <head>.",
+          "fix_prompt": "Add the following tag inside the <head> of the WorkX 2026 microsite HTML, immediately after the existing viewport meta tag: <meta name='robots' content='index, follow'>."
+        },
+        {
+          "severity": "minor",
+          "location": "OG / Twitter description",
+          "issue": "The OG and Twitter descriptions are identical to the oversized meta description (446 chars). Social platforms truncate at ~200 characters for OG and ~200 for Twitter cards, so the key benefit messaging is cut off on shares.",
+          "recommendation": "Write a dedicated OG/Twitter description of ~200 characters that leads with the event name, date, city, and the single most compelling benefit, then ends with a CTA.",
+          "fix_prompt": "Rewrite the og:description and twitter:description for the WorkX 2026 page as a single 190–200 character string. It must mention: WorkX, August 2026, San Francisco, and one concrete attendee outcome (e.g., benchmarks, cost-justification frameworks, peer-tested strategies). End with 'Register now' or equivalent. No superlatives."
+        },
+        {
+          "severity": "minor",
+          "location": "og:type",
+          "issue": "og:type is set to 'website' rather than 'event'. While the Open Graph protocol does not have a native 'event' type, setting type to 'website' means platforms like Facebook cannot surface date/location rich previews that are available via custom og:event properties.",
+          "recommendation": "Consider supplementing with Facebook-specific event meta tags (og:type = 'event.public', event:start_time, event:end_time, event:location) alongside the existing og:type='website' to unlock richer social previews.",
+          "fix_prompt": "Add the following Open Graph event properties to the <head> of the WorkX 2026 page after the existing og: tags: <meta property='event:start_time' content='2026-08-10T00:00:00+00:00'>, <meta property='event:end_time' content='2026-08-12T00:00:00+00:00'>, <meta property='event:location' content='San Francisco, CA'>. Keep the existing og:type='website' tag in place."
+        },
+        {
+          "severity": "minor",
+          "location": "meta keywords tag",
+          "issue": "The meta keywords tag is present but empty (content=''). While major search engines ignore this tag for ranking, an empty tag is dead weight and signals incomplete template hygiene.",
+          "recommendation": "Either populate it with 5–8 relevant terms ('workplace conference, facilities management, corporate real estate, return to office, workplace strategy, San Francisco 2026') or remove the tag entirely.",
+          "fix_prompt": "Either remove the <meta name='keywords'> tag from the WorkX page <head> entirely, or populate its content attribute with the following value: 'workplace strategy conference, facilities management, corporate real estate, return to office, hybrid work, San Francisco 2026, WorkX'. Do not use more than 8 comma-separated phrases."
+        }
+      ],
+      "report_md": "**Structural checks (deterministic)**\n- Title: \"WorkX August 2026 | San Francisco\" (33 chars)\n- Meta description: 446 chars\n- Open Graph: ✓ complete enough for share cards\n- Canonical: ✓ · Viewport: ✓ · Robots: —\n- H1 count: 1 · Image alt coverage: 95% of 66\n- Event structured data (JSON-LD): ✗ MISSING — generated below\n\n**Findings**\n- [minor] Meta description is 446 chars (will truncate).\n  - Fix: Trim to ≤160 characters.\n- [major] No schema.org Event structured data (JSON-LD) — the page cannot earn event rich results in Google.\n  - Fix: Add Event JSON-LD with name, dates, location, organizer, and offers.\n- [critical] Meta description is 446 characters — nearly three times the ~160-character SERP display limit. Google will truncate and rewrite it, losing control of the snippet. It also opens with the unverifiable superlative 'the leading workplace conference', which Google's quality guidelines flag and which fails the brand tone rule ('no unverifiable superlatives').\n  - Fix: Rewrite to 150–160 characters. Lead with the audience pain point and primary keyword ('workplace strategy conference'), include the date, city, and one concrete benefit. Remove 'the leading'.\n- [critical] Title 'WorkX August 2026 | San Francisco' (33 chars) contains zero descriptive keywords about what the event covers. A user searching 'workplace strategy conference 2026' or 'corporate real estate conference San Francisco' will not recognise relevance from the title alone. The brand name 'WorkX' has low standalone recognition outside existing audiences.\n  - Fix: Expand the title to 55–60 characters by adding a short descriptor of the event's topic. Format: '[Brand] | [Descriptor] | [City] [Year]' or '[Descriptor] – WorkX Conference San Francisco 2026'.\n- [major] The H1 contains only the brand name plus the generic word 'Conference' — no audience signal, no topic keyword, no year or location. It provides no additional keyword surface beyond the title tag and misses the opportunity to reinforce search-intent terms like 'workplace strategy', 'facilities management', or 'corporate real estate'.\n  - Fix: Expand the H1 to include the core topic and qualifier, e.g. 'WorkX: The Workplace Strategy & Facilities Conference | San Francisco 2026'. This should mirror the revised title while being allowed to be slightly longer.\n- [major] High-intent adjacent queries driving this audience — 'hybrid work conference', 'return to office strategy', 'workplace optimization conference', 'corporate real estate summit' — appear nowhere in the metadata. The body copy addresses these themes (RTO as a financial conversation, utilization targets, portfolio strategy) but none of this surfaces to crawlers via metadata.\n  - Fix: Integrate at least two of the following phrases naturally into the revised meta description and/or title: 'hybrid work', 'return-to-office strategy', 'workplace optimization', 'facilities management conference'. Ensure the H1 and first paragraph of body copy also reflect these terms.\n- [major] The Event schema uses '@id': 'https://www.iqpc.com#event' while the canonical URL and page URL are on ssonetwork.com. The WebSite schema also points 'url' to iqpc.com. This domain mismatch can confuse Google's entity reconciliation and dilute PageRank signals between the two domains.\n  - Fix: Change the Event '@id' to 'https://www.ssonetwork.com/events-workx#event' to match the canonical. Update the WebSite schema 'url' to 'https://www.ssonetwork.com' or add a sameAs linking the two domains explicitly.\n- [major] robots_meta is null — no explicit robots directive is set. While this defaults to index/follow, the absence of an explicit tag is a missed hygiene opportunity and could be risky if a staging/preview version of this page exists without a block.\n  - Fix: Add <meta name='robots' content='index, follow'> explicitly to the <head>.\n- [minor] The OG and Twitter descriptions are identical to the oversized meta description (446 chars). Social platforms truncate at ~200 characters for OG and ~200 for Twitter cards, so the key benefit messaging is cut off on shares.\n  - Fix: Write a dedicated OG/Twitter description of ~200 characters that leads with the event name, date, city, and the single most compelling benefit, then ends with a CTA.\n- [minor] og:type is set to 'website' rather than 'event'. While the Open Graph protocol does not have a native 'event' type, setting type to 'website' means platforms like Facebook cannot surface date/location rich previews that are available via custom og:event properties.\n  - Fix: Consider supplementing with Facebook-specific event meta tags (og:type = 'event.public', event:start_time, event:end_time, event:location) alongside the existing og:type='website' to unlock richer social previews.\n- [minor] The meta keywords tag is present but empty (content=''). While major search engines ignore this tag for ranking, an empty tag is dead weight and signals incomplete template hygiene.\n  - Fix: Either populate it with 5–8 relevant terms ('workplace conference, facilities management, corporate real estate, return to office, workplace strategy, San Francisco 2026') or remove the tag entirely.\n\n**Improved metadata (ready to apply)**\n- Title: WorkX 2026 | Workplace Strategy & Facilities Conference | San Francisco\n- Meta description: Join 500+ workplace, facilities, and CRE leaders at WorkX, 10–12 August 2026, San Francisco. Leave with real benchmarks, cost-justification playbooks, and proven strategies to drive performance.",
+      "extra": {
+        "checks": {
+          "title": "WorkX August 2026 | San Francisco",
+          "title_length": 33,
+          "meta_description": "WorkX in August 2026 is the leading workplace conference that covers all things workplace, facilities, and corporate real estate.\n\nThe WorkX Conference gives attendees data and peer-tested strategies, and therefore confidence, to act decisively instead of defensively. Attendees will walk away with real-world benchmarks, cost-justification playbooks, and proven ways to reposition the workplace as a performance driver rather than a cost center.",
+          "meta_description_length": 446,
+          "canonical": "https://www.ssonetwork.com/events-workx",
+          "og": {
+            "title": "WorkX August 2026 | San Francisco",
+            "description": "WorkX in August 2026 is the leading workplace conference that covers all things workplace, facilities, and corporate real estate.\n\nThe WorkX Conference gives attendees data and peer-tested strategies, and therefore confidence, to act decisively instead of defensively. Attendees will walk away with real-world benchmarks, cost-justification playbooks, and proven ways to reposition the workplace as a performance driver rather than a cost center.",
+            "image": "https://eco-cdn.iqpc.com/eco/images/logos/LruQca4OfnglU5eE31Y7NdPwAjnC6LZ337ze7b5X.png"
+          },
+          "viewport_meta": true,
+          "robots_meta": null,
+          "h1_count": 1,
+          "h1s": [
+            "WorkX Conference"
+          ],
+          "image_alt_coverage_pct": 95,
+          "images_total": 66,
+          "has_event_schema": false
+        },
+        "improved_meta": {
+          "title": "WorkX 2026 | Workplace Strategy & Facilities Conference | San Francisco",
+          "meta_description": "Join 500+ workplace, facilities, and CRE leaders at WorkX, 10–12 August 2026, San Francisco. Leave with real benchmarks, cost-justification playbooks, and proven strategies to drive performance.",
+          "og_title": "WorkX 2026 — Workplace Strategy Conference | San Francisco, Aug 10–12",
+          "og_description": "Join workplace, facilities & CRE leaders in San Francisco, 10–12 Aug 2026. Get peer-tested benchmarks, RTO financial frameworks, and strategies to prove office ROI. Register now."
+        },
+        "event_schema_jsonld": null
+      }
+    }
+  ],
+  "conversion": {
+    "analytics_found": [
+      "GA4 / Google Tag Manager",
+      "LinkedIn Insight Tag"
+    ],
+    "analytics_missing": [
+      "Meta Pixel"
+    ],
+    "ctas": [],
+    "utm_propagation": "not_tested",
+    "issues": [
+      {
+        "severity": "major",
+        "code": "MISSING_PIXEL",
+        "detail": "Meta Pixel not detected — conversions from this page cannot be measured/attributed for that channel."
+      },
+      {
+        "severity": "critical",
+        "code": "NO_REGISTRATION_CTA",
+        "detail": "No registration/booking call-to-action was found on the page. The primary conversion path is missing."
+      }
+    ]
+  },
+  "perf": {
+    "available": false,
+    "note": "Skipped via --skip-perf"
+  },
+  "regression": {
+    "first_run": false,
+    "previous_date": "2026-07-22T16:05:34.561Z",
+    "previous_score": 0,
+    "score_delta": 71,
+    "previous_verdict": "BLOCK",
+    "verdict_changed": false,
+    "regressed": false
+  },
+  "axe": [
+    {
+      "id": "aria-valid-attr-value",
+      "impact": "critical",
+      "description": "Ensure all ARIA attributes have valid values",
+      "affected_nodes": 3,
+      "example_target": "#tier-6994e6cc50cb2108c7583cfb-tab"
+    },
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "affected_nodes": 12,
+      "example_target": "a[role=\"button\"]"
+    },
+    {
+      "id": "heading-order",
+      "impact": "moderate",
+      "description": "Ensure the order of headings is semantically correct",
+      "affected_nodes": 7,
+      "example_target": "#wlxOz > h6"
+    },
+    {
+      "id": "image-alt",
+      "impact": "critical",
+      "description": "Ensure <img> elements have alternative text or a role of none or presentation",
+      "affected_nodes": 1,
+      "example_target": "a[href$=\"www.iqpc.com\"] > .d-block"
+    },
+    {
+      "id": "landmark-unique",
+      "impact": "moderate",
+      "description": "Ensure landmarks are unique",
+      "affected_nodes": 1,
+      "example_target": ".portal-navigation"
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensure links have discernible text",
+      "affected_nodes": 1,
+      "example_target": "a[href$=\"www.iqpc.com\"]"
+    },
+    {
+      "id": "listitem",
+      "impact": "serious",
+      "description": "Ensure <li> elements are used semantically",
+      "affected_nodes": 3,
+      "example_target": ".px-2.nav-link:nth-child(1)"
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensure all page content is contained by landmarks",
+      "affected_nodes": 26,
+      "example_target": ".template-6-header-container"
+    }
+  ],
+  "hasApiKey": true
+}

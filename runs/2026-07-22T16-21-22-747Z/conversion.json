@@ -1,0 +1,33 @@
+{
+  "analytics_found": [
+    "GA4 / Google Tag Manager",
+    "LinkedIn Insight Tag"
+  ],
+  "analytics_missing": [
+    "Meta Pixel"
+  ],
+  "ctas": [
+    {
+      "tag": "a",
+      "text": "Book Online Now",
+      "href": "https://www.ssonetwork.com/events-workx/srspricing",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "tag": "a",
+      "text": "Book Online Now",
+      "href": "https://www.ssonetwork.com/events-workx/srspricing",
+      "status": 200,
+      "ok": true
+    }
+  ],
+  "utm_propagation": "not_tested",
+  "issues": [
+    {
+      "severity": "major",
+      "code": "MISSING_PIXEL",
+      "detail": "Meta Pixel not detected — conversions from this page cannot be measured/attributed for that channel."
+    }
+  ]
+}

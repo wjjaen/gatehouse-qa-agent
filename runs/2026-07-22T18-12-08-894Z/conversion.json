@@ -1,0 +1,61 @@
+{
+  "analytics_found": [
+    "GA4 / Google Tag Manager",
+    "LinkedIn Insight Tag"
+  ],
+  "analytics_missing": [
+    "Meta Pixel"
+  ],
+  "ctas": [
+    {
+      "tag": "a",
+      "text": "JOIN US IN LONDON",
+      "href": "https://www.cxnetwork.com/events-customer-experience-exchange-retail-uk/downloads/request-an-invitation",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "tag": "a",
+      "text": "REQUEST YOUR INVITE",
+      "href": "https://www.cxnetwork.com/events-customer-experience-exchange-retail-uk/downloads/request-an-invitation",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "tag": "a",
+      "text": "REQUEST AN INVITATION",
+      "href": "https://www.cxnetwork.com/events-customer-experience-exchange-retail-uk/downloads/request-an-invitation",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "tag": "a",
+      "text": "JOIN US IN EUROPE",
+      "href": "https://www.cxnetwork.com/events-customer-experience-exchange-retail-europe",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "tag": "a",
+      "text": "JOIN US IN ATLANTA",
+      "href": "https://www.cxnetwork.com/events-customer-experience-exchange-retail-us",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "tag": "a",
+      "text": "REQUEST YOUR INVITE",
+      "href": "https://www.cxnetwork.com/events-customer-experience-exchange-retail-uk/downloads/request-an-invitation",
+      "status": 200,
+      "ok": true
+    }
+  ],
+  "utm_propagation": "not_tested",
+  "issues": [
+    {
+      "severity": "major",
+      "code": "MISSING_PIXEL",
+      "detail": "Meta Pixel not detected — conversions from this page cannot be measured/attributed for that channel."
+    }
+  ]
+}

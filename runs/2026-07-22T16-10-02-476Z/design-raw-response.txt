@@ -1,0 +1,181 @@
+{
+  "overall_score": 52,
+  "summary": "WorkX 2026 is a content-complete microsite with recognisable brand structure, but it reads as a competent platform default rather than a polished designer build. The most urgent problems are a broken visual hierarchy in the hero (three competing CTA buttons of roughly equal weight, with the primary 'Book Online Now' not clearly dominant), inconsistent component styling across sections, and mobile stacking issues that leave key sections poorly organised. Fixing the hero hierarchy, tightening the spacing scale, and enforcing consistent button treatment would lift the page substantially before launch.",
+  "axes": [
+    {
+      "name": "Layout & grid",
+      "score": 4,
+      "findings": [
+        {
+          "severity": "major",
+          "location": "Hero section, desktop",
+          "issue": "The hero splits into a left text column and a right conference photo, but the photo bleeds to the viewport edge while the left text column appears to sit on a narrower contained grid. The two columns are not vertically aligned to a shared baseline, giving the hero an assembled rather than designed feel.",
+          "recommendation": "Constrain both columns inside a consistent max-width container (e.g. 1200px) with equal gutters, and vertically align the photo top-edge to the eyebrow text top-edge.",
+          "fix_prompt": "In the hero section, wrap both the text column and the image column inside a single div with class 'container' (max-width: 1200px, margin: 0 auto). Remove any full-bleed override on the image column and set both columns to align-items: flex-start so their tops are flush."
+        },
+        {
+          "severity": "major",
+          "location": "Cookie consent banner, desktop",
+          "issue": "The cookie consent bar overlaps the lower portion of the hero content area and is visually indistinguishable from page content at this viewport. It partially obscures the stat bar ('100+ Attendees…') below the hero image.",
+          "recommendation": "Ensure the cookie banner uses position: fixed; bottom: 0 and has a z-index high enough to sit above all content without overlapping the hero. Increase banner contrast so it reads as a system overlay, not page content.",
+          "fix_prompt": "Set the .cookie-consent element to position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999 and give it a background of rgba(0,0,0,0.85) with white text so it is visually distinct from page content and does not obscure the hero."
+        },
+        {
+          "severity": "minor",
+          "location": "2026 Sponsors section, desktop",
+          "issue": "Sponsor logos are displayed in a single row with inconsistent vertical alignment and varying apparent sizes. The logos are not normalised to a consistent height container, so bevi, bubl, DoorDash, embrava, and Envoy appear at different optical scales.",
+          "recommendation": "Place all logos inside flex containers of a fixed height (e.g. 48px) with object-fit: contain so every logo scales proportionally to the same optical weight.",
+          "fix_prompt": "In the sponsors row, set each logo image to height: 48px; width: auto; object-fit: contain and wrap each in a flex item with display: flex; align-items: center; justify-content: center; height: 48px."
+        }
+      ]
+    },
+    {
+      "name": "Typography",
+      "score": 4,
+      "findings": [
+        {
+          "severity": "major",
+          "location": "Hero section, desktop — eyebrow label",
+          "issue": "The eyebrow text 'NO BUDGET, NO EXCUSES: HOW THE OFFICE STILL DELIVERS' appears in a very small, low-contrast uppercase style sitting above the event name. It competes with the event name rather than subordinating to it, and the type size appears to be outside the defined scale (closer to 10–11px rendered).",
+          "recommendation": "Set the eyebrow to 12px (the smallest scale step), letter-spacing: 0.08em, and a muted colour (e.g. #555) so it clearly precedes rather than competes with the H1.",
+          "fix_prompt": "Set the hero eyebrow element font-size to 12px, font-weight: 600, letter-spacing: 0.1em, color: #555, text-transform: uppercase, and margin-bottom: 8px."
+        },
+        {
+          "severity": "major",
+          "location": "Section labels throughout page (e.g. 'WHO YOU'LL HEAR FROM', 'WHY ATTEND WORKX?')",
+          "issue": "Repeated use of centred, small-caps section dividers with decorative lines uses an apparent font and weight inconsistent with the Archivo/Inter brand config. These labels read as a third typeface (appears to be Oswald or similar condensed face loaded via the dynamic styles import), breaking the two-family rule.",
+          "recommendation": "Standardise all section-label eyebrows to Inter, 12px, 600 weight, letter-spacing: 0.12em, brand primary colour or a muted tint. Remove condensed/display typeface imports if not part of brand config.",
+          "fix_prompt": "Find all elements with the section-divider eyebrow style (small uppercase labels between decorative rules) and apply: font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.12em; color: #0A2540; text-transform: uppercase. Remove any Oswald or condensed font references from those elements."
+        },
+        {
+          "severity": "minor",
+          "location": "Pricing section, desktop — 'Reimagined Passes Starting at $799'",
+          "issue": "The heading 'Reimagined Passes Starting at $799' is rendered at a size and weight that nearly matches the H2 section headings elsewhere ('2026 Visionary Speakers Include'), collapsing the heading hierarchy between a promotional sub-section and a primary page section.",
+          "recommendation": "Reduce this heading to the 24px scale step (H3 equivalent) and set font-weight: 600 rather than 700 to distinguish it from primary H2s.",
+          "fix_prompt": "Set the pricing-section heading 'Reimagined Passes Starting at $799' to font-size: 24px; font-weight: 600; font-family: 'Archivo', sans-serif to differentiate it from the page's primary H2 headings at 32px."
+        }
+      ]
+    },
+    {
+      "name": "Spacing & rhythm",
+      "score": 4,
+      "findings": [
+        {
+          "severity": "major",
+          "location": "Hero section, desktop — CTA button cluster",
+          "issue": "Three buttons ('View Event Guide', 'Sponsorship Opportunities', 'Book Online Now') are spaced with unequal gaps between them. The gap between buttons 1 and 2 appears ~16px while the gap to button 3 is ~8px, breaking the proximity rule and making it unclear that they form a related group.",
+          "recommendation": "Apply a consistent gap of 12px or 16px between all three hero buttons using flex gap, and ensure the CTA group has 32px of top margin from the date/location line.",
+          "fix_prompt": "Wrap the three hero CTA buttons in a flex container with display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px to create even spacing between all buttons and consistent separation from the date text above."
+        },
+        {
+          "severity": "major",
+          "location": "'What You'll Explore at WorkX' section, desktop",
+          "issue": "The four topic cards (Lead Through Financial Correction, Workplace Performance…, Make Irreversible Decisions…, Influence the C-Suite…) have inconsistent bottom padding below each card's body text, causing the section's bottom edge to appear ragged. Card heights are not equalised.",
+          "recommendation": "Set the card components to display: flex; flex-direction: column and use flex: 1 on the body text element so all cards stretch to equal height within the row.",
+          "fix_prompt": "On the topic cards in the 'What You'll Explore' section, set each card wrapper to display: flex; flex-direction: column; height: 100% and the card body paragraph to flex: 1 so all cards in a row equalise to the tallest card's height."
+        },
+        {
+          "severity": "minor",
+          "location": "Testimonial / 'Hear from Past Attendees' section, desktop",
+          "issue": "The TDECU logo on the right side of the testimonial card is vertically centred against the quote text but has no defined minimum clear space from the card border, appearing to sit very close to the card edge on the right.",
+          "recommendation": "Add padding-right: 32px to the testimonial card and ensure the logo has at least 24px margin from the nearest card edge.",
+          "fix_prompt": "In the testimonial card, add padding: 32px to the card container and set the logo image wrapper to padding: 0 32px so the TDECU logo has adequate breathing room from the card edges."
+        }
+      ]
+    },
+    {
+      "name": "Visual hierarchy",
+      "score": 3,
+      "findings": [
+        {
+          "severity": "critical",
+          "location": "Hero section, desktop and mobile",
+          "issue": "Three CTA buttons appear above the fold: 'View Event Guide' (purple/dark fill), 'Sponsorship Opportunities' (outline), and 'Book Online Now' (appears lighter/smaller). The primary registration CTA 'Book Online Now' is visually the weakest of the three — it is rendered in a lighter fill and smaller visual weight than 'View Event Guide', which dominates. A visitor's eye is drawn to the wrong action.",
+          "recommendation": "Make 'Book Online Now' the sole filled accent-colour button (background: #FF5A36, white text, font-weight: 700, padding: 14px 28px). Demote 'View Event Guide' to a ghost/outline style and 'Sponsorship Opportunities' to a text link or secondary outline so the hierarchy is unambiguous.",
+          "fix_prompt": "In the hero button group, apply these styles: 'Book Online Now' button → background-color: #FF5A36; color: #FFFFFF; font-weight: 700; border: none; padding: 14px 28px; border-radius: 4px. 'View Event Guide' → background: transparent; border: 2px solid #0A2540; color: #0A2540; padding: 12px 24px. 'Sponsorship Opportunities' → background: transparent; border: 1px solid #888; color: #444; padding: 12px 24px. This creates a clear primary → secondary → tertiary hierarchy."
+        },
+        {
+          "severity": "major",
+          "location": "Registration / pricing widget, desktop",
+          "issue": "The registration section below the fold buries the 'Continue' CTA button inside a form widget with no visual prominence. The button appears as a small element at the bottom of a bordered box. Combined with the conversion instrumentation report flagging no registration CTA being detected, this section is not asserting itself as the key conversion point.",
+          "recommendation": "Give the 'Continue' / registration CTA button the full accent colour (#FF5A36), increase its width to full container width or at least 240px, and add a section heading above the pricing widget that reinforces urgency (e.g. 'Register for WorkX 2026').",
+          "fix_prompt": "Style the registration widget's submit/Continue button as: background-color: #FF5A36; color: #FFFFFF; font-size: 18px; font-weight: 700; width: 100%; padding: 16px; border: none; border-radius: 4px; cursor: pointer. Add a visually prominent H2 heading 'Register for WorkX 2026' immediately above the widget in font-size: 32px; color: #0A2540."
+        },
+        {
+          "severity": "minor",
+          "location": "'No Budget, No Excuses' content section, desktop",
+          "issue": "The 'View Event Guide' CTA button appears a second time mid-page in the body copy section using the same dark-fill style as the hero's primary-looking button. This creates a second apparent primary action that competes with the registration CTA.",
+          "recommendation": "Restyle this mid-page button as a secondary/outline button to prevent it from competing with the primary registration action.",
+          "fix_prompt": "Change the 'View Event Guide' button in the body copy section to: background: transparent; border: 2px solid #0A2540; color: #0A2540; padding: 10px 22px; border-radius: 4px; font-weight: 600 so it reads as a secondary action."
+        }
+      ]
+    },
+    {
+      "name": "Consistency",
+      "score": 3,
+      "findings": [
+        {
+          "severity": "major",
+          "location": "CTA buttons across the full page",
+          "issue": "At least four distinct button styles are visible across the page: dark navy fill (hero 'View Event Guide'), outline dark (hero 'Sponsorship Opportunities'), lighter fill (hero 'Book Online Now'), purple/violet fill (mid-page 'View Event Guide' in body and 'View All Speakers'), and a blue-tinted style in the SRS widget. None of these colours match the defined accent (#FF5A36). There is no consistent button design system applied.",
+          "recommendation": "Establish two button variants — Primary: #FF5A36 fill, white text; Secondary: transparent with #0A2540 border and text — and apply them exclusively across the page. Remove all purple/violet and blue button colours.",
+          "fix_prompt": "Do a global find-and-replace on all button styles: (1) Primary buttons (.btn-primary, .btn-register): background-color: #FF5A36; color: #fff; border: none. (2) Secondary buttons (.btn-secondary, .btn-outline): background: transparent; border: 2px solid #0A2540; color: #0A2540. Remove all instances of purple (#6f42c1 or similar) and blue (#5696CB) button backgrounds."
+        },
+        {
+          "severity": "major",
+          "location": "Speaker cards vs. topic/exploration cards",
+          "issue": "Speaker cards use circular photo crops with name/title below. Topic exploration cards use rectangular landscape photos with title and body text below. Image aspect ratios and corner radii differ between these two card types and also internally — the four topic images in 'What You'll Explore' are not all the same height in the screenshot.",
+          "recommendation": "Standardise topic card images to a fixed aspect ratio (16:9 or 3:2) with consistent corner radius (4px). Speaker cards can remain circular but should all be the same diameter.",
+          "fix_prompt": "Set all images inside the 'What You'll Explore' topic cards to: width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 4px. Set all speaker portrait images to: width: 96px; height: 96px; border-radius: 50%; object-fit: cover."
+        },
+        {
+          "severity": "minor",
+          "location": "Section background colours throughout the page",
+          "issue": "Most sections use white (#FFFFFF) background, but the pricing/passes section uses a distinct off-white or very light grey, and the testimonials section uses a light blue tint. Neither of these background colours is in the defined brand config (primary: #0A2540, accent: #FF5A36, background: #FFFFFF).",
+          "recommendation": "Limit section backgrounds to white (#FFFFFF) and the primary dark (#0A2540) for reversed sections. If a subtle separator is needed, use a 1px border-top in #E5E5E5 rather than a background colour shift.",
+          "fix_prompt": "Change the pricing section background from its current off-white/grey to background-color: #FFFFFF and the testimonials section from its blue tint to background-color: #FFFFFF. If visual separation is still needed, add border-top: 1px solid #E5E5E5 to each section."
+        }
+      ]
+    },
+    {
+      "name": "Responsive integrity",
+      "score": 4,
+      "findings": [
+        {
+          "severity": "major",
+          "location": "Mobile hero (390px viewport)",
+          "issue": "On mobile, the hero shows the event name and dates but the conference photo is stacked below the text in a tall aspect ratio that pushes the primary CTA ('Book Online Now') very far down the screen — arguably off the initial viewport. The hero fails to put a registration CTA above the fold on mobile.",
+          "recommendation": "On mobile, hide the hero conference photo or move it below the CTA group. Keep event name, date/location, and the primary CTA visible within the first 600px of the mobile viewport.",
+          "fix_prompt": "Add a CSS media query: @media (max-width: 768px) { .hero-image-column { display: none; } .hero-cta-group { margin-top: 24px; } } to hide the conference photo on mobile and ensure the CTA buttons are immediately visible after the event details."
+        },
+        {
+          "severity": "major",
+          "location": "Mobile — 'What You'll Explore at WorkX' section",
+          "issue": "The four topic cards stack vertically on mobile, but the card images appear very tall (close to square crop) rather than maintaining a landscape ratio, and body text under each card is close to the card edge with minimal padding, making it feel cramped.",
+          "recommendation": "Set card images on mobile to aspect-ratio: 16/9 and increase card body padding to 16px on all sides.",
+          "fix_prompt": "Add to your mobile CSS: @media (max-width: 768px) { .explore-card img { aspect-ratio: 16/9; object-fit: cover; width: 100%; } .explore-card .card-body { padding: 16px; } }"
+        },
+        {
+          "severity": "minor",
+          "location": "Mobile — Sponsors section",
+          "issue": "On mobile, the sponsors row appears to show only one or two logos with the rest presumably hidden or truncated. The 'View All Sponsors' button is present but it is unclear from the screenshot whether all tier-1 displayed logos are visible without scrolling horizontally.",
+          "recommendation": "Ensure the displayed sponsors wrap to 2–3 per row in a CSS grid on mobile rather than a single horizontal row that might overflow.",
+          "fix_prompt": "Add: @media (max-width: 768px) { .sponsors-logo-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; align-items: center; } .sponsors-logo-row img { max-height: 40px; width: auto; margin: 0 auto; } }"
+        }
+      ]
+    },
+    {
+      "name": "Visual accessibility",
+      "score": 3,
+      "findings": [
+        {
+          "severity": "critical",
+          "location": "Hero section — eyebrow text over light background",
+          "issue": "The eyebrow text 'NO BUDGET, NO EXCUSES: HOW THE OFFICE STILL DELIVERS' is rendered in a very small size (approximately 10–11px) in a grey or muted colour. At this size and colour, it is highly likely to fail WCAG AA 4.5:1 contrast ratio. The automated scan confirms 12 contrast failures on the page.",
+          "recommendation": "Increase to at least 12px and ensure the colour achieves 4.5:1 against the white background. #767676 on white barely passes; use #595959 or darker to provide safe margin.",
+          "fix_prompt": "Set the hero eyebrow text to: font-size: 12px; color: #595959; font-weight: 600. Verify this achieves 4.5:1 contrast ratio against the white background using a contrast checker before publishing."
+        },
+        {
+          "severity": "major",
+          "location": "Speaker section — name links below speaker photos",
+          "issue": "Speaker names appear as links in what looks like a purple or default-blue colour against the white card background. This colour is not the defined brand primary (#0A2540) or accent (#FF5A36), and the automated scan confirms serious contrast failures on link elements. The link styling

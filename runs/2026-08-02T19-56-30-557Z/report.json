@@ -1,0 +1,825 @@
+{
+  "url": "https://www.iqpc.com/events-corporate-counsel-and-compliance-exchange-usa",
+  "portal": "IQPC",
+  "run": "2026-08-02T19-56-30-557Z",
+  "outDir": "runs/2026-08-02T19-56-30-557Z",
+  "verdict": "BLOCK",
+  "reason": "2 critical/serious accessibility violation(s) (axe-core)",
+  "score": 42,
+  "agents": [
+    {
+      "id": "design",
+      "label": "Design QA",
+      "score": 52,
+      "summary": "The Corporate Counsel & Compliance Exchange USA microsite covers all required content elements and communicates the event's value proposition clearly, but suffers from meaningful polish gaps across typography, spacing, and brand-config compliance — most notably the use of Raleway instead of the mandated Archivo/Inter pair and blue (#0081ff) as the primary color instead of #0A2540. Several sections on mobile show cramped stacking and illegible small text, and the hero's two competing CTA buttons dilute registration prominence. The page is publishable but would benefit from pre-launch fixes to avoid credibility damage.",
+      "findings": [
+        {
+          "severity": "major",
+          "location": "Layout & grid · Key Themes section, desktop",
+          "issue": "The four theme cards appear to use unequal column widths at 1440px — the rightmost card ('The Knights: Navigating Complexity') is visibly narrower than the leftmost card, creating a non-uniform grid that looks unintentional.",
+          "recommendation": "Ensure all four cards share an equal Bootstrap col-3 (25%) width with consistent gutter. Do not rely on auto-layout flex-shrink to size columns.",
+          "fix_prompt": "In the Key Themes section, change all theme card wrapper divs to use class 'col-12 col-md-6 col-lg-3' and add 'g-4' to their parent row so all four cards render at equal width with consistent gutters on desktop."
+        },
+        {
+          "severity": "major",
+          "location": "Layout & grid · Sponsors logo grid, desktop",
+          "issue": "The 2026 Sponsors logo row mixes drastically different logo sizes (e.g., 'Ivo' wordmark appears tiny while 'Litera' and 'MITRATECH' are significantly larger), making the row look unfinished rather than curated.",
+          "recommendation": "Normalise all sponsor logos to a fixed container height (e.g., 40px) with object-fit: contain so visual weight is uniform across the row.",
+          "fix_prompt": "For every <img> inside the 2026 Sponsors section, set style='height:40px; width:auto; object-fit:contain;' and wrap each in a flex container with align-items:center; justify-content:center so all logos appear at equal visual height."
+        },
+        {
+          "severity": "minor",
+          "location": "Layout & grid · Past Leaders logo grid, desktop",
+          "issue": "The multi-row past-leader company logo grid has inconsistent horizontal alignment — some rows are left-justified while others appear centred, breaking the sense of a coherent grid.",
+          "recommendation": "Apply justify-content: center to the flex/grid container wrapping the logo rows so all rows are centre-aligned consistently.",
+          "fix_prompt": "Add 'justify-content: center; align-items: center; flex-wrap: wrap; gap: 24px;' to the CSS of the Past Leaders logo container div so all logo items are evenly centred across every row."
+        },
+        {
+          "severity": "critical",
+          "location": "Typography · Entire page",
+          "issue": "The page loads 'Raleway' as both primary and secondary font (confirmed in CSS :root variables). The brand config mandates 'Archivo' for headings and 'Inter' for body copy. This is a wholesale brand-config violation affecting every piece of text on the page.",
+          "recommendation": "Replace '--primary-font' with Archivo and '--secondary-font' with Inter. Import both from Google Fonts and remove the Raleway import.",
+          "fix_prompt": "In the <style data-dynamic> block, replace the Google Fonts import URL to include 'Archivo:wght@400;600;700;800' and 'Inter:wght@400;500;600', then update :root to set --primary-font: 'Archivo', sans-serif and --secondary-font: 'Inter', sans-serif."
+        },
+        {
+          "severity": "major",
+          "location": "Typography · Hero section subheadline, desktop",
+          "issue": "The tagline 'Checkmate, Chaos — Turning Volatility Into Your Next Strategic Advantage' uses a noticeably different size and weight treatment to the event name above it, but the step between the two is too small — both compete for H1 prominence, flattening the type hierarchy.",
+          "recommendation": "Set the event name at 64px (top of the brand scale) and the tagline at 32px to create clear hierarchy. Limit the tagline to font-weight 400 or 500.",
+          "fix_prompt": "In the hero section, set the event name heading to font-size:64px; font-weight:800; and the tagline subtitle to font-size:32px; font-weight:400; so they occupy distinct levels of the type scale."
+        },
+        {
+          "severity": "major",
+          "location": "Typography · Statistics row (75 / 22 / 194 / 27), desktop and mobile",
+          "issue": "The large numeral labels (75, 22, etc.) appear in a heavy weight that is visually fine, but their descriptor text beneath is extremely small — estimated at 10–11px — falling below the brand scale minimum of 12px and likely failing legibility on mobile.",
+          "recommendation": "Set stat descriptor text to a minimum of 12px (brand scale floor) and 14px on desktop.",
+          "fix_prompt": "Find the CSS class styling the stat description text beneath the large numerals in the statistics row and set font-size: 14px; line-height: 1.4; to bring it within the brand type scale."
+        },
+        {
+          "severity": "minor",
+          "location": "Typography · Speaker cards, desktop",
+          "issue": "Speaker name and title lines are very close in size and weight, making it hard to distinguish the name from the role/company at a glance.",
+          "recommendation": "Differentiate speaker name (16px, font-weight 700) from role/company (14px, font-weight 400, muted color) to restore typographic hierarchy within the card.",
+          "fix_prompt": "In the speaker card CSS, set the speaker name to font-size:16px; font-weight:700; color:#1A1A1A; and the speaker title/company to font-size:14px; font-weight:400; color:#555555; to create clear intra-card hierarchy."
+        },
+        {
+          "severity": "major",
+          "location": "Spacing & rhythm · Hero section, desktop — between date/location line and CTA buttons",
+          "issue": "The gap between the date/location text ('July 20–21, 2026 | New York, USA') and the two CTA buttons beneath it appears to be less than 8px, creating a cramped cluster that merges date metadata with the action layer.",
+          "recommendation": "Apply a minimum 24px margin-top to the CTA button group below the date line, consistent with the brand spacing scale.",
+          "fix_prompt": "Add margin-top: 24px to the div or flex container holding the hero CTA buttons so there is a clear breathing gap between the event date metadata line and the call-to-action group."
+        },
+        {
+          "severity": "major",
+          "location": "Spacing & rhythm · Sponsorship Opportunities section, desktop",
+          "issue": "The 'Sponsorship Opportunities' text block and the image beside it have uneven internal padding — the text side has generous left padding while the image bleeds closer to the section edge, creating visual imbalance.",
+          "recommendation": "Apply equal horizontal padding (at least 32px) to both the text column and image column inside this section.",
+          "fix_prompt": "In the Sponsorship Opportunities section, add padding: 0 32px to both the text column and image column children of the row so both sides have symmetric horizontal spacing."
+        },
+        {
+          "severity": "minor",
+          "location": "Spacing & rhythm · Footer, desktop",
+          "issue": "The footer contact block appears to have disproportionately large top padding compared to the bottom padding, creating a vertically unbalanced footer band.",
+          "recommendation": "Set symmetric vertical padding of 48px top and 48px bottom on the footer container.",
+          "fix_prompt": "Set the footer container's padding to padding: 48px 0; so vertical spacing is symmetric above and below the footer content."
+        },
+        {
+          "severity": "major",
+          "location": "Visual hierarchy · Hero section, desktop and mobile",
+          "issue": "There are two near-equal-weight CTA buttons in the hero: 'Request Your Invite' and 'Explore Our Next-Level Event' / 'Sponsorship Opportunities'. All three appear at similar visual weight, diluting the primary registration CTA. The eye has no clear winner.",
+          "recommendation": "Make 'Request Your Invite' the dominant CTA (accent color fill, larger horizontal padding) and demote the sponsorship CTA to a ghost/outline style button so hierarchy is unambiguous.",
+          "fix_prompt": "In the hero section, change the primary registration button to background-color:#FF5A36; color:#FFFFFF; font-weight:700; padding:14px 32px; and change the secondary sponsorship button to background:transparent; border:2px solid #FFFFFF; color:#FFFFFF; padding:12px 28px; so the primary action is visually dominant."
+        },
+        {
+          "severity": "major",
+          "location": "Visual hierarchy · Primary color usage, entire page",
+          "issue": "Buttons and interactive elements use #0081ff (bright blue) as the primary color, conflicting with the brand config's #0A2540 (dark navy) as primary and #FF5A36 (coral-orange) as the accent reserved for CTAs. The accent color is not visibly used for any CTA on the page.",
+          "recommendation": "Remap CSS variables: --primary-color to #0A2540 and repaint all CTA buttons with the accent #FF5A36 to match brand config. Reserve navy for backgrounds and section fills.",
+          "fix_prompt": "In the :root CSS block, change --primary-color to #FF5A36 and --primary-color-hover to #e04a28 so that all .btn-primary elements render in the brand-specified accent color for CTAs. Update --secondary-color to #0A2540 for background applications."
+        },
+        {
+          "severity": "minor",
+          "location": "Visual hierarchy · 'What Our Players Say' testimonial section, desktop",
+          "issue": "The large decorative quotation mark graphic dominates the section visually and draws the eye before the testimonial text, inverting the intended hierarchy (quote text should be primary).",
+          "recommendation": "Reduce the decorative quote mark to roughly 60% of its current size and apply 30–40% opacity so it reads as a background element rather than a focal point.",
+          "fix_prompt": "On the large decorative quote mark element in the testimonial section, add opacity: 0.35; and reduce its font-size or width by 40% so it recedes behind the testimonial text."
+        },
+        {
+          "severity": "major",
+          "location": "Consistency · CTA buttons, multiple sections (hero vs. 'Secure Your Place' banner vs. Sponsors section)",
+          "issue": "Buttons are not styled consistently: the hero buttons appear with a rounded-pill style, the 'Secure Your Place' banner has a flat rectangular CTA, and the Sponsors section uses yet another button style. These look like three different components rather than one design system.",
+          "recommendation": "Standardise all primary CTAs to one button spec: border-radius 4px, consistent padding (13px 24px), font-size 14px, font-weight 700, accent fill color.",
+          "fix_prompt": "Create a single .btn-primary rule with border-radius:4px; padding:13px 24px; font-size:14px; font-weight:700; background-color:#FF5A36; color:#FFFFFF; and remove any conflicting button styles in section-specific CSS overrides so all primary CTAs look identical."
+        },
+        {
+          "severity": "major",
+          "location": "Consistency · Theme cards vs. speaker cards, desktop",
+          "issue": "Theme cards use image overlays with text on top; speaker cards use circular avatar images with text below on a white background. The corner radius, shadow, and card border treatment differ between these two card types and also differ from the sponsor and resource cards lower on the page — no unified card system is apparent.",
+          "recommendation": "Define a two-card-type system: one for people (speaker/avatar cards) and one for content (topic/resource cards), each with a consistent border-radius, shadow, and typography spec, applied without exception.",
+          "fix_prompt": "Add a shared CSS class .content-card with border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.08); and apply it to all non-speaker card components. Add a shared .person-card class with border-radius:8px; text-align:center; and apply to all speaker-type cards to unify the card system."
+        },
+        {
+          "severity": "minor",
+          "location": "Consistency · Section heading alignment, desktop",
+          "issue": "Some section headings are centred ('2026 Expert Speakers Included', 'Key Themes for 2026') while others are left-aligned ('Sponsorship Opportunities', 'Contact Us'). The inconsistency makes the page feel assembled from disconnected templates rather than one design system.",
+          "recommendation": "Choose one heading alignment strategy (centred for full-width sections, left-aligned for two-column sections) and apply it consistently.",
+          "fix_prompt": "Audit each section heading. For all full-width content sections (where content spans the full container), add text-align:center to the heading and its subtitle. For two-column layout sections, set text-align:left. Apply these rules consistently throughout the page."
+        },
+        {
+          "severity": "major",
+          "location": "Responsive integrity · Key Themes section, mobile (390px)",
+          "issue": "The four theme cards stack vertically on mobile but each card image appears to be a different height, with text overlaid at varying vertical positions. The overlay text on the first card ('The Leadership Card: The Roundtable') is partially cut off at the top of the card image.",
+          "recommendation": "Set a fixed aspect ratio on all theme card images (e.g., 16:9) using aspect-ratio: 16/9 and ensure the text overlay has sufficient bottom padding (at least 16px) so no text is ever cropped.",
+          "fix_prompt": "In the theme cards CSS, add aspect-ratio: 16/9; overflow:hidden; to the card image container, and add padding-bottom:16px to the overlay text container within each card so text is never clipped on any viewport size."
+        },
+        {
+          "severity": "major",
+          "location": "Responsive integrity · Statistics row (75 / 22 / 194 / 27), mobile",
+          "issue": "On mobile, the four stats appear to collapse into a 2×2 grid, but the label text beneath the numbers truncates with ellipsis or wraps awkwardly mid-phrase ('SENIOR GENERAL COUNSEL & C-SNO…'), reducing comprehension.",
+          "recommendation": "Allow stat descriptor text to wrap naturally at a minimum font-size of 12px; remove any white-space:nowrap or overflow:hidden constraints on mobile.",
+          "fix_prompt": "In the responsive CSS for screens below 576px, set the stat descriptor text elements to white-space:normal; overflow:visible; text-overflow:clip; font-size:12px; so stat labels wrap and remain fully readable on narrow screens."
+        },
+        {
+          "severity": "major",
+          "location": "Responsive integrity · Past Leaders logo grid, mobile",
+          "issue": "The multi-row logo grid on mobile shows logos at inconsistent sizes — some are tiny (single-word wordmarks like 'BNY') while others (Amazon, Adobe) appear proportionally much larger, making the grid look broken rather than intentional.",
+          "recommendation": "Apply a uniform container height of 32px with object-fit: contain to all logo images in this grid, identical to the desktop treatment recommendation.",
+          "fix_prompt": "Add the CSS rule .past-leaders-section img { height: 32px; width: auto; max-width: 100px; object-fit: contain; } and ensure the wrapping flex container has flex-wrap:wrap; justify-content:center; gap:16px; so logos lay out consistently on mobile."
+        },
+        {
+          "severity": "minor",
+          "location": "Responsive integrity · Navigation bar, mobile",
+          "issue": "The mobile hamburger menu icon is present, but on the 390px screenshot the IQPC logo and the sign-in link appear very close together with minimal tap target separation, raising usability concerns for touch interaction.",
+          "recommendation": "Ensure the hamburger icon touch target is at least 44×44px and the sign-in link has at least 8px separation from the logo.",
+          "fix_prompt": "Set the mobile nav toggle button to min-width:44px; min-height:44px; and add margin-left:auto to push it to the far right of the navbar, ensuring the logo and toggle button have adequate visual and tap-target separation."
+        },
+        {
+          "severity": "critical",
+          "location": "Visual accessibility · Hero section — text over background image, desktop and mobile",
+          "issue": "The hero headline and date text sit over a chess-board/conference photograph without a consistent dark scrim. Portions of the white text (particularly the subheadline and date line) overlap lighter areas of the background image, making contrast insufficient. The axe-core report confirms 11 color-contrast failures including primary CTA buttons.",
+          "recommendation": "Add a semi-transparent dark overlay (rgba(0,0,0,0.55) minimum) as a pseudo-element over the entire hero background image, and separately verify CTA buttons achieve 4.5:1 contrast against their background.",
+          "fix_prompt": "On the hero section's background image container, add a ::after pseudo-element with content:''; position:absolute; inset:0; background:rgba(10,37,64,0.6); z-index:0; and set the hero text container to position:relative; z-index:1; to ensure all hero text has a consistent dark backing that meets WCAG AA contrast."
+        },
+        {
+          "severity": "major",
+          "location": "Visual accessibility · Theme cards — text over imagery, desktop and mobile",
+          "issue": "Each Key Theme card has text overlaid directly on a photograph without a gradient or scrim. On cards with lighter background imagery (e.g., the second card showing a conference room scene), the overlay text appears in white or yellow without sufficient contrast, likely failing WCAG AA at this size.",
+          "recommendation": "Apply a linear-gradient overlay from rgba(0,0,0,0) at top to rgba(0,0,0,0.75) at bottom on each theme card image so text at the bottom of each card always has adequate backing.",
+          "fix_prompt": "Add background: linear-gradient(to bottom, rgba(0,0,0,0) 40%, rgba(0,0,0,0.75) 100%); as the background of the overlay div inside each theme card, positioned absolutely to cover the full card image area, so all white text on images meets WCAG AA contrast requirements."
+        },
+        {
+          "severity": "major",
+          "location": "Visual accessibility · CTA buttons (primary), entire page",
+          "issue": "Per the axe-core report, .btn-primary elements have serious color-contrast failures. Visually, the current bright blue (#0081ff) buttons with white text may meet contrast for large text but the 14px button label weight likely fails at 4.5:1. The brand-correct accent color #FF5A36 on white text will also need verification — orange CTAs require dark text to pass AA.",
+          "recommendation": "If using #FF5A36 as CTA background, switch button text to #0A2540 (dark navy) or #1A1A1A rather than white to achieve the required 4.5:1 contrast ratio.",
+          "fix_prompt": "Update .btn-primary to set color: #0A2540 (dark navy) instead of white when background-color is #FF5A36, and verify the combination achieves at least 4.5:1 contrast. If the primary CTAs remain blue, ensure the blue used achieves a 4.5:1 ratio with white — replace #0081ff with #0053c2 or darker if needed."
+        },
+        {
+          "severity": "minor",
+          "location": "Visual accessibility · Footer, desktop",
+          "issue": "The footer privacy policy and contact links appear to use the brand link color (#ffd230 yellow) against a dark background. While this may pass contrast, the yellow link color is not part of the brand config's defined palette and creates a discordant tone for the footer.",
+          "recommendation": "Use white (#FFFFFF) for footer links on dark backgrounds, matching the brand config reversed-logo guidance for dark surfaces.",
+          "fix_prompt": "In the footer CSS, set a { color: #FFFFFF; } and a:hover { color: #FF5A36; } within the footer scope so links use the brand-approved colors and remain clearly legible on the dark background."
+        }
+      ],
+      "report_md": "**Layout & grid — 4/7**\n- [major] Key Themes section, desktop: The four theme cards appear to use unequal column widths at 1440px — the rightmost card ('The Knights: Navigating Complexity') is visibly narrower than the leftmost card, creating a non-uniform grid that looks unintentional.\n  - Fix: Ensure all four cards share an equal Bootstrap col-3 (25%) width with consistent gutter. Do not rely on auto-layout flex-shrink to size columns.\n- [major] Sponsors logo grid, desktop: The 2026 Sponsors logo row mixes drastically different logo sizes (e.g., 'Ivo' wordmark appears tiny while 'Litera' and 'MITRATECH' are significantly larger), making the row look unfinished rather than curated.\n  - Fix: Normalise all sponsor logos to a fixed container height (e.g., 40px) with object-fit: contain so visual weight is uniform across the row.\n- [minor] Past Leaders logo grid, desktop: The multi-row past-leader company logo grid has inconsistent horizontal alignment — some rows are left-justified while others appear centred, breaking the sense of a coherent grid.\n  - Fix: Apply justify-content: center to the flex/grid container wrapping the logo rows so all rows are centre-aligned consistently.\n**Typography — 3/7**\n- [critical] Entire page: The page loads 'Raleway' as both primary and secondary font (confirmed in CSS :root variables). The brand config mandates 'Archivo' for headings and 'Inter' for body copy. This is a wholesale brand-config violation affecting every piece of text on the page.\n  - Fix: Replace '--primary-font' with Archivo and '--secondary-font' with Inter. Import both from Google Fonts and remove the Raleway import.\n- [major] Hero section subheadline, desktop: The tagline 'Checkmate, Chaos — Turning Volatility Into Your Next Strategic Advantage' uses a noticeably different size and weight treatment to the event name above it, but the step between the two is too small — both compete for H1 prominence, flattening the type hierarchy.\n  - Fix: Set the event name at 64px (top of the brand scale) and the tagline at 32px to create clear hierarchy. Limit the tagline to font-weight 400 or 500.\n- [major] Statistics row (75 / 22 / 194 / 27), desktop and mobile: The large numeral labels (75, 22, etc.) appear in a heavy weight that is visually fine, but their descriptor text beneath is extremely small — estimated at 10–11px — falling below the brand scale minimum of 12px and likely failing legibility on mobile.\n  - Fix: Set stat descriptor text to a minimum of 12px (brand scale floor) and 14px on desktop.\n- [minor] Speaker cards, desktop: Speaker name and title lines are very close in size and weight, making it hard to distinguish the name from the role/company at a glance.\n  - Fix: Differentiate speaker name (16px, font-weight 700) from role/company (14px, font-weight 400, muted color) to restore typographic hierarchy within the card.\n**Spacing & rhythm — 4/7**\n- [major] Hero section, desktop — between date/location line and CTA buttons: The gap between the date/location text ('July 20–21, 2026 | New York, USA') and the two CTA buttons beneath it appears to be less than 8px, creating a cramped cluster that merges date metadata with the action layer.\n  - Fix: Apply a minimum 24px margin-top to the CTA button group below the date line, consistent with the brand spacing scale.\n- [major] Sponsorship Opportunities section, desktop: The 'Sponsorship Opportunities' text block and the image beside it have uneven internal padding — the text side has generous left padding while the image bleeds closer to the section edge, creating visual imbalance.\n  - Fix: Apply equal horizontal padding (at least 32px) to both the text column and image column inside this section.\n- [minor] Footer, desktop: The footer contact block appears to have disproportionately large top padding compared to the bottom padding, creating a vertically unbalanced footer band.\n  - Fix: Set symmetric vertical padding of 48px top and 48px bottom on the footer container.\n**Visual hierarchy — 4/7**\n- [major] Hero section, desktop and mobile: There are two near-equal-weight CTA buttons in the hero: 'Request Your Invite' and 'Explore Our Next-Level Event' / 'Sponsorship Opportunities'. All three appear at similar visual weight, diluting the primary registration CTA. The eye has no clear winner.\n  - Fix: Make 'Request Your Invite' the dominant CTA (accent color fill, larger horizontal padding) and demote the sponsorship CTA to a ghost/outline style button so hierarchy is unambiguous.\n- [major] Primary color usage, entire page: Buttons and interactive elements use #0081ff (bright blue) as the primary color, conflicting with the brand config's #0A2540 (dark navy) as primary and #FF5A36 (coral-orange) as the accent reserved for CTAs. The accent color is not visibly used for any CTA on the page.\n  - Fix: Remap CSS variables: --primary-color to #0A2540 and repaint all CTA buttons with the accent #FF5A36 to match brand config. Reserve navy for backgrounds and section fills.\n- [minor] 'What Our Players Say' testimonial section, desktop: The large decorative quotation mark graphic dominates the section visually and draws the eye before the testimonial text, inverting the intended hierarchy (quote text should be primary).\n  - Fix: Reduce the decorative quote mark to roughly 60% of its current size and apply 30–40% opacity so it reads as a background element rather than a focal point.\n**Consistency — 4/7**\n- [major] CTA buttons, multiple sections (hero vs. 'Secure Your Place' banner vs. Sponsors section): Buttons are not styled consistently: the hero buttons appear with a rounded-pill style, the 'Secure Your Place' banner has a flat rectangular CTA, and the Sponsors section uses yet another button style. These look like three different components rather than one design system.\n  - Fix: Standardise all primary CTAs to one button spec: border-radius 4px, consistent padding (13px 24px), font-size 14px, font-weight 700, accent fill color.\n- [major] Theme cards vs. speaker cards, desktop: Theme cards use image overlays with text on top; speaker cards use circular avatar images with text below on a white background. The corner radius, shadow, and card border treatment differ between these two card types and also differ from the sponsor and resource cards lower on the page — no unified card system is apparent.\n  - Fix: Define a two-card-type system: one for people (speaker/avatar cards) and one for content (topic/resource cards), each with a consistent border-radius, shadow, and typography spec, applied without exception.\n- [minor] Section heading alignment, desktop: Some section headings are centred ('2026 Expert Speakers Included', 'Key Themes for 2026') while others are left-aligned ('Sponsorship Opportunities', 'Contact Us'). The inconsistency makes the page feel assembled from disconnected templates rather than one design system.\n  - Fix: Choose one heading alignment strategy (centred for full-width sections, left-aligned for two-column sections) and apply it consistently.\n**Responsive integrity — 4/7**\n- [major] Key Themes section, mobile (390px): The four theme cards stack vertically on mobile but each card image appears to be a different height, with text overlaid at varying vertical positions. The overlay text on the first card ('The Leadership Card: The Roundtable') is partially cut off at the top of the card image.\n  - Fix: Set a fixed aspect ratio on all theme card images (e.g., 16:9) using aspect-ratio: 16/9 and ensure the text overlay has sufficient bottom padding (at least 16px) so no text is ever cropped.\n- [major] Statistics row (75 / 22 / 194 / 27), mobile: On mobile, the four stats appear to collapse into a 2×2 grid, but the label text beneath the numbers truncates with ellipsis or wraps awkwardly mid-phrase ('SENIOR GENERAL COUNSEL & C-SNO…'), reducing comprehension.\n  - Fix: Allow stat descriptor text to wrap naturally at a minimum font-size of 12px; remove any white-space:nowrap or overflow:hidden constraints on mobile.\n- [major] Past Leaders logo grid, mobile: The multi-row logo grid on mobile shows logos at inconsistent sizes — some are tiny (single-word wordmarks like 'BNY') while others (Amazon, Adobe) appear proportionally much larger, making the grid look broken rather than intentional.\n  - Fix: Apply a uniform container height of 32px with object-fit: contain to all logo images in this grid, identical to the desktop treatment recommendation.\n- [minor] Navigation bar, mobile: The mobile hamburger menu icon is present, but on the 390px screenshot the IQPC logo and the sign-in link appear very close together with minimal tap target separation, raising usability concerns for touch interaction.\n  - Fix: Ensure the hamburger icon touch target is at least 44×44px and the sign-in link has at least 8px separation from the logo.\n**Visual accessibility — 3/7**\n- [critical] Hero section — text over background image, desktop and mobile: The hero headline and date text sit over a chess-board/conference photograph without a consistent dark scrim. Portions of the white text (particularly the subheadline and date line) overlap lighter areas of the background image, making contrast insufficient. The axe-core report confirms 11 color-contrast failures including primary CTA buttons.\n  - Fix: Add a semi-transparent dark overlay (rgba(0,0,0,0.55) minimum) as a pseudo-element over the entire hero background image, and separately verify CTA buttons achieve 4.5:1 contrast against their background.\n- [major] Theme cards — text over imagery, desktop and mobile: Each Key Theme card has text overlaid directly on a photograph without a gradient or scrim. On cards with lighter background imagery (e.g., the second card showing a conference room scene), the overlay text appears in white or yellow without sufficient contrast, likely failing WCAG AA at this size.\n  - Fix: Apply a linear-gradient overlay from rgba(0,0,0,0) at top to rgba(0,0,0,0.75) at bottom on each theme card image so text at the bottom of each card always has adequate backing.\n- [major] CTA buttons (primary), entire page: Per the axe-core report, .btn-primary elements have serious color-contrast failures. Visually, the current bright blue (#0081ff) buttons with white text may meet contrast for large text but the 14px button label weight likely fails at 4.5:1. The brand-correct accent color #FF5A36 on white text will also need verification — orange CTAs require dark text to pass AA.\n  - Fix: If using #FF5A36 as CTA background, switch button text to #0A2540 (dark navy) or #1A1A1A rather than white to achieve the required 4.5:1 contrast ratio.\n- [minor] Footer, desktop: The footer privacy policy and contact links appear to use the brand link color (#ffd230 yellow) against a dark background. While this may pass contrast, the yellow link color is not part of the brand config's defined palette and creates a discordant tone for the footer.\n  - Fix: Use white (#FFFFFF) for footer links on dark backgrounds, matching the brand config reversed-logo guidance for dark surfaces.",
+      "extra": {
+        "axes": [
+          {
+            "name": "Layout & grid",
+            "score": 4,
+            "findings": [
+              {
+                "severity": "major",
+                "location": "Key Themes section, desktop",
+                "issue": "The four theme cards appear to use unequal column widths at 1440px — the rightmost card ('The Knights: Navigating Complexity') is visibly narrower than the leftmost card, creating a non-uniform grid that looks unintentional.",
+                "recommendation": "Ensure all four cards share an equal Bootstrap col-3 (25%) width with consistent gutter. Do not rely on auto-layout flex-shrink to size columns.",
+                "fix_prompt": "In the Key Themes section, change all theme card wrapper divs to use class 'col-12 col-md-6 col-lg-3' and add 'g-4' to their parent row so all four cards render at equal width with consistent gutters on desktop."
+              },
+              {
+                "severity": "major",
+                "location": "Sponsors logo grid, desktop",
+                "issue": "The 2026 Sponsors logo row mixes drastically different logo sizes (e.g., 'Ivo' wordmark appears tiny while 'Litera' and 'MITRATECH' are significantly larger), making the row look unfinished rather than curated.",
+                "recommendation": "Normalise all sponsor logos to a fixed container height (e.g., 40px) with object-fit: contain so visual weight is uniform across the row.",
+                "fix_prompt": "For every <img> inside the 2026 Sponsors section, set style='height:40px; width:auto; object-fit:contain;' and wrap each in a flex container with align-items:center; justify-content:center so all logos appear at equal visual height."
+              },
+              {
+                "severity": "minor",
+                "location": "Past Leaders logo grid, desktop",
+                "issue": "The multi-row past-leader company logo grid has inconsistent horizontal alignment — some rows are left-justified while others appear centred, breaking the sense of a coherent grid.",
+                "recommendation": "Apply justify-content: center to the flex/grid container wrapping the logo rows so all rows are centre-aligned consistently.",
+                "fix_prompt": "Add 'justify-content: center; align-items: center; flex-wrap: wrap; gap: 24px;' to the CSS of the Past Leaders logo container div so all logo items are evenly centred across every row."
+              }
+            ]
+          },
+          {
+            "name": "Typography",
+            "score": 3,
+            "findings": [
+              {
+                "severity": "critical",
+                "location": "Entire page",
+                "issue": "The page loads 'Raleway' as both primary and secondary font (confirmed in CSS :root variables). The brand config mandates 'Archivo' for headings and 'Inter' for body copy. This is a wholesale brand-config violation affecting every piece of text on the page.",
+                "recommendation": "Replace '--primary-font' with Archivo and '--secondary-font' with Inter. Import both from Google Fonts and remove the Raleway import.",
+                "fix_prompt": "In the <style data-dynamic> block, replace the Google Fonts import URL to include 'Archivo:wght@400;600;700;800' and 'Inter:wght@400;500;600', then update :root to set --primary-font: 'Archivo', sans-serif and --secondary-font: 'Inter', sans-serif."
+              },
+              {
+                "severity": "major",
+                "location": "Hero section subheadline, desktop",
+                "issue": "The tagline 'Checkmate, Chaos — Turning Volatility Into Your Next Strategic Advantage' uses a noticeably different size and weight treatment to the event name above it, but the step between the two is too small — both compete for H1 prominence, flattening the type hierarchy.",
+                "recommendation": "Set the event name at 64px (top of the brand scale) and the tagline at 32px to create clear hierarchy. Limit the tagline to font-weight 400 or 500.",
+                "fix_prompt": "In the hero section, set the event name heading to font-size:64px; font-weight:800; and the tagline subtitle to font-size:32px; font-weight:400; so they occupy distinct levels of the type scale."
+              },
+              {
+                "severity": "major",
+                "location": "Statistics row (75 / 22 / 194 / 27), desktop and mobile",
+                "issue": "The large numeral labels (75, 22, etc.) appear in a heavy weight that is visually fine, but their descriptor text beneath is extremely small — estimated at 10–11px — falling below the brand scale minimum of 12px and likely failing legibility on mobile.",
+                "recommendation": "Set stat descriptor text to a minimum of 12px (brand scale floor) and 14px on desktop.",
+                "fix_prompt": "Find the CSS class styling the stat description text beneath the large numerals in the statistics row and set font-size: 14px; line-height: 1.4; to bring it within the brand type scale."
+              },
+              {
+                "severity": "minor",
+                "location": "Speaker cards, desktop",
+                "issue": "Speaker name and title lines are very close in size and weight, making it hard to distinguish the name from the role/company at a glance.",
+                "recommendation": "Differentiate speaker name (16px, font-weight 700) from role/company (14px, font-weight 400, muted color) to restore typographic hierarchy within the card.",
+                "fix_prompt": "In the speaker card CSS, set the speaker name to font-size:16px; font-weight:700; color:#1A1A1A; and the speaker title/company to font-size:14px; font-weight:400; color:#555555; to create clear intra-card hierarchy."
+              }
+            ]
+          },
+          {
+            "name": "Spacing & rhythm",
+            "score": 4,
+            "findings": [
+              {
+                "severity": "major",
+                "location": "Hero section, desktop — between date/location line and CTA buttons",
+                "issue": "The gap between the date/location text ('July 20–21, 2026 | New York, USA') and the two CTA buttons beneath it appears to be less than 8px, creating a cramped cluster that merges date metadata with the action layer.",
+                "recommendation": "Apply a minimum 24px margin-top to the CTA button group below the date line, consistent with the brand spacing scale.",
+                "fix_prompt": "Add margin-top: 24px to the div or flex container holding the hero CTA buttons so there is a clear breathing gap between the event date metadata line and the call-to-action group."
+              },
+              {
+                "severity": "major",
+                "location": "Sponsorship Opportunities section, desktop",
+                "issue": "The 'Sponsorship Opportunities' text block and the image beside it have uneven internal padding — the text side has generous left padding while the image bleeds closer to the section edge, creating visual imbalance.",
+                "recommendation": "Apply equal horizontal padding (at least 32px) to both the text column and image column inside this section.",
+                "fix_prompt": "In the Sponsorship Opportunities section, add padding: 0 32px to both the text column and image column children of the row so both sides have symmetric horizontal spacing."
+              },
+              {
+                "severity": "minor",
+                "location": "Footer, desktop",
+                "issue": "The footer contact block appears to have disproportionately large top padding compared to the bottom padding, creating a vertically unbalanced footer band.",
+                "recommendation": "Set symmetric vertical padding of 48px top and 48px bottom on the footer container.",
+                "fix_prompt": "Set the footer container's padding to padding: 48px 0; so vertical spacing is symmetric above and below the footer content."
+              }
+            ]
+          },
+          {
+            "name": "Visual hierarchy",
+            "score": 4,
+            "findings": [
+              {
+                "severity": "major",
+                "location": "Hero section, desktop and mobile",
+                "issue": "There are two near-equal-weight CTA buttons in the hero: 'Request Your Invite' and 'Explore Our Next-Level Event' / 'Sponsorship Opportunities'. All three appear at similar visual weight, diluting the primary registration CTA. The eye has no clear winner.",
+                "recommendation": "Make 'Request Your Invite' the dominant CTA (accent color fill, larger horizontal padding) and demote the sponsorship CTA to a ghost/outline style button so hierarchy is unambiguous.",
+                "fix_prompt": "In the hero section, change the primary registration button to background-color:#FF5A36; color:#FFFFFF; font-weight:700; padding:14px 32px; and change the secondary sponsorship button to background:transparent; border:2px solid #FFFFFF; color:#FFFFFF; padding:12px 28px; so the primary action is visually dominant."
+              },
+              {
+                "severity": "major",
+                "location": "Primary color usage, entire page",
+                "issue": "Buttons and interactive elements use #0081ff (bright blue) as the primary color, conflicting with the brand config's #0A2540 (dark navy) as primary and #FF5A36 (coral-orange) as the accent reserved for CTAs. The accent color is not visibly used for any CTA on the page.",
+                "recommendation": "Remap CSS variables: --primary-color to #0A2540 and repaint all CTA buttons with the accent #FF5A36 to match brand config. Reserve navy for backgrounds and section fills.",
+                "fix_prompt": "In the :root CSS block, change --primary-color to #FF5A36 and --primary-color-hover to #e04a28 so that all .btn-primary elements render in the brand-specified accent color for CTAs. Update --secondary-color to #0A2540 for background applications."
+              },
+              {
+                "severity": "minor",
+                "location": "'What Our Players Say' testimonial section, desktop",
+                "issue": "The large decorative quotation mark graphic dominates the section visually and draws the eye before the testimonial text, inverting the intended hierarchy (quote text should be primary).",
+                "recommendation": "Reduce the decorative quote mark to roughly 60% of its current size and apply 30–40% opacity so it reads as a background element rather than a focal point.",
+                "fix_prompt": "On the large decorative quote mark element in the testimonial section, add opacity: 0.35; and reduce its font-size or width by 40% so it recedes behind the testimonial text."
+              }
+            ]
+          },
+          {
+            "name": "Consistency",
+            "score": 4,
+            "findings": [
+              {
+                "severity": "major",
+                "location": "CTA buttons, multiple sections (hero vs. 'Secure Your Place' banner vs. Sponsors section)",
+                "issue": "Buttons are not styled consistently: the hero buttons appear with a rounded-pill style, the 'Secure Your Place' banner has a flat rectangular CTA, and the Sponsors section uses yet another button style. These look like three different components rather than one design system.",
+                "recommendation": "Standardise all primary CTAs to one button spec: border-radius 4px, consistent padding (13px 24px), font-size 14px, font-weight 700, accent fill color.",
+                "fix_prompt": "Create a single .btn-primary rule with border-radius:4px; padding:13px 24px; font-size:14px; font-weight:700; background-color:#FF5A36; color:#FFFFFF; and remove any conflicting button styles in section-specific CSS overrides so all primary CTAs look identical."
+              },
+              {
+                "severity": "major",
+                "location": "Theme cards vs. speaker cards, desktop",
+                "issue": "Theme cards use image overlays with text on top; speaker cards use circular avatar images with text below on a white background. The corner radius, shadow, and card border treatment differ between these two card types and also differ from the sponsor and resource cards lower on the page — no unified card system is apparent.",
+                "recommendation": "Define a two-card-type system: one for people (speaker/avatar cards) and one for content (topic/resource cards), each with a consistent border-radius, shadow, and typography spec, applied without exception.",
+                "fix_prompt": "Add a shared CSS class .content-card with border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.08); and apply it to all non-speaker card components. Add a shared .person-card class with border-radius:8px; text-align:center; and apply to all speaker-type cards to unify the card system."
+              },
+              {
+                "severity": "minor",
+                "location": "Section heading alignment, desktop",
+                "issue": "Some section headings are centred ('2026 Expert Speakers Included', 'Key Themes for 2026') while others are left-aligned ('Sponsorship Opportunities', 'Contact Us'). The inconsistency makes the page feel assembled from disconnected templates rather than one design system.",
+                "recommendation": "Choose one heading alignment strategy (centred for full-width sections, left-aligned for two-column sections) and apply it consistently.",
+                "fix_prompt": "Audit each section heading. For all full-width content sections (where content spans the full container), add text-align:center to the heading and its subtitle. For two-column layout sections, set text-align:left. Apply these rules consistently throughout the page."
+              }
+            ]
+          },
+          {
+            "name": "Responsive integrity",
+            "score": 4,
+            "findings": [
+              {
+                "severity": "major",
+                "location": "Key Themes section, mobile (390px)",
+                "issue": "The four theme cards stack vertically on mobile but each card image appears to be a different height, with text overlaid at varying vertical positions. The overlay text on the first card ('The Leadership Card: The Roundtable') is partially cut off at the top of the card image.",
+                "recommendation": "Set a fixed aspect ratio on all theme card images (e.g., 16:9) using aspect-ratio: 16/9 and ensure the text overlay has sufficient bottom padding (at least 16px) so no text is ever cropped.",
+                "fix_prompt": "In the theme cards CSS, add aspect-ratio: 16/9; overflow:hidden; to the card image container, and add padding-bottom:16px to the overlay text container within each card so text is never clipped on any viewport size."
+              },
+              {
+                "severity": "major",
+                "location": "Statistics row (75 / 22 / 194 / 27), mobile",
+                "issue": "On mobile, the four stats appear to collapse into a 2×2 grid, but the label text beneath the numbers truncates with ellipsis or wraps awkwardly mid-phrase ('SENIOR GENERAL COUNSEL & C-SNO…'), reducing comprehension.",
+                "recommendation": "Allow stat descriptor text to wrap naturally at a minimum font-size of 12px; remove any white-space:nowrap or overflow:hidden constraints on mobile.",
+                "fix_prompt": "In the responsive CSS for screens below 576px, set the stat descriptor text elements to white-space:normal; overflow:visible; text-overflow:clip; font-size:12px; so stat labels wrap and remain fully readable on narrow screens."
+              },
+              {
+                "severity": "major",
+                "location": "Past Leaders logo grid, mobile",
+                "issue": "The multi-row logo grid on mobile shows logos at inconsistent sizes — some are tiny (single-word wordmarks like 'BNY') while others (Amazon, Adobe) appear proportionally much larger, making the grid look broken rather than intentional.",
+                "recommendation": "Apply a uniform container height of 32px with object-fit: contain to all logo images in this grid, identical to the desktop treatment recommendation.",
+                "fix_prompt": "Add the CSS rule .past-leaders-section img { height: 32px; width: auto; max-width: 100px; object-fit: contain; } and ensure the wrapping flex container has flex-wrap:wrap; justify-content:center; gap:16px; so logos lay out consistently on mobile."
+              },
+              {
+                "severity": "minor",
+                "location": "Navigation bar, mobile",
+                "issue": "The mobile hamburger menu icon is present, but on the 390px screenshot the IQPC logo and the sign-in link appear very close together with minimal tap target separation, raising usability concerns for touch interaction.",
+                "recommendation": "Ensure the hamburger icon touch target is at least 44×44px and the sign-in link has at least 8px separation from the logo.",
+                "fix_prompt": "Set the mobile nav toggle button to min-width:44px; min-height:44px; and add margin-left:auto to push it to the far right of the navbar, ensuring the logo and toggle button have adequate visual and tap-target separation."
+              }
+            ]
+          },
+          {
+            "name": "Visual accessibility",
+            "score": 3,
+            "findings": [
+              {
+                "severity": "critical",
+                "location": "Hero section — text over background image, desktop and mobile",
+                "issue": "The hero headline and date text sit over a chess-board/conference photograph without a consistent dark scrim. Portions of the white text (particularly the subheadline and date line) overlap lighter areas of the background image, making contrast insufficient. The axe-core report confirms 11 color-contrast failures including primary CTA buttons.",
+                "recommendation": "Add a semi-transparent dark overlay (rgba(0,0,0,0.55) minimum) as a pseudo-element over the entire hero background image, and separately verify CTA buttons achieve 4.5:1 contrast against their background.",
+                "fix_prompt": "On the hero section's background image container, add a ::after pseudo-element with content:''; position:absolute; inset:0; background:rgba(10,37,64,0.6); z-index:0; and set the hero text container to position:relative; z-index:1; to ensure all hero text has a consistent dark backing that meets WCAG AA contrast."
+              },
+              {
+                "severity": "major",
+                "location": "Theme cards — text over imagery, desktop and mobile",
+                "issue": "Each Key Theme card has text overlaid directly on a photograph without a gradient or scrim. On cards with lighter background imagery (e.g., the second card showing a conference room scene), the overlay text appears in white or yellow without sufficient contrast, likely failing WCAG AA at this size.",
+                "recommendation": "Apply a linear-gradient overlay from rgba(0,0,0,0) at top to rgba(0,0,0,0.75) at bottom on each theme card image so text at the bottom of each card always has adequate backing.",
+                "fix_prompt": "Add background: linear-gradient(to bottom, rgba(0,0,0,0) 40%, rgba(0,0,0,0.75) 100%); as the background of the overlay div inside each theme card, positioned absolutely to cover the full card image area, so all white text on images meets WCAG AA contrast requirements."
+              },
+              {
+                "severity": "major",
+                "location": "CTA buttons (primary), entire page",
+                "issue": "Per the axe-core report, .btn-primary elements have serious color-contrast failures. Visually, the current bright blue (#0081ff) buttons with white text may meet contrast for large text but the 14px button label weight likely fails at 4.5:1. The brand-correct accent color #FF5A36 on white text will also need verification — orange CTAs require dark text to pass AA.",
+                "recommendation": "If using #FF5A36 as CTA background, switch button text to #0A2540 (dark navy) or #1A1A1A rather than white to achieve the required 4.5:1 contrast ratio.",
+                "fix_prompt": "Update .btn-primary to set color: #0A2540 (dark navy) instead of white when background-color is #FF5A36, and verify the combination achieves at least 4.5:1 contrast. If the primary CTAs remain blue, ensure the blue used achieves a 4.5:1 ratio with white — replace #0081ff with #0053c2 or darker if needed."
+              },
+              {
+                "severity": "minor",
+                "location": "Footer, desktop",
+                "issue": "The footer privacy policy and contact links appear to use the brand link color (#ffd230 yellow) against a dark background. While this may pass contrast, the yellow link color is not part of the brand config's defined palette and creates a discordant tone for the footer.",
+                "recommendation": "Use white (#FFFFFF) for footer links on dark backgrounds, matching the brand config reversed-logo guidance for dark surfaces.",
+                "fix_prompt": "In the footer CSS, set a { color: #FFFFFF; } and a:hover { color: #FF5A36; } within the footer scope so links use the brand-approved colors and remain clearly legible on the dark background."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "brand",
+      "label": "Brand Compliance",
+      "score": 20,
+      "summary": "The microsite is for the Corporate Counsel & Compliance Exchange USA, an IQPC event, but it diverges substantially from the WorkX 2026 brand configuration provided. The CSS reveals the site is running on a completely different design system (primary color #0081ff, secondary #ffd230, font family Raleway) rather than the mandated #0A2540 primary, #FF5A36 accent, and Archivo/Inter typography. Several required elements are present but one legally required element (privacy policy footer link) cannot be confirmed from the visible copy, and the event name/dates in the hero do not match the WorkX 2026 brand config at all.",
+      "findings": [
+        {
+          "severity": "major",
+          "location": "Rendered CSS (computed styles)",
+          "issue": "Off-palette color #212121 is used on 370 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+          "recommendation": "Replace #212121 with the nearest approved brand token.",
+          "fix_prompt": "Find every use of the color #212121 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+          "deterministic": true
+        },
+        {
+          "severity": "major",
+          "location": "Rendered CSS (computed styles)",
+          "issue": "Off-palette color #212529 is used on 274 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+          "recommendation": "Replace #212529 with the nearest approved brand token.",
+          "fix_prompt": "Find every use of the color #212529 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+          "deterministic": true
+        },
+        {
+          "severity": "minor",
+          "location": "Rendered CSS (computed styles)",
+          "issue": "Off-palette color #222222 is used on 94 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+          "recommendation": "Replace #222222 with the nearest approved brand token.",
+          "fix_prompt": "Find every use of the color #222222 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+          "deterministic": true
+        },
+        {
+          "severity": "minor",
+          "location": "Rendered CSS (computed styles)",
+          "issue": "Off-palette color #FFD230 is used on 48 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+          "recommendation": "Replace #FFD230 with the nearest approved brand token.",
+          "fix_prompt": "Find every use of the color #FFD230 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+          "deterministic": true
+        },
+        {
+          "severity": "minor",
+          "location": "Rendered CSS (computed styles)",
+          "issue": "Off-palette color #696969 is used on 32 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+          "recommendation": "Replace #696969 with the nearest approved brand token.",
+          "fix_prompt": "Find every use of the color #696969 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+          "deterministic": true
+        },
+        {
+          "severity": "major",
+          "location": "Rendered CSS (computed styles)",
+          "issue": "Non-brand font stack \"Raleway, sans-serif\" is used on 1067 elements. Brand fonts: Archivo, sans-serif (headings), Inter, sans-serif (body).",
+          "recommendation": "Load and apply the brand font families.",
+          "fix_prompt": "Replace the font stack \"Raleway, sans-serif\" across this site with the brand fonts: \"Archivo, sans-serif\" for headings and \"Inter, sans-serif\" for body text. Add the necessary font imports.",
+          "deterministic": true
+        },
+        {
+          "severity": "critical",
+          "location": "Entire page — CSS custom properties / design system",
+          "issue": "The site is running an entirely different brand system. CSS declares --primary-color: #0081ff, --secondary-color: #ffd230, and --primary-font / --secondary-font: 'Raleway'. The brand config mandates primary #0A2540, accent #FF5A36, headings in Archivo, and body in Inter. This is a wholesale brand mismatch, not a token-level deviation.",
+          "recommendation": "Replace the CSS variable declarations with the correct tokens: --primary-color: #0A2540; --accent-color: #FF5A36; --primary-font: 'Archivo', sans-serif; --secondary-font: 'Inter', sans-serif. Remove Raleway from the Google Fonts import and all fallback references.",
+          "fix_prompt": "In the <style data-dynamic> block, update the :root CSS variables as follows: set --primary-color to #0A2540, remove --secondary-color (#ffd230) and replace accent usage with #FF5A36, set --primary-font to 'Archivo, sans-serif', set --secondary-font (body) to 'Inter, sans-serif'. Remove the Raleway @import and add @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;800&family=Inter:wght@400;600;700&display=swap');. Update all button background-color references from var(--primary-color) (#0081ff) to #0A2540 for primary actions and #FF5A36 for CTAs."
+        },
+        {
+          "severity": "critical",
+          "location": "Hero section — event name and brand config alignment",
+          "issue": "The event promoted is 'Corporate Counsel and Compliance Exchange USA', whereas the brand configuration specifies the event as 'WorkX 2026'. Either the wrong brand config has been applied to this microsite, or the wrong template is being used for the event. This fundamental misalignment means the brand guardrails being enforced do not belong to this event.",
+          "recommendation": "Confirm which brand config applies to this microsite. If this is indeed the Corporate Counsel & Compliance Exchange USA event, obtain and apply the correct brand configuration for that IQPC community portal rather than the WorkX 2026 config. If this is a WorkX 2026 page, the hero event name, copy, imagery, and all content must be replaced to reflect WorkX 2026.",
+          "fix_prompt": "Resolve the brand config / event mismatch before any further styling work. Either: (a) request the correct brand-config JSON for 'Corporate Counsel & Compliance Exchange USA' from the portal admin and rerun this review, or (b) replace all hero and page content with WorkX 2026 event details if this page is intended for that event."
+        },
+        {
+          "severity": "critical",
+          "location": "Hero — primary CTA button",
+          "issue": "The primary CTA 'Request Your Invite' appears styled with the incorrect #0081ff blue (from the overriding CSS system) rather than the mandated accent color #FF5A36. The accent color is explicitly reserved for CTAs and key highlights. A blue CTA is off-brand and reduces visual hierarchy impact.",
+          "recommendation": "Apply background-color: #FF5A36 and color: #FFFFFF to all primary CTA buttons. Ensure hover state darkens the accent (e.g. #E04A2A) rather than switching to an entirely different hue.",
+          "fix_prompt": "Find all elements with class .btn-primary used for registration/invite CTAs and set their background-color to #FF5A36 and border-color to #FF5A36. Set hover state to background-color: #E04A2A. Remove the --primary-color variable reference from CTA button rules and hardcode or remap to the accent token."
+        },
+        {
+          "severity": "major",
+          "location": "Hero — secondary CTA 'Explore Our Next-Gen Brand Event'",
+          "issue": "The phrase 'Next-Gen' is a vague, unverifiable superlative. The brand tone requires benefit-led, professional copy with no unverifiable superlatives. 'Next-Gen' adds no concrete meaning and violates the tone-of-voice guidelines.",
+          "recommendation": "Replace 'Explore Our Next-Gen Brand Event' with specific, benefit-led language, e.g. 'Explore Sponsorship Packages' or 'See What's New for 2026'.",
+          "fix_prompt": "In the hero section HTML, locate the secondary CTA button whose visible label is 'Explore Our Next-Gen Brand Event' and replace the label text with 'Explore Sponsorship Packages' or a comparably specific, benefit-led phrase that removes the unverifiable 'Next-Gen' claim."
+        },
+        {
+          "severity": "major",
+          "location": "Meta description and OG description",
+          "issue": "The meta description opens with 'The Premier Exchange for Legal Leaders' — 'Premier' is an unverifiable superlative that violates the brand tone-of-voice rule against unverifiable superlatives.",
+          "recommendation": "Rewrite the meta description opening to a benefit-led statement, e.g. 'An exclusive exchange for senior legal and compliance leaders navigating regulatory complexity and governance challenges in 2026.'",
+          "fix_prompt": "In the <head> section, locate the <meta name='description'> and <meta property='og:description'> tags. Replace the phrase 'The Premier Exchange for Legal Leaders' with a specific, benefit-led description such as 'An exclusive gathering for senior legal and compliance leaders to exchange strategies on governance, regulatory change, and legal technology.'"
+        },
+        {
+          "severity": "major",
+          "location": "Hero — logo placement over full-bleed background image",
+          "issue": "The event logo ('Corporate Counsel and Compliance Exchange USA' circular lockup) appears placed directly over a dark photographic background. The brand config requires either a reversed logo on dark backgrounds or a scrim behind the logo when placed over busy imagery. No visible scrim or sufficient contrast treatment is apparent around the circular logo lockup in the hero.",
+          "recommendation": "Add a semi-transparent dark scrim (rgba(10,37,64,0.55) or similar) behind the logo lockup, or use the reversed/white variant of the logo. Ensure minimum clear space equal to the logomark height on all sides is maintained.",
+          "fix_prompt": "Wrap the hero logo element in a container with CSS: background: rgba(10, 37, 64, 0.5); border-radius: 50%; padding: equal to logomark height; to create a scrim. Alternatively, switch the logo src to the white/reversed variant designed for dark backgrounds."
+        },
+        {
+          "severity": "major",
+          "location": "Theme cards section ('Key Themes for 2026 Included') — accent color on decorative card backgrounds",
+          "issue": "The theme cards appear to use a yellow/gold color (#ffd230, the misapplied secondary-color token) as decorative background fills. The brand config states accent is reserved for CTAs and key highlights only; decorative section backgrounds should use primary (#0A2540) or white (#FFFFFF). Yellow is also entirely absent from the approved palette.",
+          "recommendation": "Replace the yellow/gold card background treatment with the primary dark navy (#0A2540) or white, reserving any color accent solely for CTA buttons and highlight labels.",
+          "fix_prompt": "In the theme cards component, find all elements using background-color: var(--secondary-color) or background-color: #ffd230 and replace with background-color: #0A2540 (with white text) or background-color: #FFFFFF (with #1A1A1A text). Remove #ffd230 from all decorative uses."
+        },
+        {
+          "severity": "minor",
+          "location": "Structured data (JSON-LD) — startDate/endDate",
+          "issue": "The JSON-LD schema declares startDate: '2027-07-20' and endDate: '2027-07-21', but the visible hero copy states 'July 20–21, 2026'. There is a year discrepancy (2026 vs 2027) between the visible page and the machine-readable metadata.",
+          "recommendation": "Align the JSON-LD startDate and endDate to match the displayed event year. If the event is 2026, set both to 2026-07-20 and 2026-07-21 respectively.",
+          "fix_prompt": "In the application/ld+json script block for the Event schema, change 'startDate': '2027-07-20' to '2026-07-20' and 'endDate': '2027-07-21' to '2026-07-21' to match the dates displayed in the hero section."
+        },
+        {
+          "severity": "minor",
+          "location": "Navigation bar — link color",
+          "issue": "The CSS sets --link-color: #ffd230 (yellow), which would render nav and inline links in an off-brand yellow that is not part of the approved palette and provides poor contrast on white backgrounds.",
+          "recommendation": "Update --link-color to #0A2540 (primary) for standard body links, and use #FF5A36 only for highlighted/CTA-style link treatments, in line with the accent discipline rule.",
+          "fix_prompt": "In the :root CSS variable block, change --link-color: #ffd230 to --link-color: #0A2540 and --link-hover-color: #0053c2 to --link-hover-color: #FF5A36 to align with the approved brand palette."
+        }
+      ],
+      "report_md": "**Required elements**\n- ✓ Event name and dates in the hero — Hero shows 'Corporate Counsel and Compliance Exchange USA' with dates 'July 20–21, 2026 | New York, USA' — however the event name does not match the configured event 'WorkX 2026', suggesting either a misconfigured brand config or wrong template applied.\n- ✓ Venue / location — Location 'New York, USA' is visible in the hero date/location line and confirmed in structured data.\n- ✓ Primary registration CTA above the fold — A 'Request Your Invite' button is visible in the hero above the fold. A secondary 'Explore Our Next-Gen Brand Event' CTA also appears.\n- ✓ IQPC or portal brand logo — IQPC logo is visible in the top-left navigation bar on both desktop and mobile screenshots.\n- ✓ Privacy policy link in footer — Footer area at the bottom of the desktop screenshot shows small-text links that appear to include 'Privacy Policy' alongside Cookie Policy and Terms links, consistent with the HTML and visible footer nav.\n\n**Token scan (deterministic)**\n- [major] Off-palette color #212121 is used on 370 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.\n- [major] Off-palette color #212529 is used on 274 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.\n- [minor] Off-palette color #222222 is used on 94 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.\n- [minor] Off-palette color #FFD230 is used on 48 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.\n- [minor] Off-palette color #696969 is used on 32 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.\n- [major] Non-brand font stack \"Raleway, sans-serif\" is used on 1067 elements. Brand fonts: Archivo, sans-serif (headings), Inter, sans-serif (body).\n\n**Findings**\n- [critical] Entire page — CSS custom properties / design system: The site is running an entirely different brand system. CSS declares --primary-color: #0081ff, --secondary-color: #ffd230, and --primary-font / --secondary-font: 'Raleway'. The brand config mandates primary #0A2540, accent #FF5A36, headings in Archivo, and body in Inter. This is a wholesale brand mismatch, not a token-level deviation.\n  - Fix: Replace the CSS variable declarations with the correct tokens: --primary-color: #0A2540; --accent-color: #FF5A36; --primary-font: 'Archivo', sans-serif; --secondary-font: 'Inter', sans-serif. Remove Raleway from the Google Fonts import and all fallback references.\n- [critical] Hero section — event name and brand config alignment: The event promoted is 'Corporate Counsel and Compliance Exchange USA', whereas the brand configuration specifies the event as 'WorkX 2026'. Either the wrong brand config has been applied to this microsite, or the wrong template is being used for the event. This fundamental misalignment means the brand guardrails being enforced do not belong to this event.\n  - Fix: Confirm which brand config applies to this microsite. If this is indeed the Corporate Counsel & Compliance Exchange USA event, obtain and apply the correct brand configuration for that IQPC community portal rather than the WorkX 2026 config. If this is a WorkX 2026 page, the hero event name, copy, imagery, and all content must be replaced to reflect WorkX 2026.\n- [critical] Hero — primary CTA button: The primary CTA 'Request Your Invite' appears styled with the incorrect #0081ff blue (from the overriding CSS system) rather than the mandated accent color #FF5A36. The accent color is explicitly reserved for CTAs and key highlights. A blue CTA is off-brand and reduces visual hierarchy impact.\n  - Fix: Apply background-color: #FF5A36 and color: #FFFFFF to all primary CTA buttons. Ensure hover state darkens the accent (e.g. #E04A2A) rather than switching to an entirely different hue.\n- [major] Hero — secondary CTA 'Explore Our Next-Gen Brand Event': The phrase 'Next-Gen' is a vague, unverifiable superlative. The brand tone requires benefit-led, professional copy with no unverifiable superlatives. 'Next-Gen' adds no concrete meaning and violates the tone-of-voice guidelines.\n  - Fix: Replace 'Explore Our Next-Gen Brand Event' with specific, benefit-led language, e.g. 'Explore Sponsorship Packages' or 'See What's New for 2026'.\n- [major] Meta description and OG description: The meta description opens with 'The Premier Exchange for Legal Leaders' — 'Premier' is an unverifiable superlative that violates the brand tone-of-voice rule against unverifiable superlatives.\n  - Fix: Rewrite the meta description opening to a benefit-led statement, e.g. 'An exclusive exchange for senior legal and compliance leaders navigating regulatory complexity and governance challenges in 2026.'\n- [major] Hero — logo placement over full-bleed background image: The event logo ('Corporate Counsel and Compliance Exchange USA' circular lockup) appears placed directly over a dark photographic background. The brand config requires either a reversed logo on dark backgrounds or a scrim behind the logo when placed over busy imagery. No visible scrim or sufficient contrast treatment is apparent around the circular logo lockup in the hero.\n  - Fix: Add a semi-transparent dark scrim (rgba(10,37,64,0.55) or similar) behind the logo lockup, or use the reversed/white variant of the logo. Ensure minimum clear space equal to the logomark height on all sides is maintained.\n- [major] Theme cards section ('Key Themes for 2026 Included') — accent color on decorative card backgrounds: The theme cards appear to use a yellow/gold color (#ffd230, the misapplied secondary-color token) as decorative background fills. The brand config states accent is reserved for CTAs and key highlights only; decorative section backgrounds should use primary (#0A2540) or white (#FFFFFF). Yellow is also entirely absent from the approved palette.\n  - Fix: Replace the yellow/gold card background treatment with the primary dark navy (#0A2540) or white, reserving any color accent solely for CTA buttons and highlight labels.\n- [minor] Structured data (JSON-LD) — startDate/endDate: The JSON-LD schema declares startDate: '2027-07-20' and endDate: '2027-07-21', but the visible hero copy states 'July 20–21, 2026'. There is a year discrepancy (2026 vs 2027) between the visible page and the machine-readable metadata.\n  - Fix: Align the JSON-LD startDate and endDate to match the displayed event year. If the event is 2026, set both to 2026-07-20 and 2026-07-21 respectively.\n- [minor] Navigation bar — link color: The CSS sets --link-color: #ffd230 (yellow), which would render nav and inline links in an off-brand yellow that is not part of the approved palette and provides poor contrast on white backgrounds.\n  - Fix: Update --link-color to #0A2540 (primary) for standard body links, and use #FF5A36 only for highlighted/CTA-style link treatments, in line with the accent discipline rule.",
+      "extra": {
+        "required_elements": [
+          {
+            "element": "Event name and dates in the hero",
+            "present": true,
+            "note": "Hero shows 'Corporate Counsel and Compliance Exchange USA' with dates 'July 20–21, 2026 | New York, USA' — however the event name does not match the configured event 'WorkX 2026', suggesting either a misconfigured brand config or wrong template applied."
+          },
+          {
+            "element": "Venue / location",
+            "present": true,
+            "note": "Location 'New York, USA' is visible in the hero date/location line and confirmed in structured data."
+          },
+          {
+            "element": "Primary registration CTA above the fold",
+            "present": true,
+            "note": "A 'Request Your Invite' button is visible in the hero above the fold. A secondary 'Explore Our Next-Gen Brand Event' CTA also appears."
+          },
+          {
+            "element": "IQPC or portal brand logo",
+            "present": true,
+            "note": "IQPC logo is visible in the top-left navigation bar on both desktop and mobile screenshots."
+          },
+          {
+            "element": "Privacy policy link in footer",
+            "present": true,
+            "note": "Footer area at the bottom of the desktop screenshot shows small-text links that appear to include 'Privacy Policy' alongside Cookie Policy and Terms links, consistent with the HTML and visible footer nav."
+          }
+        ],
+        "token_scan": [
+          {
+            "severity": "major",
+            "location": "Rendered CSS (computed styles)",
+            "issue": "Off-palette color #212121 is used on 370 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+            "recommendation": "Replace #212121 with the nearest approved brand token.",
+            "fix_prompt": "Find every use of the color #212121 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+            "deterministic": true
+          },
+          {
+            "severity": "major",
+            "location": "Rendered CSS (computed styles)",
+            "issue": "Off-palette color #212529 is used on 274 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+            "recommendation": "Replace #212529 with the nearest approved brand token.",
+            "fix_prompt": "Find every use of the color #212529 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+            "deterministic": true
+          },
+          {
+            "severity": "minor",
+            "location": "Rendered CSS (computed styles)",
+            "issue": "Off-palette color #222222 is used on 94 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+            "recommendation": "Replace #222222 with the nearest approved brand token.",
+            "fix_prompt": "Find every use of the color #222222 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+            "deterministic": true
+          },
+          {
+            "severity": "minor",
+            "location": "Rendered CSS (computed styles)",
+            "issue": "Off-palette color #FFD230 is used on 48 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+            "recommendation": "Replace #FFD230 with the nearest approved brand token.",
+            "fix_prompt": "Find every use of the color #FFD230 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+            "deterministic": true
+          },
+          {
+            "severity": "minor",
+            "location": "Rendered CSS (computed styles)",
+            "issue": "Off-palette color #696969 is used on 32 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+            "recommendation": "Replace #696969 with the nearest approved brand token.",
+            "fix_prompt": "Find every use of the color #696969 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+            "deterministic": true
+          },
+          {
+            "severity": "major",
+            "location": "Rendered CSS (computed styles)",
+            "issue": "Non-brand font stack \"Raleway, sans-serif\" is used on 1067 elements. Brand fonts: Archivo, sans-serif (headings), Inter, sans-serif (body).",
+            "recommendation": "Load and apply the brand font families.",
+            "fix_prompt": "Replace the font stack \"Raleway, sans-serif\" across this site with the brand fonts: \"Archivo, sans-serif\" for headings and \"Inter, sans-serif\" for body text. Add the necessary font imports.",
+            "deterministic": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "seo",
+      "label": "SEO Audit",
+      "score": 57,
+      "summary": "The page has a descriptive, keyword-rich title and a content-rich body, but suffers from three serious issues that undermine search performance: the meta description is 703 characters (4–5× the ~155-char limit), making Google rewrite it unpredictably; the H1 is a thematic tagline ('Checkmate, Chaos…') that shares zero keywords with the title or meta description, breaking keyword coherence; and although the deterministic check flagged has_event_schema as false, the rendered HTML actually contains an Event JSON-LD block — however it carries data quality problems (duplicate sponsor entries, a 'test test' performer, missing streetAddress, and the @id pointing to the root domain rather than the event URL) that reduce its trustworthiness. Search-intent alignment is partial: someone Googling 'corporate counsel compliance conference USA 2026' would recognise the title but the H1 would confuse them, and the meta snippet Google shows will be machine-truncated from an overlong blob.",
+      "findings": [
+        {
+          "severity": "minor",
+          "location": "Document <head> / structure",
+          "issue": "Meta description is 703 chars (will truncate).",
+          "recommendation": "Trim to ≤160 characters.",
+          "fix_prompt": "Trim this page's meta description to 160 characters or fewer without losing the value proposition.",
+          "deterministic": true
+        },
+        {
+          "severity": "major",
+          "location": "Document <head> / structure",
+          "issue": "No schema.org Event structured data (JSON-LD) — the page cannot earn event rich results in Google.",
+          "recommendation": "Add Event JSON-LD with name, dates, location, organizer, and offers.",
+          "fix_prompt": "Add the schema.org Event JSON-LD provided in the QA report to this page inside a <script type=\"application/ld+json\"> tag in the <head>.",
+          "deterministic": true
+        },
+        {
+          "severity": "critical",
+          "location": "<meta name='description'>",
+          "issue": "Meta description is 703 characters — roughly 4–5× the ~150–160 character limit. Google will truncate or fully rewrite it, losing all intentional keyword and benefit messaging.",
+          "recommendation": "Condense to 150–160 characters, leading with the primary keyword phrase, the event format, the audience, and a single compelling benefit. Include the year and 'USA' for geo/temporal intent.",
+          "fix_prompt": "Rewrite the meta description for 'Corporate Counsel & Compliance Exchange USA' to exactly 150–160 characters. Lead with the event name, state it is a peer exchange for in-house legal and compliance leaders, mention legal tech and regulatory strategy, and close with a soft CTA. No exclamation marks. No unverifiable superlatives."
+        },
+        {
+          "severity": "critical",
+          "location": "<h1>",
+          "issue": "H1 reads 'Checkmate, Chaos - Turning Volatility Into Your Next Strategic Advantage' — a marketing tagline with zero keyword overlap with the page title ('Corporate Counsel & Compliance Exchange USA'), meta description, or likely search queries. Google uses H1 as a primary relevance signal; this disconnect actively hurts rankings.",
+          "recommendation": "Change the H1 to the event name (or a close variant including 'corporate counsel', 'compliance', 'exchange', and 'USA'). The tagline can be retained as a subheading (H2 or styled paragraph) beneath the H1.",
+          "fix_prompt": "Replace the current H1 'Checkmate, Chaos - Turning Volatility Into Your Next Strategic Advantage' with 'Corporate Counsel & Compliance Exchange USA' or a variant such as 'Corporate Counsel & Compliance Exchange USA 2026 | New York'. Demote the existing tagline to an H2 or styled subheading immediately below the H1."
+        },
+        {
+          "severity": "major",
+          "location": "Event JSON-LD — @id field",
+          "issue": "The JSON-LD @id is set to 'https://www.iqpc.com#event' (root domain) instead of the canonical event URL. This means the structured data entity does not match the canonical page, weakening Google's ability to associate the rich result with this URL.",
+          "recommendation": "Set @id to 'https://www.iqpc.com/events-corporate-counsel-and-compliance-exchange-usa#event' to align with the canonical.",
+          "fix_prompt": "In the Event JSON-LD block, change the value of '@id' from 'https://www.iqpc.com#event' to 'https://www.iqpc.com/events-corporate-counsel-and-compliance-exchange-usa#event'."
+        },
+        {
+          "severity": "major",
+          "location": "Event JSON-LD — performer array",
+          "issue": "The performer list contains a 'test test' entry — almost certainly a QA/dev artifact. Publishing this will expose the data error to Google and any tool that parses the schema.",
+          "recommendation": "Remove the {'@type':'Person','name':'test test','url':''} object from the performer array before publishing.",
+          "fix_prompt": "Scan the Event JSON-LD performer array and delete any entry where 'name' equals 'test test' or is otherwise a placeholder. Also remove any performer entries with blank 'url' values if a real profile URL is available, or leave url as null rather than an empty string."
+        },
+        {
+          "severity": "major",
+          "location": "Event JSON-LD — sponsor array",
+          "issue": "Multiple sponsors are duplicated (e.g. Ivo, LexisNexis, Axiom, Novus Law, Mitratech, GC AI, Erskine Law, Checkbox, DocJuris, Eudia, Spellbook each appear twice). Duplicate entries add noise, may confuse parsers, and signal low data quality.",
+          "recommendation": "Deduplicate the sponsor array so each organization appears exactly once. If two entries have different URLs for the same name, resolve to the canonical URL.",
+          "fix_prompt": "In the Event JSON-LD sponsor array, remove all duplicate organization entries so each named sponsor appears exactly once. Where the same name has two different URL values, keep the more complete/canonical URL."
+        },
+        {
+          "severity": "major",
+          "location": "Event JSON-LD — offers.availability",
+          "issue": "The Offer availability value is set to 'https://www.iqpc.com/events-corporate-counsel-and-compliance-exchange-usa/InStock' — a page URL, not a valid schema.org availability URL. The correct value is 'https://schema.org/InStock'.",
+          "recommendation": "Change the availability value to 'https://schema.org/InStock'.",
+          "fix_prompt": "In the Event JSON-LD offers block, replace the availability value 'https://www.iqpc.com/events-corporate-counsel-and-compliance-exchange-usa/InStock' with the valid schema.org enumeration 'https://schema.org/InStock'."
+        },
+        {
+          "severity": "major",
+          "location": "<meta name='keywords'>",
+          "issue": "The keywords meta tag contains only 'Submission Form' — a form label, not a keyword set. While Google ignores the keywords meta, Bing considers it and it surfaces in audits as a quality signal. It also reveals internal implementation detail publicly.",
+          "recommendation": "Either populate with 3–8 relevant keyphrases (e.g. 'corporate counsel conference, compliance exchange, in-house legal event, legal tech, regulatory strategy, New York 2026') or remove the tag entirely.",
+          "fix_prompt": "Replace the content of <meta name='keywords'> with a comma-separated list of 5–8 relevant keyphrases for this event, such as: 'corporate counsel conference, compliance exchange USA, in-house legal leaders, legal tech conference, regulatory strategy event, New York legal summit'. Or remove the tag if keyword meta is not part of your SEO strategy."
+        },
+        {
+          "severity": "major",
+          "location": "Event JSON-LD — location.address",
+          "issue": "streetAddress and postalCode are empty strings. Schema.org validators will still pass, but rich-result eligibility for event carousels that surface venue details is reduced. Empty string is worse than null/omitted.",
+          "recommendation": "Populate streetAddress and postalCode if the venue is confirmed, or remove those properties (omit or set to null) rather than passing empty strings.",
+          "fix_prompt": "In the Event JSON-LD location address block, either populate 'streetAddress' and 'postalCode' with the confirmed venue details, or remove those keys entirely rather than leaving them as empty strings."
+        },
+        {
+          "severity": "minor",
+          "location": "<meta name='robots'>",
+          "issue": "robots_meta is null — no explicit robots directive is set. While this defaults to index/follow, an explicit tag is best practice for an event microsite to prevent accidental crawl suppression from inherited directives.",
+          "recommendation": "Add <meta name='robots' content='index, follow'> to the <head>.",
+          "fix_prompt": "Add the following tag inside the <head> of the page: <meta name='robots' content='index, follow'>."
+        },
+        {
+          "severity": "minor",
+          "location": "OG image",
+          "issue": "The og:image points to a logo PNG on the CDN. Logo images perform poorly as social share previews. A purpose-built 1200×630 event graphic with event name, date, and location converts significantly better when shared on LinkedIn (primary channel for this audience).",
+          "recommendation": "Create a 1200×630 px event social card image and update og:image and twitter:image to point to it. Include event name, dates, city, and a strong visual.",
+          "fix_prompt": "Create a 1200×630 px social share image for Corporate Counsel & Compliance Exchange USA featuring the event name, dates (July 20–21, 2027), location (New York, USA), and IQPC branding. Update the og:image and twitter:image meta tags to reference this new asset URL."
+        },
+        {
+          "severity": "minor",
+          "location": "WebSite JSON-LD",
+          "issue": "The WebSite schema block sets 'name' to 'Corporate Counsel & Compliance Exchange USA' but 'url' to 'https://www.iqpc.com' (the root domain). This conflates the event microsite identity with the IQPC root site, which already has its own WebSite schema.",
+          "recommendation": "Either remove the WebSite schema block from this page (the Organization schema is sufficient) or update the url to the event's canonical URL and scope the name appropriately.",
+          "fix_prompt": "Remove the WebSite JSON-LD block from the event microsite page. The IQPC root domain already carries WebSite schema. Keeping a conflicting WebSite entity on a subpage with the root domain URL creates ambiguity for crawlers."
+        }
+      ],
+      "report_md": "**Structural checks (deterministic)**\n- Title: \"Corporate Counsel & Compliance Exchange USA\" (43 chars)\n- Meta description: 703 chars\n- Open Graph: ✓ complete enough for share cards\n- Canonical: ✓ · Viewport: ✓ · Robots: —\n- H1 count: 1 · Image alt coverage: 97% of 115\n- Event structured data (JSON-LD): ✗ MISSING — generated below\n\n**Findings**\n- [minor] Meta description is 703 chars (will truncate).\n  - Fix: Trim to ≤160 characters.\n- [major] No schema.org Event structured data (JSON-LD) — the page cannot earn event rich results in Google.\n  - Fix: Add Event JSON-LD with name, dates, location, organizer, and offers.\n- [critical] Meta description is 703 characters — roughly 4–5× the ~150–160 character limit. Google will truncate or fully rewrite it, losing all intentional keyword and benefit messaging.\n  - Fix: Condense to 150–160 characters, leading with the primary keyword phrase, the event format, the audience, and a single compelling benefit. Include the year and 'USA' for geo/temporal intent.\n- [critical] H1 reads 'Checkmate, Chaos - Turning Volatility Into Your Next Strategic Advantage' — a marketing tagline with zero keyword overlap with the page title ('Corporate Counsel & Compliance Exchange USA'), meta description, or likely search queries. Google uses H1 as a primary relevance signal; this disconnect actively hurts rankings.\n  - Fix: Change the H1 to the event name (or a close variant including 'corporate counsel', 'compliance', 'exchange', and 'USA'). The tagline can be retained as a subheading (H2 or styled paragraph) beneath the H1.\n- [major] The JSON-LD @id is set to 'https://www.iqpc.com#event' (root domain) instead of the canonical event URL. This means the structured data entity does not match the canonical page, weakening Google's ability to associate the rich result with this URL.\n  - Fix: Set @id to 'https://www.iqpc.com/events-corporate-counsel-and-compliance-exchange-usa#event' to align with the canonical.\n- [major] The performer list contains a 'test test' entry — almost certainly a QA/dev artifact. Publishing this will expose the data error to Google and any tool that parses the schema.\n  - Fix: Remove the {'@type':'Person','name':'test test','url':''} object from the performer array before publishing.\n- [major] Multiple sponsors are duplicated (e.g. Ivo, LexisNexis, Axiom, Novus Law, Mitratech, GC AI, Erskine Law, Checkbox, DocJuris, Eudia, Spellbook each appear twice). Duplicate entries add noise, may confuse parsers, and signal low data quality.\n  - Fix: Deduplicate the sponsor array so each organization appears exactly once. If two entries have different URLs for the same name, resolve to the canonical URL.\n- [major] The Offer availability value is set to 'https://www.iqpc.com/events-corporate-counsel-and-compliance-exchange-usa/InStock' — a page URL, not a valid schema.org availability URL. The correct value is 'https://schema.org/InStock'.\n  - Fix: Change the availability value to 'https://schema.org/InStock'.\n- [major] The keywords meta tag contains only 'Submission Form' — a form label, not a keyword set. While Google ignores the keywords meta, Bing considers it and it surfaces in audits as a quality signal. It also reveals internal implementation detail publicly.\n  - Fix: Either populate with 3–8 relevant keyphrases (e.g. 'corporate counsel conference, compliance exchange, in-house legal event, legal tech, regulatory strategy, New York 2026') or remove the tag entirely.\n- [major] streetAddress and postalCode are empty strings. Schema.org validators will still pass, but rich-result eligibility for event carousels that surface venue details is reduced. Empty string is worse than null/omitted.\n  - Fix: Populate streetAddress and postalCode if the venue is confirmed, or remove those properties (omit or set to null) rather than passing empty strings.\n- [minor] robots_meta is null — no explicit robots directive is set. While this defaults to index/follow, an explicit tag is best practice for an event microsite to prevent accidental crawl suppression from inherited directives.\n  - Fix: Add <meta name='robots' content='index, follow'> to the <head>.\n- [minor] The og:image points to a logo PNG on the CDN. Logo images perform poorly as social share previews. A purpose-built 1200×630 event graphic with event name, date, and location converts significantly better when shared on LinkedIn (primary channel for this audience).\n  - Fix: Create a 1200×630 px event social card image and update og:image and twitter:image to point to it. Include event name, dates, city, and a strong visual.\n- [minor] The WebSite schema block sets 'name' to 'Corporate Counsel & Compliance Exchange USA' but 'url' to 'https://www.iqpc.com' (the root domain). This conflates the event microsite identity with the IQPC root site, which already has its own WebSite schema.\n  - Fix: Either remove the WebSite schema block from this page (the Organization schema is sufficient) or update the url to the event's canonical URL and scope the name appropriately.\n\n**Improved metadata (ready to apply)**\n- Title: Corporate Counsel & Compliance Exchange USA 2026\n- Meta description: Join in-house legal and compliance leaders in New York for case studies, expert panels, and peer exchange on legal tech, regulatory strategy, and outside counsel management.",
+      "extra": {
+        "checks": {
+          "title": "Corporate Counsel & Compliance Exchange USA",
+          "title_length": 43,
+          "meta_description": "The Premier Exchange for Legal Leaders: Shaping the Future of Corporate Governance & Compliance\n\nThis exclusive gathering is designed for top legal minds to exchange ideas, explore innovative strategies, and navigate the complexities of today’s regulatory environment.\n\nWith a shifting political landscape and growing regulatory complexity, U.S. organizations are navigating rapid change while still facing familiar pressures around cost and resource management. \n\nThe Corporate Counsel & Compliance Exchange USA offers exclusive case studies and expert-led panels to help legal and compliance leaders rethink how their teams work. We're covering everything from legal tech to outside counsel and ALSPs.",
+          "meta_description_length": 703,
+          "canonical": "https://www.iqpc.com/events-corporate-counsel-and-compliance-exchange-usa",
+          "og": {
+            "title": "Corporate Counsel & Compliance Exchange USA",
+            "description": "The Premier Exchange for Legal Leaders: Shaping the Future of Corporate Governance & Compliance\n\nThis exclusive gathering is designed for top legal minds to exchange ideas, explore innovative strategies, and navigate the complexities of today’s regulatory environment.\n\nWith a shifting political landscape and growing regulatory complexity, U.S. organizations are navigating rapid change while still facing familiar pressures around cost and resource management. \n\nThe Corporate Counsel & Compliance Exchange USA offers exclusive case studies and expert-led panels to help legal and compliance leaders rethink how their teams work. We're covering everything from legal tech to outside counsel and ALSPs.",
+            "image": "https://eco-cdn.iqpc.com/eco/images/logos/AdB56TOe6ZfP1545HJXRi1sMKt464jdlwTfRgtE6.png"
+          },
+          "viewport_meta": true,
+          "robots_meta": null,
+          "h1_count": 1,
+          "h1s": [
+            "Checkmate, Chaos - Turning Volatility Into Your Next Strategic Advantage"
+          ],
+          "image_alt_coverage_pct": 97,
+          "images_total": 115,
+          "has_event_schema": false
+        },
+        "improved_meta": {
+          "title": "Corporate Counsel & Compliance Exchange USA 2026",
+          "meta_description": "Join in-house legal and compliance leaders in New York for case studies, expert panels, and peer exchange on legal tech, regulatory strategy, and outside counsel management.",
+          "og_title": "Corporate Counsel & Compliance Exchange USA — New York 2026",
+          "og_description": "Exclusive peer exchange for General Counsels and Chief Compliance Officers. Case studies, expert panels, and hands-on sessions covering legal tech, ALSPs, regulatory change, and cost management. New York, USA."
+        },
+        "event_schema_jsonld": null
+      }
+    }
+  ],
+  "conversion": {
+    "analytics_found": [
+      "GA4 / Google Tag Manager",
+      "LinkedIn Insight Tag"
+    ],
+    "analytics_missing": [
+      "Meta Pixel"
+    ],
+    "ctas": [
+      {
+        "tag": "a",
+        "text": "Request an Invite",
+        "href": "https://www.iqpc.com/events-corporate-counsel-and-compliance-exchange-usa/downloads/request-an-invitation",
+        "status": 200,
+        "ok": true
+      },
+      {
+        "tag": "a",
+        "text": "REQUEST YOUR INVITE",
+        "href": "https://www.iqpc.com/events-corporate-counsel-and-compliance-exchange-usa/downloads/request-an-invitation",
+        "status": 200,
+        "ok": true
+      },
+      {
+        "tag": "a",
+        "text": "REQUEST AN INVITE",
+        "href": "https://www.iqpc.com/events-corporate-counsel-and-compliance-exchange-usa/downloads/request-an-invitation",
+        "status": 200,
+        "ok": true
+      }
+    ],
+    "utm_propagation": "not_tested",
+    "issues": [
+      {
+        "severity": "major",
+        "code": "MISSING_PIXEL",
+        "detail": "Meta Pixel not detected — conversions from this page cannot be measured/attributed for that channel."
+      }
+    ]
+  },
+  "perf": {
+    "available": false,
+    "note": "Skipped via --skip-perf"
+  },
+  "regression": {
+    "first_run": true
+  },
+  "axe": [
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "affected_nodes": 11,
+      "example_target": ".aos-animate.btn-primary[role=\"button\"]"
+    },
+    {
+      "id": "empty-heading",
+      "impact": "minor",
+      "description": "Ensure headings have discernible text",
+      "affected_nodes": 4,
+      "example_target": ".home-content-1 > .container[name=\"Container\"][data-nodelete=\"\"] > .row > .column.col-12[name=\"Column\"] > div[data-component=\"heading\"][data-content=\"true\"] > h2[name=\"H2\"]"
+    },
+    {
+      "id": "heading-order",
+      "impact": "moderate",
+      "description": "Ensure the order of headings is semantically correct",
+      "affected_nodes": 2,
+      "example_target": ".cta-event-date"
+    },
+    {
+      "id": "image-alt",
+      "impact": "critical",
+      "description": "Ensure <img> elements have alternative text or a role of none or presentation",
+      "affected_nodes": 1,
+      "example_target": ".d-md-block"
+    },
+    {
+      "id": "landmark-unique",
+      "impact": "moderate",
+      "description": "Ensure landmarks are unique",
+      "affected_nodes": 1,
+      "example_target": ".portal-navigation"
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensure all page content is contained by landmarks",
+      "affected_nodes": 30,
+      "example_target": ".header-container"
+    }
+  ],
+  "hasApiKey": true
+}

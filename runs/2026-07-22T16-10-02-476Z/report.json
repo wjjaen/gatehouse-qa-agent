@@ -1,0 +1,441 @@
+{
+  "url": "https://www.ssonetwork.com/events-workx",
+  "portal": null,
+  "run": "2026-07-22T16-10-02-476Z",
+  "outDir": "runs/2026-07-22T16-10-02-476Z",
+  "verdict": "BLOCK",
+  "reason": "1 critical conversion issue(s): NO_REGISTRATION_CTA",
+  "score": 54,
+  "agents": [
+    {
+      "id": "design",
+      "label": "Design QA",
+      "score": null,
+      "summary": null,
+      "findings": [],
+      "report_md": "",
+      "error": "Model response was not valid JSON"
+    },
+    {
+      "id": "brand",
+      "label": "Brand Compliance",
+      "score": 48,
+      "summary": "The WorkX 2026 microsite satisfies most required-elements checks and maintains a generally professional, benefit-led tone. However, the accent color (#FF5A36 / orange-red) is applied well beyond CTAs and highlights — it bleeds into section-label dividers, link text, and decorative ruled lines throughout the page. Additionally, no privacy policy link is visibly present in the footer, which is a legally required element. A third-party testimonial logo (TDECU) dominates the social-proof section in a way that competes with the portal brand identity. Missing required elements: Privacy policy link in footer.",
+      "findings": [
+        {
+          "severity": "major",
+          "location": "Rendered CSS (computed styles)",
+          "issue": "Off-palette color #212529 is used on 446 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+          "recommendation": "Replace #212529 with the nearest approved brand token.",
+          "fix_prompt": "Find every use of the color #212529 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+          "deterministic": true
+        },
+        {
+          "severity": "major",
+          "location": "Rendered CSS (computed styles)",
+          "issue": "Off-palette color #590167 is used on 150 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+          "recommendation": "Replace #590167 with the nearest approved brand token.",
+          "fix_prompt": "Find every use of the color #590167 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+          "deterministic": true
+        },
+        {
+          "severity": "minor",
+          "location": "Rendered CSS (computed styles)",
+          "issue": "Off-palette color #696969 is used on 32 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+          "recommendation": "Replace #696969 with the nearest approved brand token.",
+          "fix_prompt": "Find every use of the color #696969 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+          "deterministic": true
+        },
+        {
+          "severity": "minor",
+          "location": "Rendered CSS (computed styles)",
+          "issue": "Off-palette color #0C2341 is used on 31 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+          "recommendation": "Replace #0C2341 with the nearest approved brand token.",
+          "fix_prompt": "Find every use of the color #0C2341 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+          "deterministic": true
+        },
+        {
+          "severity": "minor",
+          "location": "Rendered CSS (computed styles)",
+          "issue": "Off-palette color #191E52 is used on 29 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+          "recommendation": "Replace #191E52 with the nearest approved brand token.",
+          "fix_prompt": "Find every use of the color #191E52 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+          "deterministic": true
+        },
+        {
+          "severity": "minor",
+          "location": "Rendered CSS (computed styles)",
+          "issue": "Off-palette color #006496 is used on 25 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+          "recommendation": "Replace #006496 with the nearest approved brand token.",
+          "fix_prompt": "Find every use of the color #006496 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+          "deterministic": true
+        },
+        {
+          "severity": "major",
+          "location": "Rendered CSS (computed styles)",
+          "issue": "Non-brand font stack \"Roboto, sans-serif\" is used on 945 elements. Brand fonts: Archivo, sans-serif (headings), Inter, sans-serif (body).",
+          "recommendation": "Load and apply the brand font families.",
+          "fix_prompt": "Replace the font stack \"Roboto, sans-serif\" across this site with the brand fonts: \"Archivo, sans-serif\" for headings and \"Inter, sans-serif\" for body text. Add the necessary font imports.",
+          "deterministic": true
+        },
+        {
+          "severity": "critical",
+          "location": "Footer",
+          "issue": "Privacy policy link is absent from the footer. This is a legally required element per the brand configuration and a regulatory obligation (GDPR/CCPA given the cookie consent banner present on the page).",
+          "recommendation": "Add a clearly labeled 'Privacy Policy' hyperlink in the footer, adjacent to the copyright line, linking to the IQPC/SSON privacy policy URL.",
+          "fix_prompt": "In the site footer, after the copyright text '©2026 IQPC. All rights reserved.', add the following HTML: <a href='https://www.iqpc.com/privacy-policy' style='color:#FFFFFF; text-decoration:underline; margin-left:16px; font-size:12px;'>Privacy Policy</a>. Ensure the link is visible on both light and dark footer backgrounds."
+        },
+        {
+          "severity": "major",
+          "location": "Section divider labels throughout the page (e.g., 'WHO YOU'LL HEAR FROM', 'WHY ATTEND WORKX?', 'INSIGHTS FROM YOUR PEERS', 'PARTNERING FOR TOMORROW', 'NEW PRICING AVAILABLE')",
+          "issue": "The accent color (#FF5A36) is used for decorative horizontal rules flanking section labels on every content section. The brand config states accent is reserved for CTAs and key highlights only. Widespread decorative use dilutes the accent's signaling power and violates the reservation rule.",
+          "recommendation": "Replace accent-colored decorative divider lines with the primary color (#0A2540) or a neutral gray. Reserve the accent exclusively for CTA buttons and genuinely critical highlight callouts (e.g., pricing badge).",
+          "fix_prompt": "Search the CSS and inline styles for any rule applying color:#FF5A36 or background-color:#FF5A36 to hr, ::before, or ::after pseudo-elements used as decorative dividers around section label text. Change those values to #0A2540 or #CCCCCC. Do not alter the accent color on button elements with class 'btn-primary' or equivalent CTA classes."
+        },
+        {
+          "severity": "major",
+          "location": "Mobile hero — primary registration CTA",
+          "issue": "On the 390px mobile viewport, the 'Book Online Now' (primary registration) CTA is not visible above the fold. Only secondary CTAs ('View Event Guide', 'Sponsorship Opportunities') are shown. The brand configuration requires the primary registration CTA above the fold.",
+          "recommendation": "Reorder the mobile hero CTA buttons so 'Book Online Now' (accent-styled primary button) appears first, before secondary links, and ensure it renders within the initial viewport without scrolling.",
+          "fix_prompt": "In the hero section's button group, reorder the anchor/button elements so that the registration CTA (e.g., <a class='btn btn-primary'>Book Online Now</a>) is the first child element. In the responsive CSS for max-width:390px, ensure the button group uses flex-direction:column and the primary CTA has order:1, with secondary CTAs at order:2 and order:3."
+        },
+        {
+          "severity": "major",
+          "location": "Testimonials / 'Hear from Past Attendees' section",
+          "issue": "The TDECU logo ('TDECU YOUR CREDIT UNION') is rendered at a very large size — significantly larger than the SSON/IQPC portal logo anywhere on the page — and appears in high-contrast red against a white card. A third-party sponsor/attendee brand is visually dominating over the event's own brand identity.",
+          "recommendation": "Constrain the third-party testimonial logo to a maximum height of 40px and desaturate or apply a neutral treatment if the logo color conflicts with brand hierarchy. Ensure the portal logo (SSON) is at least as prominent as any third-party logo on the page.",
+          "fix_prompt": "In the testimonial card component, apply a max-height:40px and width:auto style to any third-party <img> logo. Add object-fit:contain. If the logo renders in a brand color that dominates, consider adding a CSS filter:grayscale(100%) with opacity:0.7 to maintain attribution without brand conflict, or request a monochrome logo asset from the testimonial contributor."
+        },
+        {
+          "severity": "minor",
+          "location": "Hero — event subtitle/tagline",
+          "issue": "The tagline 'NO BUDGET, NO EXCUSES: HOW THE OFFICE STILL DELIVERS' uses all-caps formatting that borders on exclamatory and declarative framing inconsistent with the 'professional, energetic, benefit-led' tone. While no literal exclamation marks are stacked, the confrontational negation ('NO BUDGET, NO EXCUSES') is close to unverifiable superlative territory.",
+          "recommendation": "Soften to a benefit-led frame, e.g., 'Delivering Office Value Under Financial Pressure' or 'Making the Office Work — Even Without a Budget Safety Net'. This preserves the energetic tone while leading with benefit rather than negation.",
+          "fix_prompt": "In the hero section, locate the heading or eyebrow element containing 'NO BUDGET, NO EXCUSES: HOW THE OFFICE STILL DELIVERS' and replace its text content with a benefit-led alternative such as 'Delivering Real Value From Every Office Dollar'. Update corresponding meta og:title and twitter:title tags in the <head> to reflect the revised copy."
+        },
+        {
+          "severity": "minor",
+          "location": "Pricing section — 'NEW PRICING AVAILABLE' label and 'Reimagined Passes Starting at $799' heading",
+          "issue": "The phrase 'Reimagined Passes' is vague marketing language that does not clearly communicate what changed or what the attendee gains. 'Reimagined' functions as an unverifiable superlative adjective with no substantive claim behind it in the visible copy.",
+          "recommendation": "Replace 'Reimagined Passes' with specific, verifiable copy such as 'Updated Pass Options' or 'New Tiered Passes' and follow with a concrete benefit statement (e.g., 'including full-day workshop access').",
+          "fix_prompt": "In the pricing section, locate the <h2> or <h3> element with text 'Reimagined Passes Starting at $799' and replace the text node 'Reimagined Passes' with 'New Tiered Passes'. Update the supporting paragraph to lead with a concrete differentiator (e.g., what is new about the pricing structure)."
+        },
+        {
+          "severity": "minor",
+          "location": "Sponsors section — sponsor logo grid",
+          "issue": "Sponsor logos (Bevi, Bubl, DoorDash, Embrava, Envoy) appear to be rendered at inconsistent sizes and with their original brand colors directly on the white background, with no visual normalization. While not a critical issue, it creates a cluttered visual impression that undermines the clean, professional brand aesthetic.",
+          "recommendation": "Apply a consistent max-height (e.g., 36px) and optional grayscale filter to all sponsor logos in the grid to create visual consistency and subordinate third-party brands to the event brand.",
+          "fix_prompt": "In the sponsors logo grid, apply the following CSS to all sponsor logo <img> elements: max-height:36px; width:auto; object-fit:contain; filter:grayscale(100%); opacity:0.75; transition:filter 0.2s, opacity 0.2s; and on hover: filter:grayscale(0%); opacity:1; This maintains brand hierarchy while providing a polished interactive treatment."
+        }
+      ],
+      "report_md": "**Required elements**\n- ✓ Event name and dates in the hero — Hero displays 'WorkX Conference' and 'August 10–12, 2026' clearly above the fold on both desktop and mobile.\n- ✓ Venue / location — 'San Francisco, CA' is present in the hero on both breakpoints.\n- ✓ Primary registration CTA above the fold — 'Book Online Now' button is visible in the hero on desktop; on mobile only 'View Event Guide' and 'Sponsorship Opportunities' are immediately visible above fold — 'Book Online Now' appears to be clipped or deprioritized. Minor concern on mobile.\n- ✓ IQPC or portal brand logo — SSON logo appears in the top navigation bar on both desktop and mobile; IQPC copyright mark appears in the footer.\n- ✗ MISSING Privacy policy link in footer — The footer contains contact information and copyright ('©2026 IQPC. All rights reserved.') but no visible privacy policy link can be confirmed in either screenshot or the provided HTML excerpt. This is a legally required element and is missing.\n\n**Token scan (deterministic)**\n- [major] Off-palette color #212529 is used on 446 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.\n- [major] Off-palette color #590167 is used on 150 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.\n- [minor] Off-palette color #696969 is used on 32 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.\n- [minor] Off-palette color #0C2341 is used on 31 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.\n- [minor] Off-palette color #191E52 is used on 29 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.\n- [minor] Off-palette color #006496 is used on 25 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.\n- [major] Non-brand font stack \"Roboto, sans-serif\" is used on 945 elements. Brand fonts: Archivo, sans-serif (headings), Inter, sans-serif (body).\n\n**Findings**\n- [critical] Footer: Privacy policy link is absent from the footer. This is a legally required element per the brand configuration and a regulatory obligation (GDPR/CCPA given the cookie consent banner present on the page).\n  - Fix: Add a clearly labeled 'Privacy Policy' hyperlink in the footer, adjacent to the copyright line, linking to the IQPC/SSON privacy policy URL.\n- [major] Section divider labels throughout the page (e.g., 'WHO YOU'LL HEAR FROM', 'WHY ATTEND WORKX?', 'INSIGHTS FROM YOUR PEERS', 'PARTNERING FOR TOMORROW', 'NEW PRICING AVAILABLE'): The accent color (#FF5A36) is used for decorative horizontal rules flanking section labels on every content section. The brand config states accent is reserved for CTAs and key highlights only. Widespread decorative use dilutes the accent's signaling power and violates the reservation rule.\n  - Fix: Replace accent-colored decorative divider lines with the primary color (#0A2540) or a neutral gray. Reserve the accent exclusively for CTA buttons and genuinely critical highlight callouts (e.g., pricing badge).\n- [major] Mobile hero — primary registration CTA: On the 390px mobile viewport, the 'Book Online Now' (primary registration) CTA is not visible above the fold. Only secondary CTAs ('View Event Guide', 'Sponsorship Opportunities') are shown. The brand configuration requires the primary registration CTA above the fold.\n  - Fix: Reorder the mobile hero CTA buttons so 'Book Online Now' (accent-styled primary button) appears first, before secondary links, and ensure it renders within the initial viewport without scrolling.\n- [major] Testimonials / 'Hear from Past Attendees' section: The TDECU logo ('TDECU YOUR CREDIT UNION') is rendered at a very large size — significantly larger than the SSON/IQPC portal logo anywhere on the page — and appears in high-contrast red against a white card. A third-party sponsor/attendee brand is visually dominating over the event's own brand identity.\n  - Fix: Constrain the third-party testimonial logo to a maximum height of 40px and desaturate or apply a neutral treatment if the logo color conflicts with brand hierarchy. Ensure the portal logo (SSON) is at least as prominent as any third-party logo on the page.\n- [minor] Hero — event subtitle/tagline: The tagline 'NO BUDGET, NO EXCUSES: HOW THE OFFICE STILL DELIVERS' uses all-caps formatting that borders on exclamatory and declarative framing inconsistent with the 'professional, energetic, benefit-led' tone. While no literal exclamation marks are stacked, the confrontational negation ('NO BUDGET, NO EXCUSES') is close to unverifiable superlative territory.\n  - Fix: Soften to a benefit-led frame, e.g., 'Delivering Office Value Under Financial Pressure' or 'Making the Office Work — Even Without a Budget Safety Net'. This preserves the energetic tone while leading with benefit rather than negation.\n- [minor] Pricing section — 'NEW PRICING AVAILABLE' label and 'Reimagined Passes Starting at $799' heading: The phrase 'Reimagined Passes' is vague marketing language that does not clearly communicate what changed or what the attendee gains. 'Reimagined' functions as an unverifiable superlative adjective with no substantive claim behind it in the visible copy.\n  - Fix: Replace 'Reimagined Passes' with specific, verifiable copy such as 'Updated Pass Options' or 'New Tiered Passes' and follow with a concrete benefit statement (e.g., 'including full-day workshop access').\n- [minor] Sponsors section — sponsor logo grid: Sponsor logos (Bevi, Bubl, DoorDash, Embrava, Envoy) appear to be rendered at inconsistent sizes and with their original brand colors directly on the white background, with no visual normalization. While not a critical issue, it creates a cluttered visual impression that undermines the clean, professional brand aesthetic.\n  - Fix: Apply a consistent max-height (e.g., 36px) and optional grayscale filter to all sponsor logos in the grid to create visual consistency and subordinate third-party brands to the event brand.",
+      "extra": {
+        "required_elements": [
+          {
+            "element": "Event name and dates in the hero",
+            "present": true,
+            "note": "Hero displays 'WorkX Conference' and 'August 10–12, 2026' clearly above the fold on both desktop and mobile."
+          },
+          {
+            "element": "Venue / location",
+            "present": true,
+            "note": "'San Francisco, CA' is present in the hero on both breakpoints."
+          },
+          {
+            "element": "Primary registration CTA above the fold",
+            "present": true,
+            "note": "'Book Online Now' button is visible in the hero on desktop; on mobile only 'View Event Guide' and 'Sponsorship Opportunities' are immediately visible above fold — 'Book Online Now' appears to be clipped or deprioritized. Minor concern on mobile."
+          },
+          {
+            "element": "IQPC or portal brand logo",
+            "present": true,
+            "note": "SSON logo appears in the top navigation bar on both desktop and mobile; IQPC copyright mark appears in the footer."
+          },
+          {
+            "element": "Privacy policy link in footer",
+            "present": false,
+            "note": "The footer contains contact information and copyright ('©2026 IQPC. All rights reserved.') but no visible privacy policy link can be confirmed in either screenshot or the provided HTML excerpt. This is a legally required element and is missing."
+          }
+        ],
+        "token_scan": [
+          {
+            "severity": "major",
+            "location": "Rendered CSS (computed styles)",
+            "issue": "Off-palette color #212529 is used on 446 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+            "recommendation": "Replace #212529 with the nearest approved brand token.",
+            "fix_prompt": "Find every use of the color #212529 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+            "deterministic": true
+          },
+          {
+            "severity": "major",
+            "location": "Rendered CSS (computed styles)",
+            "issue": "Off-palette color #590167 is used on 150 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+            "recommendation": "Replace #590167 with the nearest approved brand token.",
+            "fix_prompt": "Find every use of the color #590167 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+            "deterministic": true
+          },
+          {
+            "severity": "minor",
+            "location": "Rendered CSS (computed styles)",
+            "issue": "Off-palette color #696969 is used on 32 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+            "recommendation": "Replace #696969 with the nearest approved brand token.",
+            "fix_prompt": "Find every use of the color #696969 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+            "deterministic": true
+          },
+          {
+            "severity": "minor",
+            "location": "Rendered CSS (computed styles)",
+            "issue": "Off-palette color #0C2341 is used on 31 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+            "recommendation": "Replace #0C2341 with the nearest approved brand token.",
+            "fix_prompt": "Find every use of the color #0C2341 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+            "deterministic": true
+          },
+          {
+            "severity": "minor",
+            "location": "Rendered CSS (computed styles)",
+            "issue": "Off-palette color #191E52 is used on 29 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+            "recommendation": "Replace #191E52 with the nearest approved brand token.",
+            "fix_prompt": "Find every use of the color #191E52 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+            "deterministic": true
+          },
+          {
+            "severity": "minor",
+            "location": "Rendered CSS (computed styles)",
+            "issue": "Off-palette color #006496 is used on 25 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+            "recommendation": "Replace #006496 with the nearest approved brand token.",
+            "fix_prompt": "Find every use of the color #006496 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+            "deterministic": true
+          },
+          {
+            "severity": "major",
+            "location": "Rendered CSS (computed styles)",
+            "issue": "Non-brand font stack \"Roboto, sans-serif\" is used on 945 elements. Brand fonts: Archivo, sans-serif (headings), Inter, sans-serif (body).",
+            "recommendation": "Load and apply the brand font families.",
+            "fix_prompt": "Replace the font stack \"Roboto, sans-serif\" across this site with the brand fonts: \"Archivo, sans-serif\" for headings and \"Inter, sans-serif\" for body text. Add the necessary font imports.",
+            "deterministic": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "seo",
+      "label": "SEO Audit",
+      "score": 62,
+      "summary": "WorkX 2026 has a solid structural foundation — Event schema is already present in the page (contradicting the deterministic flag), dates and location are declared, and speaker/sponsor data is rich. However, the title tag wastes its 33-character budget on vague branding with no primary keyword, the meta description wildly exceeds the 160-character limit at 446 characters (guaranteeing Google rewrites it), the H1 is a bare brand name with zero keyword signal, and the robots meta is null which, while not harmful, leaves indexing intent ambiguous. Keyword coherence between the headline, copy, and metadata is weak: terms like 'workplace conference', 'facilities management', 'corporate real estate conference', and 'hybrid work' appear in body copy but are absent from the title and H1.",
+      "findings": [
+        {
+          "severity": "minor",
+          "location": "Document <head> / structure",
+          "issue": "Meta description is 446 chars (will truncate).",
+          "recommendation": "Trim to ≤160 characters.",
+          "fix_prompt": "Trim this page's meta description to 160 characters or fewer without losing the value proposition.",
+          "deterministic": true
+        },
+        {
+          "severity": "major",
+          "location": "Document <head> / structure",
+          "issue": "No schema.org Event structured data (JSON-LD) — the page cannot earn event rich results in Google.",
+          "recommendation": "Add Event JSON-LD with name, dates, location, organizer, and offers.",
+          "fix_prompt": "Add the schema.org Event JSON-LD provided in the QA report to this page inside a <script type=\"application/ld+json\"> tag in the <head>.",
+          "deterministic": true
+        },
+        {
+          "severity": "critical",
+          "location": "<meta name=\"description\">",
+          "issue": "Meta description is 446 characters — nearly 3× the ~155-character threshold. Google will truncate or rewrite it entirely, losing controlled messaging in SERPs.",
+          "recommendation": "Condense to 150–160 characters, leading with the highest-value keyword phrase ('workplace conference San Francisco 2026') and a clear benefit hook. Save the extended copy for the page body.",
+          "fix_prompt": "Rewrite the meta description for the WorkX 2026 event page. It must be 150–160 characters, open with 'workplace conference San Francisco 2026', include one concrete attendee benefit (e.g., benchmarks, peer strategies), and end with a soft CTA. No exclamation marks."
+        },
+        {
+          "severity": "critical",
+          "location": "<title> tag",
+          "issue": "Title 'WorkX August 2026 | San Francisco' contains no descriptive keyword. A user searching 'workplace conference San Francisco 2026' or 'facilities management conference 2026' would not recognise this result as relevant.",
+          "recommendation": "Prepend a primary keyword phrase before the brand name, e.g. 'Workplace & Facilities Conference | WorkX 2026 – San Francisco'. Keep under 60 characters.",
+          "fix_prompt": "Rewrite the HTML <title> for the WorkX 2026 microsite. Requirements: ≤60 characters; lead with a descriptive keyword phrase ('Workplace & Facilities Conference'); include brand name 'WorkX 2026'; include 'San Francisco'. No pipes at the start."
+        },
+        {
+          "severity": "critical",
+          "location": "<h1>",
+          "issue": "H1 reads 'WorkX Conference' — a pure brand label with no keyword signal. It neither reinforces the title/meta keywords nor tells a first-time visitor what the event covers.",
+          "recommendation": "Expand to something like 'WorkX 2026: Workplace, Facilities & Corporate Real Estate Conference' to surface the three core topic pillars in the page's most authoritative on-page signal.",
+          "fix_prompt": "Rewrite the H1 for the WorkX 2026 event page. It should name the event, the year, and its three core disciplines (workplace, facilities, corporate real estate). Tone: professional and benefit-led per IQPC brand guidelines. Target 8–12 words."
+        },
+        {
+          "severity": "major",
+          "location": "Event schema JSON-LD — 'location' object",
+          "issue": "The Place schema has empty streetAddress and postalCode fields. While San Francisco, CA is present, the incomplete address reduces confidence scoring for rich-result eligibility.",
+          "recommendation": "Populate streetAddress and postalCode once the venue is confirmed, or remove the empty fields rather than passing empty strings, which can trigger validation warnings in Google's Rich Results Test.",
+          "fix_prompt": "In the Event JSON-LD schema on the WorkX 2026 page, remove the 'streetAddress', 'postalCode', and 'telephone' properties from the PostalAddress object if their values are empty strings. Do not invent values."
+        },
+        {
+          "severity": "major",
+          "location": "Event schema JSON-LD — 'offers.validFrom'",
+          "issue": "'validFrom' is set to '2026-08-10', which is the event start date — not when registration opens. This signals to Google that offers are not yet valid until the event itself begins, which may suppress early rich-result display.",
+          "recommendation": "Set validFrom to the date registration opened (or today's date if unknown), not the event start date.",
+          "fix_prompt": "In the Event JSON-LD offers block, change 'validFrom' from '2026-08-10' to the actual date registration became available. If unknown, use the current ISO date. Do not use the event start date."
+        },
+        {
+          "severity": "major",
+          "location": "<meta name=\"keywords\">",
+          "issue": "The keywords meta tag is present but completely empty (content=\"\"). While Google ignores keywords meta for ranking, Bing still reads it, and leaving it blank is a missed low-effort signal opportunity.",
+          "recommendation": "Populate with 8–10 comma-separated phrases: 'workplace conference 2026, facilities management conference, corporate real estate conference, hybrid work strategy, San Francisco conference 2026, CRE conference, workplace strategy, IWMS conference'.",
+          "fix_prompt": "Populate the <meta name='keywords'> tag on the WorkX 2026 page with 8–10 relevant phrases covering: workplace conference, facilities management, corporate real estate, hybrid work, San Francisco 2026, WorkX. Separate by commas."
+        },
+        {
+          "severity": "major",
+          "location": "robots meta",
+          "issue": "robots_meta is null — no explicit robots directive is set. While Googlebot defaults to index/follow, the absence of an explicit tag is an oversight for a tracked event microsite.",
+          "recommendation": "Add <meta name='robots' content='index, follow'> to assert intent and prevent accidental suppression if a CMS default ever changes.",
+          "fix_prompt": "Add <meta name='robots' content='index, follow'> inside the <head> of the WorkX 2026 event page."
+        },
+        {
+          "severity": "minor",
+          "location": "OG image",
+          "issue": "The og:image points to a logo PNG (approx. logo dimensions), not a 1200×630 social-share image. LinkedIn and Facebook will render a small, uncropped logo card, reducing click-through from social shares.",
+          "recommendation": "Create a branded 1200×630 event hero image featuring event name, dates, and city and replace the og:image URL with it.",
+          "fix_prompt": "Update og:image and twitter:image on the WorkX 2026 page to point to a 1200×630 px branded event card image (not a logo file). The image should include event name, dates (Aug 10–12 2026), and location (San Francisco)."
+        },
+        {
+          "severity": "minor",
+          "location": "Event schema — duplicate performers",
+          "issue": "Several speaker names appear 2–3 times in the 'performer' array (e.g., 'Dalton Viggers' ×3, 'Lily Yuan' ×2, 'Gerard Visser' ×2). Duplicate structured data entries may cause validation warnings.",
+          "recommendation": "Deduplicate the performer array so each person appears only once.",
+          "fix_prompt": "Deduplicate the 'performer' array in the WorkX 2026 Event JSON-LD schema. Remove any Person entry whose 'name' value already appears earlier in the array. Preserve all other properties."
+        },
+        {
+          "severity": "minor",
+          "location": "Event schema — @id value",
+          "issue": "The Event @id is 'https://www.iqpc.com#event' but the canonical URL is 'https://www.ssonetwork.com/events-workx'. The @id should match the canonical page URL to avoid entity disambiguation issues.",
+          "recommendation": "Change @id to 'https://www.ssonetwork.com/events-workx#event'.",
+          "fix_prompt": "In the WorkX 2026 Event JSON-LD, change the '@id' value from 'https://www.iqpc.com#event' to 'https://www.ssonetwork.com/events-workx#event' to match the page's canonical URL."
+        }
+      ],
+      "report_md": "**Structural checks (deterministic)**\n- Title: \"WorkX August 2026 | San Francisco\" (33 chars)\n- Meta description: 446 chars\n- Open Graph: ✓ complete enough for share cards\n- Canonical: ✓ · Viewport: ✓ · Robots: —\n- H1 count: 1 · Image alt coverage: 95% of 66\n- Event structured data (JSON-LD): ✗ MISSING — generated below\n\n**Findings**\n- [minor] Meta description is 446 chars (will truncate).\n  - Fix: Trim to ≤160 characters.\n- [major] No schema.org Event structured data (JSON-LD) — the page cannot earn event rich results in Google.\n  - Fix: Add Event JSON-LD with name, dates, location, organizer, and offers.\n- [critical] Meta description is 446 characters — nearly 3× the ~155-character threshold. Google will truncate or rewrite it entirely, losing controlled messaging in SERPs.\n  - Fix: Condense to 150–160 characters, leading with the highest-value keyword phrase ('workplace conference San Francisco 2026') and a clear benefit hook. Save the extended copy for the page body.\n- [critical] Title 'WorkX August 2026 | San Francisco' contains no descriptive keyword. A user searching 'workplace conference San Francisco 2026' or 'facilities management conference 2026' would not recognise this result as relevant.\n  - Fix: Prepend a primary keyword phrase before the brand name, e.g. 'Workplace & Facilities Conference | WorkX 2026 – San Francisco'. Keep under 60 characters.\n- [critical] H1 reads 'WorkX Conference' — a pure brand label with no keyword signal. It neither reinforces the title/meta keywords nor tells a first-time visitor what the event covers.\n  - Fix: Expand to something like 'WorkX 2026: Workplace, Facilities & Corporate Real Estate Conference' to surface the three core topic pillars in the page's most authoritative on-page signal.\n- [major] The Place schema has empty streetAddress and postalCode fields. While San Francisco, CA is present, the incomplete address reduces confidence scoring for rich-result eligibility.\n  - Fix: Populate streetAddress and postalCode once the venue is confirmed, or remove the empty fields rather than passing empty strings, which can trigger validation warnings in Google's Rich Results Test.\n- [major] 'validFrom' is set to '2026-08-10', which is the event start date — not when registration opens. This signals to Google that offers are not yet valid until the event itself begins, which may suppress early rich-result display.\n  - Fix: Set validFrom to the date registration opened (or today's date if unknown), not the event start date.\n- [major] The keywords meta tag is present but completely empty (content=\"\"). While Google ignores keywords meta for ranking, Bing still reads it, and leaving it blank is a missed low-effort signal opportunity.\n  - Fix: Populate with 8–10 comma-separated phrases: 'workplace conference 2026, facilities management conference, corporate real estate conference, hybrid work strategy, San Francisco conference 2026, CRE conference, workplace strategy, IWMS conference'.\n- [major] robots_meta is null — no explicit robots directive is set. While Googlebot defaults to index/follow, the absence of an explicit tag is an oversight for a tracked event microsite.\n  - Fix: Add <meta name='robots' content='index, follow'> to assert intent and prevent accidental suppression if a CMS default ever changes.\n- [minor] The og:image points to a logo PNG (approx. logo dimensions), not a 1200×630 social-share image. LinkedIn and Facebook will render a small, uncropped logo card, reducing click-through from social shares.\n  - Fix: Create a branded 1200×630 event hero image featuring event name, dates, and city and replace the og:image URL with it.\n- [minor] Several speaker names appear 2–3 times in the 'performer' array (e.g., 'Dalton Viggers' ×3, 'Lily Yuan' ×2, 'Gerard Visser' ×2). Duplicate structured data entries may cause validation warnings.\n  - Fix: Deduplicate the performer array so each person appears only once.\n- [minor] The Event @id is 'https://www.iqpc.com#event' but the canonical URL is 'https://www.ssonetwork.com/events-workx'. The @id should match the canonical page URL to avoid entity disambiguation issues.\n  - Fix: Change @id to 'https://www.ssonetwork.com/events-workx#event'.\n\n**Improved metadata (ready to apply)**\n- Title: Workplace & Facilities Conference | WorkX 2026 San Francisco\n- Meta description: WorkX 2026 | Aug 10–12, San Francisco. Peer-led strategies, real benchmarks, and cost-justification playbooks for CRE, Facilities & Workplace leaders. Register now.",
+      "extra": {
+        "checks": {
+          "title": "WorkX August 2026 | San Francisco",
+          "title_length": 33,
+          "meta_description": "WorkX in August 2026 is the leading workplace conference that covers all things workplace, facilities, and corporate real estate.\n\nThe WorkX Conference gives attendees data and peer-tested strategies, and therefore confidence, to act decisively instead of defensively. Attendees will walk away with real-world benchmarks, cost-justification playbooks, and proven ways to reposition the workplace as a performance driver rather than a cost center.",
+          "meta_description_length": 446,
+          "canonical": "https://www.ssonetwork.com/events-workx",
+          "og": {
+            "title": "WorkX August 2026 | San Francisco",
+            "description": "WorkX in August 2026 is the leading workplace conference that covers all things workplace, facilities, and corporate real estate.\n\nThe WorkX Conference gives attendees data and peer-tested strategies, and therefore confidence, to act decisively instead of defensively. Attendees will walk away with real-world benchmarks, cost-justification playbooks, and proven ways to reposition the workplace as a performance driver rather than a cost center.",
+            "image": "https://eco-cdn.iqpc.com/eco/images/logos/LruQca4OfnglU5eE31Y7NdPwAjnC6LZ337ze7b5X.png"
+          },
+          "viewport_meta": true,
+          "robots_meta": null,
+          "h1_count": 1,
+          "h1s": [
+            "WorkX Conference"
+          ],
+          "image_alt_coverage_pct": 95,
+          "images_total": 66,
+          "has_event_schema": false
+        },
+        "improved_meta": {
+          "title": "Workplace & Facilities Conference | WorkX 2026 San Francisco",
+          "meta_description": "WorkX 2026 | Aug 10–12, San Francisco. Peer-led strategies, real benchmarks, and cost-justification playbooks for CRE, Facilities & Workplace leaders. Register now.",
+          "og_title": "WorkX 2026 — Workplace & Facilities Conference | Aug 10–12, San Francisco",
+          "og_description": "Join 500+ CRE, Facilities, and Workplace leaders in San Francisco for WorkX 2026. Walk away with peer-tested benchmarks, space strategies, and ROI playbooks you can use immediately."
+        },
+        "event_schema_jsonld": null
+      }
+    }
+  ],
+  "conversion": {
+    "analytics_found": [
+      "GA4 / Google Tag Manager",
+      "LinkedIn Insight Tag"
+    ],
+    "analytics_missing": [
+      "Meta Pixel"
+    ],
+    "ctas": [],
+    "utm_propagation": "not_tested",
+    "issues": [
+      {
+        "severity": "major",
+        "code": "MISSING_PIXEL",
+        "detail": "Meta Pixel not detected — conversions from this page cannot be measured/attributed for that channel."
+      },
+      {
+        "severity": "critical",
+        "code": "NO_REGISTRATION_CTA",
+        "detail": "No registration/booking call-to-action was found on the page. The primary conversion path is missing."
+      }
+    ]
+  },
+  "perf": {
+    "available": false,
+    "note": "Skipped via --skip-perf"
+  },
+  "regression": {
+    "first_run": false,
+    "previous_date": "2026-07-22T16:07:45.147Z",
+    "previous_score": 71,
+    "score_delta": -17,
+    "previous_verdict": "BLOCK",
+    "verdict_changed": false,
+    "regressed": true
+  },
+  "axe": [
+    {
+      "id": "aria-valid-attr-value",
+      "impact": "critical",
+      "description": "Ensure all ARIA attributes have valid values",
+      "affected_nodes": 3,
+      "example_target": "#tier-6994e6cc50cb2108c7583cfb-tab"
+    },
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "affected_nodes": 12,
+      "example_target": "a[role=\"button\"]"
+    },
+    {
+      "id": "heading-order",
+      "impact": "moderate",
+      "description": "Ensure the order of headings is semantically correct",
+      "affected_nodes": 7,
+      "example_target": "#wlxOz > h6"
+    },
+    {
+      "id": "image-alt",
+      "impact": "critical",
+      "description": "Ensure <img> elements have alternative text or a role of none or presentation",
+      "affected_nodes": 1,
+      "example_target": "a[href$=\"www.iqpc.com\"] > .d-block"
+    },
+    {
+      "id": "landmark-unique",
+      "impact": "moderate",
+      "description": "Ensure landmarks are unique",
+      "affected_nodes": 1,
+      "example_target": ".portal-navigation"
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensure links have discernible text",
+      "affected_nodes": 1,
+      "example_target": "a[href$=\"www.iqpc.com\"]"
+    },
+    {
+      "id": "listitem",
+      "impact": "serious",
+      "description": "Ensure <li> elements are used semantically",
+      "affected_nodes": 3,
+      "example_target": ".px-2.nav-link:nth-child(1)"
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensure all page content is contained by landmarks",
+      "affected_nodes": 26,
+      "example_target": ".template-6-header-container"
+    }
+  ],
+  "hasApiKey": true
+}

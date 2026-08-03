@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+
+# Environment secrets — never commit these
+.env
+
+# Large run artifacts — screenshots are regenerated on each scan.
+# JSON reports ARE committed so Railway starts with existing data.
+runs/**/*.png
+runs/**/*.webp
+runs/**/*.jpg
+runs/*/page.html
+
+# Dashboard build output (generated from build-dashboard.js)
+dashboard/
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+api.rtf

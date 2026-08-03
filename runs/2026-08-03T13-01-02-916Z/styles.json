@@ -1,0 +1,94 @@
+{
+  "colors": [
+    {
+      "value": "#F0F0F5",
+      "elements": 84
+    },
+    {
+      "value": "#A0A0B0",
+      "elements": 35
+    },
+    {
+      "value": "#B0B0C0",
+      "elements": 28
+    },
+    {
+      "value": "#0984E3",
+      "elements": 24
+    },
+    {
+      "value": "#FFFFFF",
+      "elements": 17
+    },
+    {
+      "value": "#FF5500",
+      "elements": 17
+    },
+    {
+      "value": "#1A1A25",
+      "elements": 17
+    },
+    {
+      "value": "#12121A",
+      "elements": 14
+    },
+    {
+      "value": "#9C8FFD",
+      "elements": 8
+    },
+    {
+      "value": "#E17055",
+      "elements": 8
+    },
+    {
+      "value": "#00D2D3",
+      "elements": 8
+    },
+    {
+      "value": "#FF9F43",
+      "elements": 8
+    },
+    {
+      "value": "#2F3E46",
+      "elements": 8
+    },
+    {
+      "value": "#10B981",
+      "elements": 8
+    },
+    {
+      "value": "#EE5253",
+      "elements": 8
+    },
+    {
+      "value": "#0A0A0F",
+      "elements": 7
+    },
+    {
+      "value": "#000000",
+      "elements": 1
+    },
+    {
+      "value": "#FF9445",
+      "elements": 1
+    }
+  ],
+  "fonts": [
+    {
+      "value": "Inter, sans-serif",
+      "elements": 223
+    },
+    {
+      "value": "Outfit, sans-serif",
+      "elements": 25
+    },
+    {
+      "value": "\"Playfair Display\", serif",
+      "elements": 2
+    },
+    {
+      "value": "\"Times New Roman\"",
+      "elements": 1
+    }
+  ]
+}

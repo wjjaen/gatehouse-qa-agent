@@ -1,0 +1,876 @@
+{
+  "url": "https://www.idga.org/events-veteransaffairshealthcare",
+  "portal": null,
+  "run": "2026-07-22T18-04-08-804Z",
+  "outDir": "runs/2026-07-22T18-04-08-804Z",
+  "verdict": "BLOCK",
+  "reason": "4 critical/serious accessibility violation(s) (axe-core)",
+  "score": 34,
+  "agents": [
+    {
+      "id": "design",
+      "label": "Design QA",
+      "score": 42,
+      "summary": "The Veterans Healthcare 2026 microsite functions as a navigable page and contains most required content elements, but it reads as a lightly customized platform template rather than a designed event property. The hero is visually cluttered and brand-inconsistent (green/Nunito Sans instead of the specified navy/Archivo/Inter palette), the type scale is arbitrary, and the mobile experience suffers from stacked content that loses all hierarchy. Multiple sections feel bolted together without rhythmic spacing or a unifying grid.",
+      "findings": [
+        {
+          "severity": "major",
+          "location": "Layout & grid · Hero section, desktop",
+          "issue": "The hero splits into a left text column and a right image, but the text block does not align to a discernible grid column edge — it appears to have inconsistent left padding relative to the navigation logo and the body copy sections below it. The overlapping 'GET YOUR COMPLIMENTARY COPY HERE' banner also floats mid-hero with no clear positional anchor.",
+          "recommendation": "Lock all hero content to a 12-column grid with a consistent gutter. The secondary CTA banner should sit below or clearly within a defined layout zone, not overlapping the primary hero image.",
+          "fix_prompt": "Refactor the hero section to use a strict 12-column CSS Grid or Bootstrap grid row. Ensure the left text column spans 6 columns and the image spans 6 columns with no absolute-positioned elements overlapping the image. Remove or repositon the floating 'GET YOUR COMPLIMENTARY COPY HERE' element so it sits inside a defined grid row below the main headline."
+        },
+        {
+          "severity": "major",
+          "location": "Layout & grid · Speaker Roster section, desktop",
+          "issue": "The speaker grid shows 4 cards in the first row and 3 in the second, with the second row left-aligned, leaving a large empty right void. Orphaned cards without a centering rule break the grid.",
+          "recommendation": "Center-justify the last row of speaker cards or use CSS Grid auto-fill with a consistent column width so partial rows center gracefully.",
+          "fix_prompt": "On the speaker roster grid container, set `justify-content: center` (if using flexbox) or `justify-items: center` (if using CSS Grid) so that the final incomplete row of cards is centered rather than left-aligned."
+        },
+        {
+          "severity": "major",
+          "location": "Layout & grid · 'Expand Your Knowledge' / content cards section, desktop",
+          "issue": "The four resource cards (Post-Show Report, VA Telehealth, VA Affairs FY2027, Confirmed Federal) have inconsistent widths and the card images are different heights, resulting in a visually jagged row with no baseline alignment.",
+          "recommendation": "Set all cards to the same fixed height container with a uniform image aspect ratio (e.g. 16:9) using object-fit: cover.",
+          "fix_prompt": "In the resource cards section, set each card wrapper to the same width (e.g. `width: 23%` or Bootstrap `col-3`) and enforce a fixed image height of 160px with `object-fit: cover` so all card images align to the same baseline."
+        },
+        {
+          "severity": "minor",
+          "location": "Layout & grid · 2026 Event Sponsors section, desktop",
+          "issue": "Sponsor logos are not aligned to a consistent vertical center line — some logos appear taller than others with no optical centering applied, making the row look unbalanced.",
+          "recommendation": "Wrap all sponsor logos in flex containers with `align-items: center` and constrain each logo to a max-height (e.g. 48px) with `object-fit: contain`.",
+          "fix_prompt": "In the sponsors section, set the sponsor logo container to `display: flex; align-items: center; justify-content: center;` and add `max-height: 48px; object-fit: contain; width: auto;` to each `<img>` tag inside it."
+        },
+        {
+          "severity": "critical",
+          "location": "Typography · Entire page",
+          "issue": "The page uses Nunito Sans throughout (defined in CSS --primary-font and --secondary-font), which conflicts directly with the brand configuration mandating Archivo for headings and Inter for body text. No Archivo or Inter font is loaded or applied anywhere on the page.",
+          "recommendation": "Replace the font stack in the dynamic styles CSS variables: set --primary-font to 'Archivo, sans-serif' and --secondary-font to 'Inter, sans-serif', and import both from Google Fonts.",
+          "fix_prompt": "In the <style data-dynamic> block, replace `--primary-font: 'Nunito Sans', sans-serif;` with `--primary-font: 'Archivo', sans-serif;` and `--secondary-font: 'Inter', sans-serif;`. Add `@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');` at the top of that style block."
+        },
+        {
+          "severity": "major",
+          "location": "Typography · Hero headline, desktop",
+          "issue": "The hero headline 'Delivering the Highest-Quality Healthcare to our Nation's Heroes' renders at a size that appears to be approximately 28–32px — well below the brand scale's 48px or 64px intended for a primary event headline. It does not command the hero visually.",
+          "recommendation": "Set the hero H1 to at least 48px (brand scale) on desktop, with a line height of 1.1–1.2.",
+          "fix_prompt": "Add a CSS rule targeting the hero section's H1 element: `.hero-section h1 { font-size: 48px; line-height: 1.15; font-family: 'Archivo', sans-serif; font-weight: 700; }` and adjust for mobile with `@media (max-width: 768px) { .hero-section h1 { font-size: 32px; } }`."
+        },
+        {
+          "severity": "major",
+          "location": "Typography · Body copy sections (About section, Sponsorship section), desktop",
+          "issue": "Body text in the main content columns runs full container width on desktop, producing line lengths visibly exceeding 90 characters — well beyond readable measure. The 'About' paragraphs in particular appear to span nearly 800px.",
+          "recommendation": "Cap body copy containers at 70ch or 720px max-width and center them within their section.",
+          "fix_prompt": "For all body text paragraphs in content sections, add a CSS rule: `.content-section p, .about-section p { max-width: 70ch; margin-left: auto; margin-right: auto; }` to constrain line length to readable measure."
+        },
+        {
+          "severity": "minor",
+          "location": "Typography · Speaker cards, desktop",
+          "issue": "Speaker name, title, and organization are rendered at sizes that appear almost identical, providing insufficient hierarchy between the person's name and their role/org.",
+          "recommendation": "Distinguish speaker name (16px semibold) from title (14px regular) from organization (12px muted) using the brand type scale.",
+          "fix_prompt": "In the speaker card component, set the name element to `font-size: 16px; font-weight: 600;`, the title element to `font-size: 14px; font-weight: 400;`, and the organization element to `font-size: 12px; color: #666666;`."
+        },
+        {
+          "severity": "major",
+          "location": "Spacing & rhythm · Between 'Secure your pass' CTA band and 'Expand Your Knowledge' section, desktop",
+          "issue": "There is almost no vertical breathing room between the green CTA band and the resource cards section that follows — the sections feel collided rather than sequenced.",
+          "recommendation": "Add 48px or 64px of top margin to the 'Expand Your Knowledge' section to create visual separation.",
+          "fix_prompt": "Add `padding-top: 64px;` to the 'Expand Your Knowledge' section container element so it has consistent separation from the CTA band above it."
+        },
+        {
+          "severity": "major",
+          "location": "Spacing & rhythm · Photo Gallery section, desktop",
+          "issue": "The 'Explore Our Photo Gallery' section shows a single photo on the left with a 'Check Out Our Gallery' call-to-action block on the right, but the two halves are vertically misaligned — the CTA block appears to sit lower than the image, creating an unbalanced void above the CTA text.",
+          "recommendation": "Vertically center-align the right-side CTA block relative to the photo using flexbox align-items: center.",
+          "fix_prompt": "Set the parent row of the Photo Gallery two-column section to `display: flex; align-items: center;` so the 'Check Out Our Gallery' content is vertically centered alongside the photo."
+        },
+        {
+          "severity": "minor",
+          "location": "Spacing & rhythm · Testimonials section, desktop",
+          "issue": "Testimonial quote cards have inconsistent internal padding — some quotes with shorter text appear to have more bottom padding than longer ones, creating uneven card heights in the row.",
+          "recommendation": "Use CSS Grid with `align-items: stretch` and ensure testimonial card content is flex-column with the attribution pushed to the bottom via `margin-top: auto`.",
+          "fix_prompt": "On testimonial cards, set `.testimonial-card { display: flex; flex-direction: column; padding: 24px; }` and `.testimonial-card .attribution { margin-top: auto; }` so all cards stretch to equal height with attribution at the bottom."
+        },
+        {
+          "severity": "critical",
+          "location": "Visual hierarchy · Hero section, desktop and mobile",
+          "issue": "The primary registration CTA button ('Book Online Now' in the nav) is small and located in the top navigation bar, not in the hero body. The hero CTA button ('VIEW AGENDA' and 'WHATS INCLUDED') are secondary actions. There is no prominent 'Register Now' CTA visually anchored within the hero section itself above the fold. The brand config requires a primary registration CTA above the fold.",
+          "recommendation": "Add a high-contrast, accent-colored (#FF5A36) 'Register Now' button prominently within the hero section, visually larger than the agenda/included buttons, placed immediately below the event date and location.",
+          "fix_prompt": "Inside the hero section's text column, after the event date/location line, add: `<a href='/events-veteransaffairshealthcare/srspricing' class='btn btn-primary-cta' style='background-color:#FF5A36; color:#ffffff; font-size:18px; font-weight:700; padding:16px 40px; border:none; border-radius:4px; display:inline-block; margin-top:24px;'>Register Now</a>` and ensure it is visible without scrolling on a 1440px viewport."
+        },
+        {
+          "severity": "major",
+          "location": "Visual hierarchy · Hero section, desktop",
+          "issue": "The eye is pulled in multiple competing directions simultaneously: the 'GET YOUR COMPLIMENTARY COPY HERE' orange banner overlapping the hero image, the social icons row, the 'VIEW AGENDA' / 'WHATS INCLUDED' buttons, and the top-nav 'Book Online Now' button all compete at similar visual weights. There is no single dominant element.",
+          "recommendation": "Reduce the hero to: event name (largest), date/location (medium), one primary CTA (accent color), one secondary CTA (outline). Remove the complimentary copy banner from the hero and relocate it to its own section below.",
+          "fix_prompt": "Remove the floating 'GET YOUR COMPLIMENTARY COPY HERE' overlay banner from the hero image area and move it to a dedicated section row below the hero. In the hero, retain only two buttons: a primary 'Register Now' (filled, #FF5A36) and a secondary 'View Agenda' (outline, border #0A2540, text #0A2540)."
+        },
+        {
+          "severity": "major",
+          "location": "Visual hierarchy · Event dates and location, hero, desktop",
+          "issue": "The event date (July 28–29, 2026) and venue (MGM Hotel and Casino, National Harbor) are present but styled in small text that is not visually distinguished from surrounding body copy. For event microsites, date and location are tier-2 hierarchy elements and should be significantly more prominent.",
+          "recommendation": "Style the date and location at 20px semibold in the brand primary color (#0A2540) with an icon prefix, placed directly below the H1.",
+          "fix_prompt": "Wrap the date and location text in a dedicated div below the H1: `<div class='event-meta' style='font-size:20px; font-weight:600; color:#0A2540; margin-top:16px;'>📅 July 28–29, 2026 &nbsp;|&nbsp; 📍 MGM Hotel and Casino, National Harbor, MD</div>`"
+        },
+        {
+          "severity": "critical",
+          "location": "Consistency · Entire page — color palette",
+          "issue": "The page is themed in a mid-green (#489945, per the CSS --primary-color) used for buttons, links, section backgrounds, and the nav bar. The brand configuration specifies #0A2540 (navy) as primary and #FF5A36 (coral) as accent. The green palette is entirely off-brand and would misrepresent the event if published against IQPC brand standards.",
+          "recommendation": "Update all CSS custom property values: --primary-color to #0A2540, --link-color to #0A2540, --link-hover-color to #FF5A36, and replace all green section backgrounds with #0A2540 or #FFFFFF as appropriate.",
+          "fix_prompt": "In the <style data-dynamic> block, make the following replacements: `--link-color: #489945` → `--link-color: #0A2540`; `--primary-color: #489945` → `--primary-color: #0A2540`; `--primary-color-hover: #1c511b` → `--primary-color-hover: #FF5A36`. Then find all hardcoded `background-color: #489945` or `background: green` declarations and replace with `#0A2540` for section backgrounds and `#FF5A36` for CTA buttons only."
+        },
+        {
+          "severity": "major",
+          "location": "Consistency · CTA buttons across page",
+          "issue": "Button styles vary across the page: the nav 'Book Online Now' button has one style, the hero 'VIEW AGENDA' button has a different style, the 'Register Now' band uses a different green shade, and the 'View More Speakers' button is yet another variant. There is no unified button component.",
+          "recommendation": "Define two button classes: .btn-primary (filled, #FF5A36 background, white text, 4px radius) and .btn-secondary (outlined, #0A2540 border and text). Apply consistently everywhere.",
+          "fix_prompt": "Add to the global stylesheet: `.btn-primary-cta { background-color: #FF5A36; color: #ffffff; border: none; border-radius: 4px; padding: 12px 32px; font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 16px; } .btn-secondary-cta { background-color: transparent; color: #0A2540; border: 2px solid #0A2540; border-radius: 4px; padding: 12px 32px; font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 16px; }` and replace all existing button inline styles with these classes."
+        },
+        {
+          "severity": "minor",
+          "location": "Consistency · Speaker cards vs. Resource cards, desktop",
+          "issue": "Speaker cards use circular portrait images with a drop shadow, while resource cards use rectangular images with no shadow and a different corner radius treatment. These are different card patterns within the same page without clear semantic reason for the divergence.",
+          "recommendation": "Standardize non-portrait cards (resources, reports) to use the same corner radius (4px) and shadow style as a unified card component.",
+          "fix_prompt": "Apply `border-radius: 4px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.10);` to all resource card containers, matching the visual treatment used for other card elements on the page."
+        },
+        {
+          "severity": "critical",
+          "location": "Responsive integrity · Hero section, mobile (390px)",
+          "issue": "On mobile, the hero text and image stack, but the event name appears truncated and the headline is very small relative to the viewport. The 'GET YOUR COMPLIMENTARY COPY HERE' banner overlaps the stacked content, partially obscuring the headline text and making it unreadable at this viewport width.",
+          "recommendation": "On mobile, hide or relocate the promotional overlay banner. Ensure the hero headline is at least 28px and that all hero text is fully visible without overlap.",
+          "fix_prompt": "Add a media query: `@media (max-width: 768px) { .complimentary-copy-banner { display: none; } .hero-section h1 { font-size: 28px; line-height: 1.2; } }` to hide the overlapping banner and scale up the mobile headline."
+        },
+        {
+          "severity": "major",
+          "location": "Responsive integrity · Speaker Roster section, mobile",
+          "issue": "On mobile the speaker cards appear to display two per row at a very small size, making names, titles, and organizations nearly illegible (approximately 10–11px rendered size).",
+          "recommendation": "Switch to a single-column speaker card layout on mobile, or at minimum 1 card per row below 480px.",
+          "fix_prompt": "Add `@media (max-width: 576px) { .speaker-card-col { flex: 0 0 100%; max-width: 100%; } }` to force speaker cards to full-width single column on small screens."
+        },
+        {
+          "severity": "major",
+          "location": "Responsive integrity · Resource / Knowledge cards section, mobile",
+          "issue": "The four resource cards appear to stack vertically on mobile but each card's internal text is extremely small and the card images appear compressed to non-square aspect ratios, distorting the document preview thumbnails.",
+          "recommendation": "Enforce aspect-ratio: 16/9 on card images with object-fit: cover on mobile, and increase the card text minimum font-size to 14px.",
+          "fix_prompt": "Add `@media (max-width: 768px) { .resource-card img { aspect-ratio: 16/9; object-fit: cover; width: 100%; } .resource-card p, .resource-card h5 { font-size: 14px; } }` to fix image distortion and improve legibility on mobile."
+        },
+        {
+          "severity": "minor",
+          "location": "Responsive integrity · Sponsor logos section, mobile",
+          "issue": "On mobile, the sponsor logo grid shows logos at very small sizes (some appear to be under 60px wide), making several logos unrecognizable, particularly text-based logos like 'INTERSURGICAL' and 'LOVELL'.",
+          "recommendation": "On mobile, reduce the number of logos per row to 2 or 3 with a larger minimum logo width of 100px.",
+          "fix_prompt": "Add `@media (max-width: 576px) { .sponsor-logo-col { flex: 0 0 50%; max-width: 50%; } .sponsor-logo-col img { min-width: 100px; max-height: 60px; object-fit: contain; } }` to improve sponsor logo legibility on mobile."
+        },
+        {
+          "severity": "critical",
+          "location": "Visual accessibility · Multiple green CTA buttons across page (desktop and mobile)",
+          "issue": "The mid-green (#489945) buttons with white text are flagged by axe-core for failing WCAG AA contrast (confirmed: 34 affected nodes including .btn-sm). Visually this is apparent in the screenshot — the 'Register Now' and 'View More Speakers' buttons appear as a light-medium green that clearly lacks sufficient contrast against white text.",
+          "recommendation": "Replace the green (#489945) button background with the brand primary (#0A2540, which achieves >7:1 against white) or the accent (#FF5A36, which achieves >3:1 — sufficient for large/bold text). Do not use mid-green for buttons.",
+          "fix_prompt": "Replace all instances of `background-color: #489945` on button elements with `background-color: #FF5A36` for primary CTAs (accent) or `background-color: #0A2540` for secondary actions, and ensure button text is `color: #ffffff` in both cases."
+        },
+        {
+          "severity": "major",
+          "location": "Visual accessibility · Hero section — text over image, desktop",
+          "issue": "Portions of the hero headline sit adjacent to (and partially over) the hero photograph. No scrim or overlay is applied to the image side. While the text is mostly on a white-background left column, the boundary between the text column and image is abrupt and on mobile the text may render over the image without a protective overlay.",
+          "recommendation": "Add a semi-transparent dark scrim (rgba(10,37,64,0.55)) over the hero image wherever text could overlap it at any viewport width.",
+          "fix_prompt": "On the hero image container, add a pseudo-element overlay: `.hero-image-container { position: relative; } .hero-image-container::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to right, rgba(10,37,64,0.6) 0%, rgba(10,37,64,0.1) 60%, transparent 100%); pointer-events: none; }`"
+        },
+        {
+          "severity": "major",
+          "location": "Visual accessibility · Green section backgrounds with body text (About section, Sponsorship section), desktop",
+          "issue": "The dark green (#489945 or similar) section backgrounds are used in the 'Secure your pass' band and possibly other sections. Body text in these sections appears to be in a shade that may not meet AA contrast against the green. Visually the text reads as slightly washed out.",
+          "recommendation": "Use only #FFFFFF text on dark green or navy backgrounds, and verify contrast ratios. Avoid placing body-weight text on mid-saturation green backgrounds.",
+          "fix_prompt": "For all sections with a green background (class containing 'bg-primary' or background-color: #489945), explicitly set `color: #ffffff;` on all child text elements and verify that no gray or muted text classes are applied within these sections."
+        },
+        {
+          "severity": "minor",
+          "location": "Visual accessibility · Resource card section — color-coded document thumbnail images",
+          "issue": "The four resource card thumbnails (Post-Show Report, VA Telehealth, etc.) use color-coded cover images where the document category is distinguished primarily by background color. No text labels differentiate the document type beyond what is in the color field.",
+          "recommendation": "Add a text badge or label to each card that identifies the resource type (e.g. 'Report', 'Analysis') without relying on color alone.",
+          "fix_prompt": "Above each resource card image, add a text badge: `<span class='resource-type-badge' style='background:#0A2540; color:#fff; font-size:11px; font-weight:700; padding:2px 8px; border-radius:2px; display:inline-block; margin-bottom:8px;'>REPORT</span>` with the appropriate label for each card type."
+        }
+      ],
+      "report_md": "**Layout & grid — 3/7**\n- [major] Hero section, desktop: The hero splits into a left text column and a right image, but the text block does not align to a discernible grid column edge — it appears to have inconsistent left padding relative to the navigation logo and the body copy sections below it. The overlapping 'GET YOUR COMPLIMENTARY COPY HERE' banner also floats mid-hero with no clear positional anchor.\n  - Fix: Lock all hero content to a 12-column grid with a consistent gutter. The secondary CTA banner should sit below or clearly within a defined layout zone, not overlapping the primary hero image.\n- [major] Speaker Roster section, desktop: The speaker grid shows 4 cards in the first row and 3 in the second, with the second row left-aligned, leaving a large empty right void. Orphaned cards without a centering rule break the grid.\n  - Fix: Center-justify the last row of speaker cards or use CSS Grid auto-fill with a consistent column width so partial rows center gracefully.\n- [major] 'Expand Your Knowledge' / content cards section, desktop: The four resource cards (Post-Show Report, VA Telehealth, VA Affairs FY2027, Confirmed Federal) have inconsistent widths and the card images are different heights, resulting in a visually jagged row with no baseline alignment.\n  - Fix: Set all cards to the same fixed height container with a uniform image aspect ratio (e.g. 16:9) using object-fit: cover.\n- [minor] 2026 Event Sponsors section, desktop: Sponsor logos are not aligned to a consistent vertical center line — some logos appear taller than others with no optical centering applied, making the row look unbalanced.\n  - Fix: Wrap all sponsor logos in flex containers with `align-items: center` and constrain each logo to a max-height (e.g. 48px) with `object-fit: contain`.\n**Typography — 2/7**\n- [critical] Entire page: The page uses Nunito Sans throughout (defined in CSS --primary-font and --secondary-font), which conflicts directly with the brand configuration mandating Archivo for headings and Inter for body text. No Archivo or Inter font is loaded or applied anywhere on the page.\n  - Fix: Replace the font stack in the dynamic styles CSS variables: set --primary-font to 'Archivo, sans-serif' and --secondary-font to 'Inter, sans-serif', and import both from Google Fonts.\n- [major] Hero headline, desktop: The hero headline 'Delivering the Highest-Quality Healthcare to our Nation's Heroes' renders at a size that appears to be approximately 28–32px — well below the brand scale's 48px or 64px intended for a primary event headline. It does not command the hero visually.\n  - Fix: Set the hero H1 to at least 48px (brand scale) on desktop, with a line height of 1.1–1.2.\n- [major] Body copy sections (About section, Sponsorship section), desktop: Body text in the main content columns runs full container width on desktop, producing line lengths visibly exceeding 90 characters — well beyond readable measure. The 'About' paragraphs in particular appear to span nearly 800px.\n  - Fix: Cap body copy containers at 70ch or 720px max-width and center them within their section.\n- [minor] Speaker cards, desktop: Speaker name, title, and organization are rendered at sizes that appear almost identical, providing insufficient hierarchy between the person's name and their role/org.\n  - Fix: Distinguish speaker name (16px semibold) from title (14px regular) from organization (12px muted) using the brand type scale.\n**Spacing & rhythm — 3/7**\n- [major] Between 'Secure your pass' CTA band and 'Expand Your Knowledge' section, desktop: There is almost no vertical breathing room between the green CTA band and the resource cards section that follows — the sections feel collided rather than sequenced.\n  - Fix: Add 48px or 64px of top margin to the 'Expand Your Knowledge' section to create visual separation.\n- [major] Photo Gallery section, desktop: The 'Explore Our Photo Gallery' section shows a single photo on the left with a 'Check Out Our Gallery' call-to-action block on the right, but the two halves are vertically misaligned — the CTA block appears to sit lower than the image, creating an unbalanced void above the CTA text.\n  - Fix: Vertically center-align the right-side CTA block relative to the photo using flexbox align-items: center.\n- [minor] Testimonials section, desktop: Testimonial quote cards have inconsistent internal padding — some quotes with shorter text appear to have more bottom padding than longer ones, creating uneven card heights in the row.\n  - Fix: Use CSS Grid with `align-items: stretch` and ensure testimonial card content is flex-column with the attribution pushed to the bottom via `margin-top: auto`.\n**Visual hierarchy — 3/7**\n- [critical] Hero section, desktop and mobile: The primary registration CTA button ('Book Online Now' in the nav) is small and located in the top navigation bar, not in the hero body. The hero CTA button ('VIEW AGENDA' and 'WHATS INCLUDED') are secondary actions. There is no prominent 'Register Now' CTA visually anchored within the hero section itself above the fold. The brand config requires a primary registration CTA above the fold.\n  - Fix: Add a high-contrast, accent-colored (#FF5A36) 'Register Now' button prominently within the hero section, visually larger than the agenda/included buttons, placed immediately below the event date and location.\n- [major] Hero section, desktop: The eye is pulled in multiple competing directions simultaneously: the 'GET YOUR COMPLIMENTARY COPY HERE' orange banner overlapping the hero image, the social icons row, the 'VIEW AGENDA' / 'WHATS INCLUDED' buttons, and the top-nav 'Book Online Now' button all compete at similar visual weights. There is no single dominant element.\n  - Fix: Reduce the hero to: event name (largest), date/location (medium), one primary CTA (accent color), one secondary CTA (outline). Remove the complimentary copy banner from the hero and relocate it to its own section below.\n- [major] Event dates and location, hero, desktop: The event date (July 28–29, 2026) and venue (MGM Hotel and Casino, National Harbor) are present but styled in small text that is not visually distinguished from surrounding body copy. For event microsites, date and location are tier-2 hierarchy elements and should be significantly more prominent.\n  - Fix: Style the date and location at 20px semibold in the brand primary color (#0A2540) with an icon prefix, placed directly below the H1.\n**Consistency — 3/7**\n- [critical] Entire page — color palette: The page is themed in a mid-green (#489945, per the CSS --primary-color) used for buttons, links, section backgrounds, and the nav bar. The brand configuration specifies #0A2540 (navy) as primary and #FF5A36 (coral) as accent. The green palette is entirely off-brand and would misrepresent the event if published against IQPC brand standards.\n  - Fix: Update all CSS custom property values: --primary-color to #0A2540, --link-color to #0A2540, --link-hover-color to #FF5A36, and replace all green section backgrounds with #0A2540 or #FFFFFF as appropriate.\n- [major] CTA buttons across page: Button styles vary across the page: the nav 'Book Online Now' button has one style, the hero 'VIEW AGENDA' button has a different style, the 'Register Now' band uses a different green shade, and the 'View More Speakers' button is yet another variant. There is no unified button component.\n  - Fix: Define two button classes: .btn-primary (filled, #FF5A36 background, white text, 4px radius) and .btn-secondary (outlined, #0A2540 border and text). Apply consistently everywhere.\n- [minor] Speaker cards vs. Resource cards, desktop: Speaker cards use circular portrait images with a drop shadow, while resource cards use rectangular images with no shadow and a different corner radius treatment. These are different card patterns within the same page without clear semantic reason for the divergence.\n  - Fix: Standardize non-portrait cards (resources, reports) to use the same corner radius (4px) and shadow style as a unified card component.\n**Responsive integrity — 3/7**\n- [critical] Hero section, mobile (390px): On mobile, the hero text and image stack, but the event name appears truncated and the headline is very small relative to the viewport. The 'GET YOUR COMPLIMENTARY COPY HERE' banner overlaps the stacked content, partially obscuring the headline text and making it unreadable at this viewport width.\n  - Fix: On mobile, hide or relocate the promotional overlay banner. Ensure the hero headline is at least 28px and that all hero text is fully visible without overlap.\n- [major] Speaker Roster section, mobile: On mobile the speaker cards appear to display two per row at a very small size, making names, titles, and organizations nearly illegible (approximately 10–11px rendered size).\n  - Fix: Switch to a single-column speaker card layout on mobile, or at minimum 1 card per row below 480px.\n- [major] Resource / Knowledge cards section, mobile: The four resource cards appear to stack vertically on mobile but each card's internal text is extremely small and the card images appear compressed to non-square aspect ratios, distorting the document preview thumbnails.\n  - Fix: Enforce aspect-ratio: 16/9 on card images with object-fit: cover on mobile, and increase the card text minimum font-size to 14px.\n- [minor] Sponsor logos section, mobile: On mobile, the sponsor logo grid shows logos at very small sizes (some appear to be under 60px wide), making several logos unrecognizable, particularly text-based logos like 'INTERSURGICAL' and 'LOVELL'.\n  - Fix: On mobile, reduce the number of logos per row to 2 or 3 with a larger minimum logo width of 100px.\n**Visual accessibility — 2/7**\n- [critical] Multiple green CTA buttons across page (desktop and mobile): The mid-green (#489945) buttons with white text are flagged by axe-core for failing WCAG AA contrast (confirmed: 34 affected nodes including .btn-sm). Visually this is apparent in the screenshot — the 'Register Now' and 'View More Speakers' buttons appear as a light-medium green that clearly lacks sufficient contrast against white text.\n  - Fix: Replace the green (#489945) button background with the brand primary (#0A2540, which achieves >7:1 against white) or the accent (#FF5A36, which achieves >3:1 — sufficient for large/bold text). Do not use mid-green for buttons.\n- [major] Hero section — text over image, desktop: Portions of the hero headline sit adjacent to (and partially over) the hero photograph. No scrim or overlay is applied to the image side. While the text is mostly on a white-background left column, the boundary between the text column and image is abrupt and on mobile the text may render over the image without a protective overlay.\n  - Fix: Add a semi-transparent dark scrim (rgba(10,37,64,0.55)) over the hero image wherever text could overlap it at any viewport width.\n- [major] Green section backgrounds with body text (About section, Sponsorship section), desktop: The dark green (#489945 or similar) section backgrounds are used in the 'Secure your pass' band and possibly other sections. Body text in these sections appears to be in a shade that may not meet AA contrast against the green. Visually the text reads as slightly washed out.\n  - Fix: Use only #FFFFFF text on dark green or navy backgrounds, and verify contrast ratios. Avoid placing body-weight text on mid-saturation green backgrounds.\n- [minor] Resource card section — color-coded document thumbnail images: The four resource card thumbnails (Post-Show Report, VA Telehealth, etc.) use color-coded cover images where the document category is distinguished primarily by background color. No text labels differentiate the document type beyond what is in the color field.\n  - Fix: Add a text badge or label to each card that identifies the resource type (e.g. 'Report', 'Analysis') without relying on color alone.",
+      "extra": {
+        "axes": [
+          {
+            "name": "Layout & grid",
+            "score": 3,
+            "findings": [
+              {
+                "severity": "major",
+                "location": "Hero section, desktop",
+                "issue": "The hero splits into a left text column and a right image, but the text block does not align to a discernible grid column edge — it appears to have inconsistent left padding relative to the navigation logo and the body copy sections below it. The overlapping 'GET YOUR COMPLIMENTARY COPY HERE' banner also floats mid-hero with no clear positional anchor.",
+                "recommendation": "Lock all hero content to a 12-column grid with a consistent gutter. The secondary CTA banner should sit below or clearly within a defined layout zone, not overlapping the primary hero image.",
+                "fix_prompt": "Refactor the hero section to use a strict 12-column CSS Grid or Bootstrap grid row. Ensure the left text column spans 6 columns and the image spans 6 columns with no absolute-positioned elements overlapping the image. Remove or repositon the floating 'GET YOUR COMPLIMENTARY COPY HERE' element so it sits inside a defined grid row below the main headline."
+              },
+              {
+                "severity": "major",
+                "location": "Speaker Roster section, desktop",
+                "issue": "The speaker grid shows 4 cards in the first row and 3 in the second, with the second row left-aligned, leaving a large empty right void. Orphaned cards without a centering rule break the grid.",
+                "recommendation": "Center-justify the last row of speaker cards or use CSS Grid auto-fill with a consistent column width so partial rows center gracefully.",
+                "fix_prompt": "On the speaker roster grid container, set `justify-content: center` (if using flexbox) or `justify-items: center` (if using CSS Grid) so that the final incomplete row of cards is centered rather than left-aligned."
+              },
+              {
+                "severity": "major",
+                "location": "'Expand Your Knowledge' / content cards section, desktop",
+                "issue": "The four resource cards (Post-Show Report, VA Telehealth, VA Affairs FY2027, Confirmed Federal) have inconsistent widths and the card images are different heights, resulting in a visually jagged row with no baseline alignment.",
+                "recommendation": "Set all cards to the same fixed height container with a uniform image aspect ratio (e.g. 16:9) using object-fit: cover.",
+                "fix_prompt": "In the resource cards section, set each card wrapper to the same width (e.g. `width: 23%` or Bootstrap `col-3`) and enforce a fixed image height of 160px with `object-fit: cover` so all card images align to the same baseline."
+              },
+              {
+                "severity": "minor",
+                "location": "2026 Event Sponsors section, desktop",
+                "issue": "Sponsor logos are not aligned to a consistent vertical center line — some logos appear taller than others with no optical centering applied, making the row look unbalanced.",
+                "recommendation": "Wrap all sponsor logos in flex containers with `align-items: center` and constrain each logo to a max-height (e.g. 48px) with `object-fit: contain`.",
+                "fix_prompt": "In the sponsors section, set the sponsor logo container to `display: flex; align-items: center; justify-content: center;` and add `max-height: 48px; object-fit: contain; width: auto;` to each `<img>` tag inside it."
+              }
+            ]
+          },
+          {
+            "name": "Typography",
+            "score": 2,
+            "findings": [
+              {
+                "severity": "critical",
+                "location": "Entire page",
+                "issue": "The page uses Nunito Sans throughout (defined in CSS --primary-font and --secondary-font), which conflicts directly with the brand configuration mandating Archivo for headings and Inter for body text. No Archivo or Inter font is loaded or applied anywhere on the page.",
+                "recommendation": "Replace the font stack in the dynamic styles CSS variables: set --primary-font to 'Archivo, sans-serif' and --secondary-font to 'Inter, sans-serif', and import both from Google Fonts.",
+                "fix_prompt": "In the <style data-dynamic> block, replace `--primary-font: 'Nunito Sans', sans-serif;` with `--primary-font: 'Archivo', sans-serif;` and `--secondary-font: 'Inter', sans-serif;`. Add `@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');` at the top of that style block."
+              },
+              {
+                "severity": "major",
+                "location": "Hero headline, desktop",
+                "issue": "The hero headline 'Delivering the Highest-Quality Healthcare to our Nation's Heroes' renders at a size that appears to be approximately 28–32px — well below the brand scale's 48px or 64px intended for a primary event headline. It does not command the hero visually.",
+                "recommendation": "Set the hero H1 to at least 48px (brand scale) on desktop, with a line height of 1.1–1.2.",
+                "fix_prompt": "Add a CSS rule targeting the hero section's H1 element: `.hero-section h1 { font-size: 48px; line-height: 1.15; font-family: 'Archivo', sans-serif; font-weight: 700; }` and adjust for mobile with `@media (max-width: 768px) { .hero-section h1 { font-size: 32px; } }`."
+              },
+              {
+                "severity": "major",
+                "location": "Body copy sections (About section, Sponsorship section), desktop",
+                "issue": "Body text in the main content columns runs full container width on desktop, producing line lengths visibly exceeding 90 characters — well beyond readable measure. The 'About' paragraphs in particular appear to span nearly 800px.",
+                "recommendation": "Cap body copy containers at 70ch or 720px max-width and center them within their section.",
+                "fix_prompt": "For all body text paragraphs in content sections, add a CSS rule: `.content-section p, .about-section p { max-width: 70ch; margin-left: auto; margin-right: auto; }` to constrain line length to readable measure."
+              },
+              {
+                "severity": "minor",
+                "location": "Speaker cards, desktop",
+                "issue": "Speaker name, title, and organization are rendered at sizes that appear almost identical, providing insufficient hierarchy between the person's name and their role/org.",
+                "recommendation": "Distinguish speaker name (16px semibold) from title (14px regular) from organization (12px muted) using the brand type scale.",
+                "fix_prompt": "In the speaker card component, set the name element to `font-size: 16px; font-weight: 600;`, the title element to `font-size: 14px; font-weight: 400;`, and the organization element to `font-size: 12px; color: #666666;`."
+              }
+            ]
+          },
+          {
+            "name": "Spacing & rhythm",
+            "score": 3,
+            "findings": [
+              {
+                "severity": "major",
+                "location": "Between 'Secure your pass' CTA band and 'Expand Your Knowledge' section, desktop",
+                "issue": "There is almost no vertical breathing room between the green CTA band and the resource cards section that follows — the sections feel collided rather than sequenced.",
+                "recommendation": "Add 48px or 64px of top margin to the 'Expand Your Knowledge' section to create visual separation.",
+                "fix_prompt": "Add `padding-top: 64px;` to the 'Expand Your Knowledge' section container element so it has consistent separation from the CTA band above it."
+              },
+              {
+                "severity": "major",
+                "location": "Photo Gallery section, desktop",
+                "issue": "The 'Explore Our Photo Gallery' section shows a single photo on the left with a 'Check Out Our Gallery' call-to-action block on the right, but the two halves are vertically misaligned — the CTA block appears to sit lower than the image, creating an unbalanced void above the CTA text.",
+                "recommendation": "Vertically center-align the right-side CTA block relative to the photo using flexbox align-items: center.",
+                "fix_prompt": "Set the parent row of the Photo Gallery two-column section to `display: flex; align-items: center;` so the 'Check Out Our Gallery' content is vertically centered alongside the photo."
+              },
+              {
+                "severity": "minor",
+                "location": "Testimonials section, desktop",
+                "issue": "Testimonial quote cards have inconsistent internal padding — some quotes with shorter text appear to have more bottom padding than longer ones, creating uneven card heights in the row.",
+                "recommendation": "Use CSS Grid with `align-items: stretch` and ensure testimonial card content is flex-column with the attribution pushed to the bottom via `margin-top: auto`.",
+                "fix_prompt": "On testimonial cards, set `.testimonial-card { display: flex; flex-direction: column; padding: 24px; }` and `.testimonial-card .attribution { margin-top: auto; }` so all cards stretch to equal height with attribution at the bottom."
+              }
+            ]
+          },
+          {
+            "name": "Visual hierarchy",
+            "score": 3,
+            "findings": [
+              {
+                "severity": "critical",
+                "location": "Hero section, desktop and mobile",
+                "issue": "The primary registration CTA button ('Book Online Now' in the nav) is small and located in the top navigation bar, not in the hero body. The hero CTA button ('VIEW AGENDA' and 'WHATS INCLUDED') are secondary actions. There is no prominent 'Register Now' CTA visually anchored within the hero section itself above the fold. The brand config requires a primary registration CTA above the fold.",
+                "recommendation": "Add a high-contrast, accent-colored (#FF5A36) 'Register Now' button prominently within the hero section, visually larger than the agenda/included buttons, placed immediately below the event date and location.",
+                "fix_prompt": "Inside the hero section's text column, after the event date/location line, add: `<a href='/events-veteransaffairshealthcare/srspricing' class='btn btn-primary-cta' style='background-color:#FF5A36; color:#ffffff; font-size:18px; font-weight:700; padding:16px 40px; border:none; border-radius:4px; display:inline-block; margin-top:24px;'>Register Now</a>` and ensure it is visible without scrolling on a 1440px viewport."
+              },
+              {
+                "severity": "major",
+                "location": "Hero section, desktop",
+                "issue": "The eye is pulled in multiple competing directions simultaneously: the 'GET YOUR COMPLIMENTARY COPY HERE' orange banner overlapping the hero image, the social icons row, the 'VIEW AGENDA' / 'WHATS INCLUDED' buttons, and the top-nav 'Book Online Now' button all compete at similar visual weights. There is no single dominant element.",
+                "recommendation": "Reduce the hero to: event name (largest), date/location (medium), one primary CTA (accent color), one secondary CTA (outline). Remove the complimentary copy banner from the hero and relocate it to its own section below.",
+                "fix_prompt": "Remove the floating 'GET YOUR COMPLIMENTARY COPY HERE' overlay banner from the hero image area and move it to a dedicated section row below the hero. In the hero, retain only two buttons: a primary 'Register Now' (filled, #FF5A36) and a secondary 'View Agenda' (outline, border #0A2540, text #0A2540)."
+              },
+              {
+                "severity": "major",
+                "location": "Event dates and location, hero, desktop",
+                "issue": "The event date (July 28–29, 2026) and venue (MGM Hotel and Casino, National Harbor) are present but styled in small text that is not visually distinguished from surrounding body copy. For event microsites, date and location are tier-2 hierarchy elements and should be significantly more prominent.",
+                "recommendation": "Style the date and location at 20px semibold in the brand primary color (#0A2540) with an icon prefix, placed directly below the H1.",
+                "fix_prompt": "Wrap the date and location text in a dedicated div below the H1: `<div class='event-meta' style='font-size:20px; font-weight:600; color:#0A2540; margin-top:16px;'>📅 July 28–29, 2026 &nbsp;|&nbsp; 📍 MGM Hotel and Casino, National Harbor, MD</div>`"
+              }
+            ]
+          },
+          {
+            "name": "Consistency",
+            "score": 3,
+            "findings": [
+              {
+                "severity": "critical",
+                "location": "Entire page — color palette",
+                "issue": "The page is themed in a mid-green (#489945, per the CSS --primary-color) used for buttons, links, section backgrounds, and the nav bar. The brand configuration specifies #0A2540 (navy) as primary and #FF5A36 (coral) as accent. The green palette is entirely off-brand and would misrepresent the event if published against IQPC brand standards.",
+                "recommendation": "Update all CSS custom property values: --primary-color to #0A2540, --link-color to #0A2540, --link-hover-color to #FF5A36, and replace all green section backgrounds with #0A2540 or #FFFFFF as appropriate.",
+                "fix_prompt": "In the <style data-dynamic> block, make the following replacements: `--link-color: #489945` → `--link-color: #0A2540`; `--primary-color: #489945` → `--primary-color: #0A2540`; `--primary-color-hover: #1c511b` → `--primary-color-hover: #FF5A36`. Then find all hardcoded `background-color: #489945` or `background: green` declarations and replace with `#0A2540` for section backgrounds and `#FF5A36` for CTA buttons only."
+              },
+              {
+                "severity": "major",
+                "location": "CTA buttons across page",
+                "issue": "Button styles vary across the page: the nav 'Book Online Now' button has one style, the hero 'VIEW AGENDA' button has a different style, the 'Register Now' band uses a different green shade, and the 'View More Speakers' button is yet another variant. There is no unified button component.",
+                "recommendation": "Define two button classes: .btn-primary (filled, #FF5A36 background, white text, 4px radius) and .btn-secondary (outlined, #0A2540 border and text). Apply consistently everywhere.",
+                "fix_prompt": "Add to the global stylesheet: `.btn-primary-cta { background-color: #FF5A36; color: #ffffff; border: none; border-radius: 4px; padding: 12px 32px; font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 16px; } .btn-secondary-cta { background-color: transparent; color: #0A2540; border: 2px solid #0A2540; border-radius: 4px; padding: 12px 32px; font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 16px; }` and replace all existing button inline styles with these classes."
+              },
+              {
+                "severity": "minor",
+                "location": "Speaker cards vs. Resource cards, desktop",
+                "issue": "Speaker cards use circular portrait images with a drop shadow, while resource cards use rectangular images with no shadow and a different corner radius treatment. These are different card patterns within the same page without clear semantic reason for the divergence.",
+                "recommendation": "Standardize non-portrait cards (resources, reports) to use the same corner radius (4px) and shadow style as a unified card component.",
+                "fix_prompt": "Apply `border-radius: 4px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.10);` to all resource card containers, matching the visual treatment used for other card elements on the page."
+              }
+            ]
+          },
+          {
+            "name": "Responsive integrity",
+            "score": 3,
+            "findings": [
+              {
+                "severity": "critical",
+                "location": "Hero section, mobile (390px)",
+                "issue": "On mobile, the hero text and image stack, but the event name appears truncated and the headline is very small relative to the viewport. The 'GET YOUR COMPLIMENTARY COPY HERE' banner overlaps the stacked content, partially obscuring the headline text and making it unreadable at this viewport width.",
+                "recommendation": "On mobile, hide or relocate the promotional overlay banner. Ensure the hero headline is at least 28px and that all hero text is fully visible without overlap.",
+                "fix_prompt": "Add a media query: `@media (max-width: 768px) { .complimentary-copy-banner { display: none; } .hero-section h1 { font-size: 28px; line-height: 1.2; } }` to hide the overlapping banner and scale up the mobile headline."
+              },
+              {
+                "severity": "major",
+                "location": "Speaker Roster section, mobile",
+                "issue": "On mobile the speaker cards appear to display two per row at a very small size, making names, titles, and organizations nearly illegible (approximately 10–11px rendered size).",
+                "recommendation": "Switch to a single-column speaker card layout on mobile, or at minimum 1 card per row below 480px.",
+                "fix_prompt": "Add `@media (max-width: 576px) { .speaker-card-col { flex: 0 0 100%; max-width: 100%; } }` to force speaker cards to full-width single column on small screens."
+              },
+              {
+                "severity": "major",
+                "location": "Resource / Knowledge cards section, mobile",
+                "issue": "The four resource cards appear to stack vertically on mobile but each card's internal text is extremely small and the card images appear compressed to non-square aspect ratios, distorting the document preview thumbnails.",
+                "recommendation": "Enforce aspect-ratio: 16/9 on card images with object-fit: cover on mobile, and increase the card text minimum font-size to 14px.",
+                "fix_prompt": "Add `@media (max-width: 768px) { .resource-card img { aspect-ratio: 16/9; object-fit: cover; width: 100%; } .resource-card p, .resource-card h5 { font-size: 14px; } }` to fix image distortion and improve legibility on mobile."
+              },
+              {
+                "severity": "minor",
+                "location": "Sponsor logos section, mobile",
+                "issue": "On mobile, the sponsor logo grid shows logos at very small sizes (some appear to be under 60px wide), making several logos unrecognizable, particularly text-based logos like 'INTERSURGICAL' and 'LOVELL'.",
+                "recommendation": "On mobile, reduce the number of logos per row to 2 or 3 with a larger minimum logo width of 100px.",
+                "fix_prompt": "Add `@media (max-width: 576px) { .sponsor-logo-col { flex: 0 0 50%; max-width: 50%; } .sponsor-logo-col img { min-width: 100px; max-height: 60px; object-fit: contain; } }` to improve sponsor logo legibility on mobile."
+              }
+            ]
+          },
+          {
+            "name": "Visual accessibility",
+            "score": 2,
+            "findings": [
+              {
+                "severity": "critical",
+                "location": "Multiple green CTA buttons across page (desktop and mobile)",
+                "issue": "The mid-green (#489945) buttons with white text are flagged by axe-core for failing WCAG AA contrast (confirmed: 34 affected nodes including .btn-sm). Visually this is apparent in the screenshot — the 'Register Now' and 'View More Speakers' buttons appear as a light-medium green that clearly lacks sufficient contrast against white text.",
+                "recommendation": "Replace the green (#489945) button background with the brand primary (#0A2540, which achieves >7:1 against white) or the accent (#FF5A36, which achieves >3:1 — sufficient for large/bold text). Do not use mid-green for buttons.",
+                "fix_prompt": "Replace all instances of `background-color: #489945` on button elements with `background-color: #FF5A36` for primary CTAs (accent) or `background-color: #0A2540` for secondary actions, and ensure button text is `color: #ffffff` in both cases."
+              },
+              {
+                "severity": "major",
+                "location": "Hero section — text over image, desktop",
+                "issue": "Portions of the hero headline sit adjacent to (and partially over) the hero photograph. No scrim or overlay is applied to the image side. While the text is mostly on a white-background left column, the boundary between the text column and image is abrupt and on mobile the text may render over the image without a protective overlay.",
+                "recommendation": "Add a semi-transparent dark scrim (rgba(10,37,64,0.55)) over the hero image wherever text could overlap it at any viewport width.",
+                "fix_prompt": "On the hero image container, add a pseudo-element overlay: `.hero-image-container { position: relative; } .hero-image-container::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to right, rgba(10,37,64,0.6) 0%, rgba(10,37,64,0.1) 60%, transparent 100%); pointer-events: none; }`"
+              },
+              {
+                "severity": "major",
+                "location": "Green section backgrounds with body text (About section, Sponsorship section), desktop",
+                "issue": "The dark green (#489945 or similar) section backgrounds are used in the 'Secure your pass' band and possibly other sections. Body text in these sections appears to be in a shade that may not meet AA contrast against the green. Visually the text reads as slightly washed out.",
+                "recommendation": "Use only #FFFFFF text on dark green or navy backgrounds, and verify contrast ratios. Avoid placing body-weight text on mid-saturation green backgrounds.",
+                "fix_prompt": "For all sections with a green background (class containing 'bg-primary' or background-color: #489945), explicitly set `color: #ffffff;` on all child text elements and verify that no gray or muted text classes are applied within these sections."
+              },
+              {
+                "severity": "minor",
+                "location": "Resource card section — color-coded document thumbnail images",
+                "issue": "The four resource card thumbnails (Post-Show Report, VA Telehealth, etc.) use color-coded cover images where the document category is distinguished primarily by background color. No text labels differentiate the document type beyond what is in the color field.",
+                "recommendation": "Add a text badge or label to each card that identifies the resource type (e.g. 'Report', 'Analysis') without relying on color alone.",
+                "fix_prompt": "Above each resource card image, add a text badge: `<span class='resource-type-badge' style='background:#0A2540; color:#fff; font-size:11px; font-weight:700; padding:2px 8px; border-radius:2px; display:inline-block; margin-bottom:8px;'>REPORT</span>` with the appropriate label for each card type."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "brand",
+      "label": "Brand Compliance",
+      "score": 9,
+      "summary": "This microsite is built for the IDGA 'Veterans Healthcare 2026' event and carries IDGA/green branding throughout, not the WorkX 2026 / Example Portal brand configuration supplied. The primary color in use is #489945 (green), CTAs and accents are green, the logo is IDGA, and the typography stack is Nunito Sans — none of which match the mandated #0A2540 primary, #FF5A36 accent, Archivo/Inter typefaces, or the portal identity. Several required elements are present, but the event name displayed ('Veterans Healthcare') does not match the configured event name ('WorkX 2026'), and the overall brand expression is entirely misaligned with the supplied configuration. Missing required elements: IQPC or portal brand logo.",
+      "findings": [
+        {
+          "severity": "major",
+          "location": "Rendered CSS (computed styles)",
+          "issue": "Off-palette color #212529 is used on 278 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+          "recommendation": "Replace #212529 with the nearest approved brand token.",
+          "fix_prompt": "Find every use of the color #212529 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+          "deterministic": true
+        },
+        {
+          "severity": "major",
+          "location": "Rendered CSS (computed styles)",
+          "issue": "Off-palette color #333333 is used on 172 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+          "recommendation": "Replace #333333 with the nearest approved brand token.",
+          "fix_prompt": "Find every use of the color #333333 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+          "deterministic": true
+        },
+        {
+          "severity": "minor",
+          "location": "Rendered CSS (computed styles)",
+          "issue": "Off-palette color #008641 is used on 64 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+          "recommendation": "Replace #008641 with the nearest approved brand token.",
+          "fix_prompt": "Find every use of the color #008641 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+          "deterministic": true
+        },
+        {
+          "severity": "minor",
+          "location": "Rendered CSS (computed styles)",
+          "issue": "Off-palette color #489945 is used on 63 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+          "recommendation": "Replace #489945 with the nearest approved brand token.",
+          "fix_prompt": "Find every use of the color #489945 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+          "deterministic": true
+        },
+        {
+          "severity": "minor",
+          "location": "Rendered CSS (computed styles)",
+          "issue": "Off-palette color #212121 is used on 62 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+          "recommendation": "Replace #212121 with the nearest approved brand token.",
+          "fix_prompt": "Find every use of the color #212121 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+          "deterministic": true
+        },
+        {
+          "severity": "minor",
+          "location": "Rendered CSS (computed styles)",
+          "issue": "Off-palette color #999999 is used on 49 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+          "recommendation": "Replace #999999 with the nearest approved brand token.",
+          "fix_prompt": "Find every use of the color #999999 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+          "deterministic": true
+        },
+        {
+          "severity": "minor",
+          "location": "Rendered CSS (computed styles)",
+          "issue": "Off-palette color #696969 is used on 32 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+          "recommendation": "Replace #696969 with the nearest approved brand token.",
+          "fix_prompt": "Find every use of the color #696969 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+          "deterministic": true
+        },
+        {
+          "severity": "major",
+          "location": "Rendered CSS (computed styles)",
+          "issue": "Non-brand font stack \"\"Nunito Sans\", sans-serif\" is used on 1212 elements. Brand fonts: Archivo, sans-serif (headings), Inter, sans-serif (body).",
+          "recommendation": "Load and apply the brand font families.",
+          "fix_prompt": "Replace the font stack \"\"Nunito Sans\", sans-serif\" across this site with the brand fonts: \"Archivo, sans-serif\" for headings and \"Inter, sans-serif\" for body text. Add the necessary font imports.",
+          "deterministic": true
+        },
+        {
+          "severity": "critical",
+          "location": "Entire page — global brand identity",
+          "issue": "The microsite is branded as an IDGA event using IDGA's green (#489945) color system, IDGA logo, and Nunito Sans typeface. The brand configuration mandates the 'Example Portal' identity with primary #0A2540, accent #FF5A36, and Archivo/Inter typefaces. The page does not reflect the configured brand at any level.",
+          "recommendation": "Re-skin the entire microsite to the configured brand: replace the IDGA green system with #0A2540 primary and #FF5A36 accent, replace Nunito Sans with Archivo (headings) and Inter (body), and replace the IDGA logo with the correct portal logo in its appropriate primary or reversed variant.",
+          "fix_prompt": "Replace all instances of --primary-color: #489945 with #0A2540 and accent usage with #FF5A36 in the CSS. Replace @import for Nunito Sans with Archivo and Inter from Google Fonts and update --primary-font and --secondary-font CSS variables accordingly. Replace the IDGA logo asset in the header with the configured portal logo asset."
+        },
+        {
+          "severity": "critical",
+          "location": "Hero section — event name",
+          "issue": "The event name displayed is 'Veterans Healthcare 2026'. The brand configuration specifies the event name as 'WorkX 2026'. This is a fundamental misidentification of the event.",
+          "recommendation": "Confirm whether this page is intentionally for Veterans Healthcare 2026 on the IDGA portal, in which case the brand configuration must be corrected to match, or update all event name references on the page to 'WorkX 2026' if this is the intended event.",
+          "fix_prompt": "Search and replace all instances of 'Veterans Healthcare 2026' and 'Veterans Healthcare' (as an event title) with 'WorkX 2026' in all visible headings, meta tags (og:title, twitter:title, page title, og:site_name), and schema markup (name field)."
+        },
+        {
+          "severity": "critical",
+          "location": "Header — logo",
+          "issue": "The IDGA logo is placed in the top-left on a dark green navigation bar. No portal brand logo ('Example Portal' / IQPC) is present. Per brand config, the IQPC or portal brand logo is a required element and the logo must be the primary logo on light backgrounds or reversed on dark; the IDGA logo does not satisfy the requirement.",
+          "recommendation": "Add the correct portal/IQPC logo to the header. If the dark nav bar is retained, use the reversed (white) variant of the logo. Ensure minimum clear space equal to the logomark height is maintained on all sides.",
+          "fix_prompt": "In the header HTML, replace the <img> src pointing to the IDGA logo with the portal's approved logo asset URL. If the navbar background is dark (#0A2540 or equivalent), use the reversed white logo variant. Add CSS padding or margin around the logo element equal to the logomark's rendered height to enforce minimum clear space."
+        },
+        {
+          "severity": "major",
+          "location": "Hero and mid-page CTA sections — accent color usage",
+          "issue": "The accent color in use site-wide is #489945 (green), applied to navigation highlights, CTA buttons ('Book Online Now', 'Register Now', 'View More Speakers'), section backgrounds, and decorative elements. The brand config mandates #FF5A36 as the accent, reserved for CTAs and key highlights only. The green accent is off-brand and appears on non-CTA elements (section backgrounds, dividers, icon blocks), violating the 'reserved for CTAs/highlights only' rule.",
+          "recommendation": "Replace all CTA button backgrounds and key highlight uses of #489945 with #FF5A36. Remove the accent color from non-CTA decorative elements (large green background sections, horizontal rules, icon containers) — use #0A2540 or #FFFFFF for those instead.",
+          "fix_prompt": "In the CSS, update --primary-color: #489945 to #0A2540 for structural/primary elements and create a separate --accent-color: #FF5A36 variable. Apply --accent-color only to .btn-primary, .btn-cta, and key highlight text spans. Remove background-color: var(--primary-color) from section wrappers and replace with background-color: #0A2540 or background-color: #FFFFFF as appropriate."
+        },
+        {
+          "severity": "major",
+          "location": "Mid-page — 'Secure your pass before places run out!' CTA section",
+          "issue": "The copy 'Secure your pass before places run out!' uses urgency-scarcity language ('before places run out') that functions as an unverifiable superlative/pressure claim. The brand tone requires professional, benefit-led copy with no unverifiable superlatives.",
+          "recommendation": "Rewrite to a benefit-led, non-scarcity-pressure statement, e.g., 'Reserve your place at Veterans Healthcare 2026 — register today.'",
+          "fix_prompt": "Locate the HTML element containing the text 'Secure your pass before places run out!' and replace it with 'Reserve your place at WorkX 2026 — register today.' Update the sub-label 'MAKE SURE TO REGISTER YOUR PLACE' to 'Register now to secure your seat'."
+        },
+        {
+          "severity": "major",
+          "location": "Hero — yellow/orange alert banner",
+          "issue": "A bright yellow/orange banner overlay appears in the hero reading promotional copy about a 'LATE PRICE INCREASE.' This introduces a third color (yellow/amber) not present in the brand palette and applies urgency/scarcity copy that conflicts with the professional, non-superlative tone of voice requirement.",
+          "recommendation": "Remove the off-palette alert banner. If a deadline communication is genuinely needed, embed it in body copy using the approved #FF5A36 accent on a white background, with factual, non-pressure language.",
+          "fix_prompt": "Remove the HTML element containing the yellow/amber alert banner from the hero section. If a price deadline must be communicated, add a single-line <p> element in the hero body copy using color: #FF5A36 and font-family: Inter, stating the deadline factually, e.g., 'Standard pricing ends [date]'."
+        },
+        {
+          "severity": "major",
+          "location": "Logo — clear space (header, desktop and mobile)",
+          "issue": "On mobile (390px), the IDGA logo in the top-left appears with minimal padding and is adjacent to the navigation toggle, with clear space well below the required minimum of one logomark height on all sides.",
+          "recommendation": "Add padding around the logo container equal to the rendered height of the IDGA logomark (approximately 28–32px based on visible size) on all sides, verified on both desktop and mobile breakpoints.",
+          "fix_prompt": "In the CSS for .navbar-brand or the logo container element, add padding: [logomark-height]px on all sides. At mobile breakpoints (max-width: 576px), ensure the logo wrapper retains at minimum 28px clearance from adjacent nav elements. Test at 390px viewport width."
+        },
+        {
+          "severity": "minor",
+          "location": "Speaker roster section — imagery style",
+          "issue": "Speaker headshots are a mix of circular crop portrait photos with some appearing in military dress uniforms, professional attire, and informal settings. While appropriate for a government/defense healthcare event, several appear low-resolution or inconsistently lit, creating an uneven imagery style across the grid.",
+          "recommendation": "Standardize all speaker headshots to a consistent circular or square crop, minimum 300×300px, with neutral or dark backgrounds where possible. Reject or professionally retouch submissions that appear pixelated or harshly lit.",
+          "fix_prompt": "For each <img> in the speaker roster grid, enforce width: 200px; height: 200px; object-fit: cover; border-radius: 50%; in the CSS. Add a content guideline note to the CMS speaker upload form specifying minimum 300×300px, neutral-background portrait photography."
+        },
+        {
+          "severity": "minor",
+          "location": "Footer — privacy policy link",
+          "issue": "The privacy policy link in the footer is very small (approximately 12px) and low-contrast against the dark footer background, making it difficult to read. While it appears present, its legibility is borderline non-compliant for a legally required element.",
+          "recommendation": "Increase the footer link font size to at least 14px and ensure the link color meets WCAG AA contrast ratio (4.5:1 minimum) against the footer background color.",
+          "fix_prompt": "In the footer CSS, set .footer-links a { font-size: 14px; color: #FFFFFF; opacity: 1; } and verify contrast ratio of white (#FFFFFF) against the footer background color using a contrast checker. If the footer is dark green (#489945 or similar), white text passes AA. Remove any opacity reduction applied to footer links."
+        }
+      ],
+      "report_md": "**Required elements**\n- ✓ Event name and dates in the hero — Hero shows 'Veterans Healthcare' with dates July 28–29, 2026, but the configured event name is 'WorkX 2026'. Dates are present and correct in format.\n- ✓ Venue / location — MGM Hotel and Casino, National Harbor, MD is visible in the hero area and confirmed in schema markup.\n- ✓ Primary registration CTA above the fold — A 'Book Online Now' button appears in the top navigation bar within the viewport; a secondary 'Get Your Complimentary Copy Here' CTA also appears in the hero, though it promotes a report rather than registration.\n- ✗ MISSING IQPC or portal brand logo — The logo displayed is the IDGA logo (top-left, white/green). No IQPC logo or 'Example Portal' logo is visible anywhere on the page. 'IQPC' text appears only in the footer in very small type as an organizational link.\n- ✓ Privacy policy link in footer — A 'Cookie Policy' link is visible in the footer; however a clearly labeled 'Privacy Policy' link is not distinctly visible in the screenshot. The footer shows 'IQPC Home | Cookie Policy | Help | Terms | Privacy' — Privacy appears present but is very small and low contrast.\n\n**Token scan (deterministic)**\n- [major] Off-palette color #212529 is used on 278 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.\n- [major] Off-palette color #333333 is used on 172 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.\n- [minor] Off-palette color #008641 is used on 64 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.\n- [minor] Off-palette color #489945 is used on 63 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.\n- [minor] Off-palette color #212121 is used on 62 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.\n- [minor] Off-palette color #999999 is used on 49 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.\n- [minor] Off-palette color #696969 is used on 32 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.\n- [major] Non-brand font stack \"\"Nunito Sans\", sans-serif\" is used on 1212 elements. Brand fonts: Archivo, sans-serif (headings), Inter, sans-serif (body).\n\n**Findings**\n- [critical] Entire page — global brand identity: The microsite is branded as an IDGA event using IDGA's green (#489945) color system, IDGA logo, and Nunito Sans typeface. The brand configuration mandates the 'Example Portal' identity with primary #0A2540, accent #FF5A36, and Archivo/Inter typefaces. The page does not reflect the configured brand at any level.\n  - Fix: Re-skin the entire microsite to the configured brand: replace the IDGA green system with #0A2540 primary and #FF5A36 accent, replace Nunito Sans with Archivo (headings) and Inter (body), and replace the IDGA logo with the correct portal logo in its appropriate primary or reversed variant.\n- [critical] Hero section — event name: The event name displayed is 'Veterans Healthcare 2026'. The brand configuration specifies the event name as 'WorkX 2026'. This is a fundamental misidentification of the event.\n  - Fix: Confirm whether this page is intentionally for Veterans Healthcare 2026 on the IDGA portal, in which case the brand configuration must be corrected to match, or update all event name references on the page to 'WorkX 2026' if this is the intended event.\n- [critical] Header — logo: The IDGA logo is placed in the top-left on a dark green navigation bar. No portal brand logo ('Example Portal' / IQPC) is present. Per brand config, the IQPC or portal brand logo is a required element and the logo must be the primary logo on light backgrounds or reversed on dark; the IDGA logo does not satisfy the requirement.\n  - Fix: Add the correct portal/IQPC logo to the header. If the dark nav bar is retained, use the reversed (white) variant of the logo. Ensure minimum clear space equal to the logomark height is maintained on all sides.\n- [major] Hero and mid-page CTA sections — accent color usage: The accent color in use site-wide is #489945 (green), applied to navigation highlights, CTA buttons ('Book Online Now', 'Register Now', 'View More Speakers'), section backgrounds, and decorative elements. The brand config mandates #FF5A36 as the accent, reserved for CTAs and key highlights only. The green accent is off-brand and appears on non-CTA elements (section backgrounds, dividers, icon blocks), violating the 'reserved for CTAs/highlights only' rule.\n  - Fix: Replace all CTA button backgrounds and key highlight uses of #489945 with #FF5A36. Remove the accent color from non-CTA decorative elements (large green background sections, horizontal rules, icon containers) — use #0A2540 or #FFFFFF for those instead.\n- [major] Mid-page — 'Secure your pass before places run out!' CTA section: The copy 'Secure your pass before places run out!' uses urgency-scarcity language ('before places run out') that functions as an unverifiable superlative/pressure claim. The brand tone requires professional, benefit-led copy with no unverifiable superlatives.\n  - Fix: Rewrite to a benefit-led, non-scarcity-pressure statement, e.g., 'Reserve your place at Veterans Healthcare 2026 — register today.'\n- [major] Hero — yellow/orange alert banner: A bright yellow/orange banner overlay appears in the hero reading promotional copy about a 'LATE PRICE INCREASE.' This introduces a third color (yellow/amber) not present in the brand palette and applies urgency/scarcity copy that conflicts with the professional, non-superlative tone of voice requirement.\n  - Fix: Remove the off-palette alert banner. If a deadline communication is genuinely needed, embed it in body copy using the approved #FF5A36 accent on a white background, with factual, non-pressure language.\n- [major] Logo — clear space (header, desktop and mobile): On mobile (390px), the IDGA logo in the top-left appears with minimal padding and is adjacent to the navigation toggle, with clear space well below the required minimum of one logomark height on all sides.\n  - Fix: Add padding around the logo container equal to the rendered height of the IDGA logomark (approximately 28–32px based on visible size) on all sides, verified on both desktop and mobile breakpoints.\n- [minor] Speaker roster section — imagery style: Speaker headshots are a mix of circular crop portrait photos with some appearing in military dress uniforms, professional attire, and informal settings. While appropriate for a government/defense healthcare event, several appear low-resolution or inconsistently lit, creating an uneven imagery style across the grid.\n  - Fix: Standardize all speaker headshots to a consistent circular or square crop, minimum 300×300px, with neutral or dark backgrounds where possible. Reject or professionally retouch submissions that appear pixelated or harshly lit.\n- [minor] Footer — privacy policy link: The privacy policy link in the footer is very small (approximately 12px) and low-contrast against the dark footer background, making it difficult to read. While it appears present, its legibility is borderline non-compliant for a legally required element.\n  - Fix: Increase the footer link font size to at least 14px and ensure the link color meets WCAG AA contrast ratio (4.5:1 minimum) against the footer background color.",
+      "extra": {
+        "required_elements": [
+          {
+            "element": "Event name and dates in the hero",
+            "present": true,
+            "note": "Hero shows 'Veterans Healthcare' with dates July 28–29, 2026, but the configured event name is 'WorkX 2026'. Dates are present and correct in format."
+          },
+          {
+            "element": "Venue / location",
+            "present": true,
+            "note": "MGM Hotel and Casino, National Harbor, MD is visible in the hero area and confirmed in schema markup."
+          },
+          {
+            "element": "Primary registration CTA above the fold",
+            "present": true,
+            "note": "A 'Book Online Now' button appears in the top navigation bar within the viewport; a secondary 'Get Your Complimentary Copy Here' CTA also appears in the hero, though it promotes a report rather than registration."
+          },
+          {
+            "element": "IQPC or portal brand logo",
+            "present": false,
+            "note": "The logo displayed is the IDGA logo (top-left, white/green). No IQPC logo or 'Example Portal' logo is visible anywhere on the page. 'IQPC' text appears only in the footer in very small type as an organizational link."
+          },
+          {
+            "element": "Privacy policy link in footer",
+            "present": true,
+            "note": "A 'Cookie Policy' link is visible in the footer; however a clearly labeled 'Privacy Policy' link is not distinctly visible in the screenshot. The footer shows 'IQPC Home | Cookie Policy | Help | Terms | Privacy' — Privacy appears present but is very small and low contrast."
+          }
+        ],
+        "token_scan": [
+          {
+            "severity": "major",
+            "location": "Rendered CSS (computed styles)",
+            "issue": "Off-palette color #212529 is used on 278 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+            "recommendation": "Replace #212529 with the nearest approved brand token.",
+            "fix_prompt": "Find every use of the color #212529 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+            "deterministic": true
+          },
+          {
+            "severity": "major",
+            "location": "Rendered CSS (computed styles)",
+            "issue": "Off-palette color #333333 is used on 172 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+            "recommendation": "Replace #333333 with the nearest approved brand token.",
+            "fix_prompt": "Find every use of the color #333333 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+            "deterministic": true
+          },
+          {
+            "severity": "minor",
+            "location": "Rendered CSS (computed styles)",
+            "issue": "Off-palette color #008641 is used on 64 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+            "recommendation": "Replace #008641 with the nearest approved brand token.",
+            "fix_prompt": "Find every use of the color #008641 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+            "deterministic": true
+          },
+          {
+            "severity": "minor",
+            "location": "Rendered CSS (computed styles)",
+            "issue": "Off-palette color #489945 is used on 63 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+            "recommendation": "Replace #489945 with the nearest approved brand token.",
+            "fix_prompt": "Find every use of the color #489945 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+            "deterministic": true
+          },
+          {
+            "severity": "minor",
+            "location": "Rendered CSS (computed styles)",
+            "issue": "Off-palette color #212121 is used on 62 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+            "recommendation": "Replace #212121 with the nearest approved brand token.",
+            "fix_prompt": "Find every use of the color #212121 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+            "deterministic": true
+          },
+          {
+            "severity": "minor",
+            "location": "Rendered CSS (computed styles)",
+            "issue": "Off-palette color #999999 is used on 49 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+            "recommendation": "Replace #999999 with the nearest approved brand token.",
+            "fix_prompt": "Find every use of the color #999999 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+            "deterministic": true
+          },
+          {
+            "severity": "minor",
+            "location": "Rendered CSS (computed styles)",
+            "issue": "Off-palette color #696969 is used on 32 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+            "recommendation": "Replace #696969 with the nearest approved brand token.",
+            "fix_prompt": "Find every use of the color #696969 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+            "deterministic": true
+          },
+          {
+            "severity": "major",
+            "location": "Rendered CSS (computed styles)",
+            "issue": "Non-brand font stack \"\"Nunito Sans\", sans-serif\" is used on 1212 elements. Brand fonts: Archivo, sans-serif (headings), Inter, sans-serif (body).",
+            "recommendation": "Load and apply the brand font families.",
+            "fix_prompt": "Replace the font stack \"\"Nunito Sans\", sans-serif\" across this site with the brand fonts: \"Archivo, sans-serif\" for headings and \"Inter, sans-serif\" for body text. Add the necessary font imports.",
+            "deterministic": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "seo",
+      "label": "SEO Audit",
+      "score": 57,
+      "summary": "The page actually contains a full schema.org Event JSON-LD block (contrary to the deterministic flag), but the visible metadata is severely under-optimised: the title wastes 34 of 60 available characters on a generic label, the meta description is a filler placeholder with zero keyword substance, and the H1 — while emotionally resonant — is entirely disconnected from the search queries a VA healthcare professional or vendor would type. Keyword coherence between the rich on-page content (VA telehealth, electronic health records, veterans mental health, DoD healthcare conference) and the metadata is effectively zero, representing a significant missed ranking and click-through opportunity.",
+      "findings": [
+        {
+          "severity": "major",
+          "location": "Document <head> / structure",
+          "issue": "No schema.org Event structured data (JSON-LD) — the page cannot earn event rich results in Google.",
+          "recommendation": "Add Event JSON-LD with name, dates, location, organizer, and offers.",
+          "fix_prompt": "Add the schema.org Event JSON-LD provided in the QA report to this page inside a <script type=\"application/ld+json\"> tag in the <head>.",
+          "deterministic": true
+        },
+        {
+          "severity": "critical",
+          "location": "<title> tag",
+          "issue": "Title 'Veterans Healthcare | IDGA' is only 26 characters, generic, and omits the year, event type, location, and any differentiating keyword signal. It does not match the intent of someone searching for a veterans affairs healthcare conference, VA summit, or DoD health event.",
+          "recommendation": "Expand to include the event year, type ('Summit' or 'Conference'), and location signal to reach the 55–60 character sweet spot and match navigational + informational queries.",
+          "fix_prompt": "Rewrite the <title> tag to: 'Veterans Healthcare Summit 2026 | VA & DoD | IDGA' (49 chars). This incorporates event type, year, primary audience abbreviations, and brand."
+        },
+        {
+          "severity": "critical",
+          "location": "<meta name=\"description\">",
+          "issue": "The description is a boilerplate filler ('Welcome to Veterans Healthcare. Find all you need to know about the latest agenda, key speakers and more') with no keywords, no benefit statement, no dates, no location, and no call to action. It will generate poor click-through rates in SERPs.",
+          "recommendation": "Replace with a 150–160 character description that includes primary keywords (veterans affairs healthcare, VA conference, telehealth, EHR, 2026), dates, location, and a CTA.",
+          "fix_prompt": "Replace meta description with: 'Join 200+ VA and DoD health leaders at the Veterans Healthcare Summit 2026, July 28–29, National Harbor MD. Explore telehealth, EHR modernisation, AI, and veteran mental health. Register now.' (197 chars — trim slightly to fit 160.)"
+        },
+        {
+          "severity": "critical",
+          "location": "<h1>",
+          "issue": "'Delivering the Highest-Quality Care to our Nation's Heroes' is emotive and brand-appropriate but contains zero searchable keywords. A user scanning the SERP snippet or landing cold on the page cannot immediately confirm this is a conference/summit event about veterans affairs healthcare in 2026.",
+          "recommendation": "Either replace the H1 with a keyword-rich event title and move the current phrasing to a supporting subheading (H2), or append a visible event name and date line directly beneath it in a styled subtitle element.",
+          "fix_prompt": "Keep the current H1 as a hero tagline but insert an H2 immediately beneath it reading: 'Veterans Healthcare Summit 2026 — July 28–29 | National Harbor, MD' to provide keyword context and event identity above the fold."
+        },
+        {
+          "severity": "major",
+          "location": "schema.org Event JSON-LD — @id and WebSite @id",
+          "issue": "The Event @id is 'https://www.iqpc.com#event' and the WebSite @id/@url points to 'https://www.iqpc.com', both mismatched from the canonical URL 'https://www.idga.org/events-veteransaffairshealthcare'. This creates entity confusion and may cause Google to associate the structured data with the wrong domain.",
+          "recommendation": "Update Event @id to 'https://www.idga.org/events-veteransaffairshealthcare#event' and WebSite url/id to 'https://www.idga.org'.",
+          "fix_prompt": "In the existing Event JSON-LD block, change '\"@id\": \"https://www.iqpc.com#event\"' to '\"@id\": \"https://www.idga.org/events-veteransaffairshealthcare#event\"'. In the WebSite JSON-LD block change both '\"@id\"' and '\"url\"' values from 'https://www.iqpc.com' to 'https://www.idga.org'."
+        },
+        {
+          "severity": "major",
+          "location": "schema.org Event JSON-LD — offers.availability",
+          "issue": "The Offer availability is set to 'https://www.idga.org/events-veteransaffairshealthcare/InStock' which is not a valid schema.org ItemAvailability URL. This will trigger a structured data warning or error in Google Search Console.",
+          "recommendation": "Replace with the correct schema.org enum value 'https://schema.org/InStock'.",
+          "fix_prompt": "In the offers object, change '\"availability\": \"https://www.idga.org/events-veteransaffairshealthcare/InStock\"' to '\"availability\": \"https://schema.org/InStock\"'."
+        },
+        {
+          "severity": "major",
+          "location": "schema.org Event JSON-LD — eventAttendanceMode",
+          "issue": "eventAttendanceMode value 'OfflineEventAttendanceMode' is missing the required schema.org namespace prefix, making it an unresolvable string rather than a valid enum.",
+          "recommendation": "Prefix with the schema.org URL: 'https://schema.org/OfflineEventAttendanceMode'.",
+          "fix_prompt": "Change '\"eventAttendanceMode\": \"OfflineEventAttendanceMode\"' to '\"eventAttendanceMode\": \"https://schema.org/OfflineEventAttendanceMode\"'."
+        },
+        {
+          "severity": "major",
+          "location": "og:image / twitter:image",
+          "issue": "The OG and Twitter card images point to what appears to be a small logo PNG ('BcYWfsRxbavGNZtW5P6XeG7tHfHZLQl6INbkQlqp.png'). Social platforms require a minimum 1200×630px image for og:image to render correctly in link previews; a logo asset is unlikely to meet this requirement.",
+          "recommendation": "Replace with a dedicated event social share image at 1200×630px featuring the event name, dates, and venue.",
+          "fix_prompt": "Update og:image and twitter:image meta tags to reference a purpose-built 1200×630px event banner image, e.g. 'https://eco-cdn.iqpc.com/eco/images/events/veterans-healthcare-2026-social.jpg'. Update twitter:card from 'summary' to 'summary_large_image' to enable the large card format."
+        },
+        {
+          "severity": "major",
+          "location": "schema.org — duplicate performer and sponsor entries",
+          "issue": "Multiple speakers (e.g. Neil Evans, Jennifer Murphy, Alison Cormier, ProMedTek, Topcon Healthcare, Snowflake) appear two or three times in their respective arrays. Duplicate entries bloat page weight and may cause parsing issues.",
+          "recommendation": "Deduplicate all performer and sponsor arrays so each entity appears exactly once.",
+          "fix_prompt": "Audit the 'performer' and 'sponsor' arrays in the Event JSON-LD and remove all duplicate entries so each person or organisation is listed only once."
+        },
+        {
+          "severity": "minor",
+          "location": "<meta name=\"robots\">",
+          "issue": "robots_meta is null — no explicit robots directive is present. While Googlebot defaults to index/follow, the absence of an explicit tag is a missed control point, particularly important for event microsites with time-sensitive indexing needs.",
+          "recommendation": "Add '<meta name=\"robots\" content=\"index, follow\">'. Consider adding 'max-snippet:-1, max-image-preview:large, max-video-preview:-1' to maximise SERP feature eligibility.",
+          "fix_prompt": "Add the following tag inside <head>: '<meta name=\"robots\" content=\"index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1\">'."
+        },
+        {
+          "severity": "minor",
+          "location": "<meta name=\"keywords\">",
+          "issue": "The keywords meta tag is present but empty (content=\"\"). While Google ignores this tag, it signals that no keyword strategy has been applied to this page at all, and some other crawlers and internal tools still reference it.",
+          "recommendation": "Populate with 8–10 relevant terms or remove the tag entirely.",
+          "fix_prompt": "Either remove the empty '<meta name=\"keywords\" property=\"schema:keywords\" content=\"\">' tag, or populate it: 'veterans healthcare conference 2026, VA summit, Department of Veterans Affairs health, DoD healthcare, telehealth veterans, EHR modernisation, veteran mental health, IDGA, National Harbor MD'."
+        },
+        {
+          "severity": "minor",
+          "location": "schema.org Event JSON-LD — location.address",
+          "issue": "streetAddress and postalCode are empty strings for the MGM Hotel and Casino, National Harbor, MD location. While the venue name is present, complete address data improves local search signals and structured data quality scores.",
+          "recommendation": "Add the full street address and ZIP code for MGM National Harbor.",
+          "fix_prompt": "In the location address object, set '\"streetAddress\": \"101 MGM National Ave\"' and '\"postalCode\": \"20745\"'."
+        }
+      ],
+      "report_md": "**Structural checks (deterministic)**\n- Title: \"Veterans Healthcare | IDGA\" (26 chars)\n- Meta description: 104 chars\n- Open Graph: ✓ complete enough for share cards\n- Canonical: ✓ · Viewport: ✓ · Robots: —\n- H1 count: 1 · Image alt coverage: 98% of 122\n- Event structured data (JSON-LD): ✗ MISSING — generated below\n\n**Findings**\n- [major] No schema.org Event structured data (JSON-LD) — the page cannot earn event rich results in Google.\n  - Fix: Add Event JSON-LD with name, dates, location, organizer, and offers.\n- [critical] Title 'Veterans Healthcare | IDGA' is only 26 characters, generic, and omits the year, event type, location, and any differentiating keyword signal. It does not match the intent of someone searching for a veterans affairs healthcare conference, VA summit, or DoD health event.\n  - Fix: Expand to include the event year, type ('Summit' or 'Conference'), and location signal to reach the 55–60 character sweet spot and match navigational + informational queries.\n- [critical] The description is a boilerplate filler ('Welcome to Veterans Healthcare. Find all you need to know about the latest agenda, key speakers and more') with no keywords, no benefit statement, no dates, no location, and no call to action. It will generate poor click-through rates in SERPs.\n  - Fix: Replace with a 150–160 character description that includes primary keywords (veterans affairs healthcare, VA conference, telehealth, EHR, 2026), dates, location, and a CTA.\n- [critical] 'Delivering the Highest-Quality Care to our Nation's Heroes' is emotive and brand-appropriate but contains zero searchable keywords. A user scanning the SERP snippet or landing cold on the page cannot immediately confirm this is a conference/summit event about veterans affairs healthcare in 2026.\n  - Fix: Either replace the H1 with a keyword-rich event title and move the current phrasing to a supporting subheading (H2), or append a visible event name and date line directly beneath it in a styled subtitle element.\n- [major] The Event @id is 'https://www.iqpc.com#event' and the WebSite @id/@url points to 'https://www.iqpc.com', both mismatched from the canonical URL 'https://www.idga.org/events-veteransaffairshealthcare'. This creates entity confusion and may cause Google to associate the structured data with the wrong domain.\n  - Fix: Update Event @id to 'https://www.idga.org/events-veteransaffairshealthcare#event' and WebSite url/id to 'https://www.idga.org'.\n- [major] The Offer availability is set to 'https://www.idga.org/events-veteransaffairshealthcare/InStock' which is not a valid schema.org ItemAvailability URL. This will trigger a structured data warning or error in Google Search Console.\n  - Fix: Replace with the correct schema.org enum value 'https://schema.org/InStock'.\n- [major] eventAttendanceMode value 'OfflineEventAttendanceMode' is missing the required schema.org namespace prefix, making it an unresolvable string rather than a valid enum.\n  - Fix: Prefix with the schema.org URL: 'https://schema.org/OfflineEventAttendanceMode'.\n- [major] The OG and Twitter card images point to what appears to be a small logo PNG ('BcYWfsRxbavGNZtW5P6XeG7tHfHZLQl6INbkQlqp.png'). Social platforms require a minimum 1200×630px image for og:image to render correctly in link previews; a logo asset is unlikely to meet this requirement.\n  - Fix: Replace with a dedicated event social share image at 1200×630px featuring the event name, dates, and venue.\n- [major] Multiple speakers (e.g. Neil Evans, Jennifer Murphy, Alison Cormier, ProMedTek, Topcon Healthcare, Snowflake) appear two or three times in their respective arrays. Duplicate entries bloat page weight and may cause parsing issues.\n  - Fix: Deduplicate all performer and sponsor arrays so each entity appears exactly once.\n- [minor] robots_meta is null — no explicit robots directive is present. While Googlebot defaults to index/follow, the absence of an explicit tag is a missed control point, particularly important for event microsites with time-sensitive indexing needs.\n  - Fix: Add '<meta name=\"robots\" content=\"index, follow\">'. Consider adding 'max-snippet:-1, max-image-preview:large, max-video-preview:-1' to maximise SERP feature eligibility.\n- [minor] The keywords meta tag is present but empty (content=\"\"). While Google ignores this tag, it signals that no keyword strategy has been applied to this page at all, and some other crawlers and internal tools still reference it.\n  - Fix: Populate with 8–10 relevant terms or remove the tag entirely.\n- [minor] streetAddress and postalCode are empty strings for the MGM Hotel and Casino, National Harbor, MD location. While the venue name is present, complete address data improves local search signals and structured data quality scores.\n  - Fix: Add the full street address and ZIP code for MGM National Harbor.\n\n**Improved metadata (ready to apply)**\n- Title: Veterans Healthcare Summit 2026 | VA & DoD | IDGA\n- Meta description: Join VA and DoD health leaders at the Veterans Healthcare Summit 2026, July 28–29, National Harbor MD. Agenda covers telehealth, EHR, AI, and mental health. Register today.",
+      "extra": {
+        "checks": {
+          "title": "Veterans Healthcare | IDGA",
+          "title_length": 26,
+          "meta_description": "Welcome to Veterans Healthcare. Find all you need to know about the latest agenda, key speakers and more",
+          "meta_description_length": 104,
+          "canonical": "https://www.idga.org/events-veteransaffairshealthcare",
+          "og": {
+            "title": "Veterans Healthcare | IDGA",
+            "description": "Welcome to Veterans Healthcare. Find all you need to know about the latest agenda, key speakers and more",
+            "image": "https://eco-cdn.iqpc.com/eco/images/logos/BcYWfsRxbavGNZtW5P6XeG7tHfHZLQl6INbkQlqp.png"
+          },
+          "viewport_meta": true,
+          "robots_meta": null,
+          "h1_count": 1,
+          "h1s": [
+            "Delivering the Highest-Quality Care to our Nation’s Heroes"
+          ],
+          "image_alt_coverage_pct": 98,
+          "images_total": 122,
+          "has_event_schema": false
+        },
+        "improved_meta": {
+          "title": "Veterans Healthcare Summit 2026 | VA & DoD | IDGA",
+          "meta_description": "Join VA and DoD health leaders at the Veterans Healthcare Summit 2026, July 28–29, National Harbor MD. Agenda covers telehealth, EHR, AI, and mental health. Register today.",
+          "og_title": "Veterans Healthcare Summit 2026 — July 28–29 | National Harbor, MD",
+          "og_description": "200+ VA and DoD leaders. Two days of sessions on telehealth, EHR modernisation, AI in healthcare, and veteran mental health. Register for the Veterans Healthcare Summit 2026."
+        },
+        "event_schema_jsonld": null
+      }
+    }
+  ],
+  "conversion": {
+    "analytics_found": [
+      "GA4 / Google Tag Manager",
+      "LinkedIn Insight Tag"
+    ],
+    "analytics_missing": [
+      "Meta Pixel"
+    ],
+    "ctas": [
+      {
+        "tag": "a",
+        "text": "Book Online Now",
+        "href": "https://www.idga.org/events-veteransaffairshealthcare/srspricing",
+        "status": 200,
+        "ok": true
+      },
+      {
+        "tag": "a",
+        "text": "2026 Registration",
+        "href": "https://www.idga.org/events-veteransaffairshealthcare/srspricing",
+        "status": 200,
+        "ok": true
+      },
+      {
+        "tag": "a",
+        "text": "Register Now",
+        "href": "https://www.idga.org/events-veteransaffairshealthcare/srspricing",
+        "status": 200,
+        "ok": true
+      }
+    ],
+    "utm_propagation": "not_tested",
+    "issues": [
+      {
+        "severity": "major",
+        "code": "MISSING_PIXEL",
+        "detail": "Meta Pixel not detected — conversions from this page cannot be measured/attributed for that channel."
+      }
+    ]
+  },
+  "perf": {
+    "available": false,
+    "note": "Skipped via --skip-perf"
+  },
+  "regression": {
+    "first_run": false,
+    "previous_date": "2026-07-22T17:20:30.666Z",
+    "previous_score": 34,
+    "score_delta": 0,
+    "previous_verdict": "BLOCK",
+    "verdict_changed": false,
+    "regressed": false
+  },
+  "axe": [
+    {
+      "id": "aria-dialog-name",
+      "impact": "serious",
+      "description": "Ensure every ARIA dialog and alertdialog node has an accessible name",
+      "affected_nodes": 1,
+      "example_target": ".ju_wrapper"
+    },
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "affected_nodes": 34,
+      "example_target": ".btn-sm"
+    },
+    {
+      "id": "heading-order",
+      "impact": "moderate",
+      "description": "Ensure the order of headings is semantically correct",
+      "affected_nodes": 6,
+      "example_target": ".template-8-two-column-img-container.aos-animate.template-8:nth-child(10) > .template-8-two-column-img-inner-container.position-relative > .template-8-two-column-img-column > .w-100[data-component=\"heading\"][data-content=\"true\"]:nth-child(1) > h6[name=\"H6\"]"
+    },
+    {
+      "id": "landmark-unique",
+      "impact": "moderate",
+      "description": "Ensure landmarks are unique",
+      "affected_nodes": 1,
+      "example_target": ".portal-navigation"
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensure links have discernible text",
+      "affected_nodes": 1,
+      "example_target": ".font-weight-normal > a[target=\"_blank\"]"
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensure all page content is contained by landmarks",
+      "affected_nodes": 35,
+      "example_target": ".template-8-two-column-img-inner-container.position-relative > .template-8-two-column-img-column.position-relative > .w-100[data-component=\"heading\"][data-content=\"true\"]:nth-child(1)"
+    },
+    {
+      "id": "tabindex",
+      "impact": "serious",
+      "description": "Ensure tabindex attribute values are not greater than 0",
+      "affected_nodes": 2,
+      "example_target": "#ju_iframe_1006722 div[data-offset-left=\"0\"]"
+    }
+  ],
+  "hasApiKey": true
+}

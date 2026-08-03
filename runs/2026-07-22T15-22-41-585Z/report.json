@@ -1,0 +1,73 @@
+{
+  "url": "https://www.ssonetwork.com/events-workx",
+  "portal": null,
+  "run": "2026-07-22T15-22-41-585Z",
+  "outDir": "runs/2026-07-22T15-22-41-585Z",
+  "verdict": "BLOCK",
+  "reason": "2 critical conversion issue(s): MISSING_ANALYTICS, NO_REGISTRATION_CTA",
+  "score": null,
+  "agents": [],
+  "conversion": {
+    "analytics_found": [],
+    "analytics_missing": [
+      "GA4 / Google Tag Manager",
+      "Meta Pixel",
+      "LinkedIn Insight Tag"
+    ],
+    "ctas": [],
+    "utm_propagation": "not_tested",
+    "issues": [
+      {
+        "severity": "critical",
+        "code": "MISSING_ANALYTICS",
+        "detail": "GA4 / Google Tag Manager not detected — conversions from this page cannot be measured/attributed for that channel."
+      },
+      {
+        "severity": "major",
+        "code": "MISSING_PIXEL",
+        "detail": "Meta Pixel not detected — conversions from this page cannot be measured/attributed for that channel."
+      },
+      {
+        "severity": "major",
+        "code": "MISSING_PIXEL",
+        "detail": "LinkedIn Insight Tag not detected — conversions from this page cannot be measured/attributed for that channel."
+      },
+      {
+        "severity": "critical",
+        "code": "NO_REGISTRATION_CTA",
+        "detail": "No registration/booking call-to-action was found on the page. The primary conversion path is missing."
+      }
+    ]
+  },
+  "perf": {
+    "available": false,
+    "note": "Skipped via --skip-perf"
+  },
+  "regression": {
+    "first_run": true
+  },
+  "axe": [
+    {
+      "id": "html-has-lang",
+      "impact": "serious",
+      "description": "Ensure every HTML document has a lang attribute",
+      "affected_nodes": 1,
+      "example_target": "html"
+    },
+    {
+      "id": "landmark-one-main",
+      "impact": "moderate",
+      "description": "Ensure the document has a main landmark",
+      "affected_nodes": 1,
+      "example_target": "html"
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensure all page content is contained by landmarks",
+      "affected_nodes": 1,
+      "example_target": "center"
+    }
+  ],
+  "hasApiKey": false
+}

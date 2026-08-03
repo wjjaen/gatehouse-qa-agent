@@ -1,0 +1,110 @@
+{
+  "colors": [
+    {
+      "value": "#FFFFFF",
+      "elements": 404
+    },
+    {
+      "value": "#212529",
+      "elements": 278
+    },
+    {
+      "value": "#333333",
+      "elements": 172
+    },
+    {
+      "value": "#000000",
+      "elements": 93
+    },
+    {
+      "value": "#008641",
+      "elements": 64
+    },
+    {
+      "value": "#489945",
+      "elements": 63
+    },
+    {
+      "value": "#212121",
+      "elements": 62
+    },
+    {
+      "value": "#999999",
+      "elements": 49
+    },
+    {
+      "value": "#696969",
+      "elements": 32
+    },
+    {
+      "value": "#F7F5FF",
+      "elements": 19
+    },
+    {
+      "value": "#EFEFEF",
+      "elements": 16
+    },
+    {
+      "value": "#555555",
+      "elements": 14
+    },
+    {
+      "value": "#3860BE",
+      "elements": 13
+    },
+    {
+      "value": "#666666",
+      "elements": 10
+    },
+    {
+      "value": "#27455C",
+      "elements": 8
+    },
+    {
+      "value": "#E9E9E9",
+      "elements": 4
+    },
+    {
+      "value": "#1F3563",
+      "elements": 3
+    },
+    {
+      "value": "#656565",
+      "elements": 2
+    },
+    {
+      "value": "#77BC43",
+      "elements": 1
+    },
+    {
+      "value": "#0B3952",
+      "elements": 1
+    }
+  ],
+  "fonts": [
+    {
+      "value": "\"Nunito Sans\", sans-serif",
+      "elements": 1212
+    },
+    {
+      "value": "Arial, Helvetica, sans-serif",
+      "elements": 3
+    },
+    {
+      "value": "\"Font Awesome 6 Brands\"",
+      "elements": 2
+    },
+    {
+      "value": "system-ui, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+      "elements": 2
+    },
+    {
+      "value": "\"Font Awesome 6 Free\"",
+      "elements": 1
+    },
+    {
+      "value": "\"Times New Roman\"",
+      "elements": 1
+    }
+  ]
+}

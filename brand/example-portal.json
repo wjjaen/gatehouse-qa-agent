@@ -1,0 +1,29 @@
+{
+  "portal": "Example Portal (replace per IQPC community)",
+  "event": "WorkX 2026",
+  "colors": {
+    "primary": "#0A2540",
+    "accent": "#FF5A36",
+    "background": "#FFFFFF",
+    "text": "#1A1A1A",
+    "notes": "Accent is reserved for CTAs and key highlights only."
+  },
+  "typography": {
+    "headings": "Archivo, sans-serif",
+    "body": "Inter, sans-serif",
+    "scale": [12, 14, 16, 20, 24, 32, 48, 64]
+  },
+  "spacing_scale_px": [4, 8, 16, 24, 32, 48, 64, 96],
+  "logo": {
+    "usage": "Primary logo on light backgrounds only; reversed logo on dark. Never stretched, recolored, or placed over busy imagery without a scrim.",
+    "min_clear_space": "Equal to the height of the logomark on all sides"
+  },
+  "required_elements": [
+    "Event name and dates in the hero",
+    "Venue / location",
+    "Primary registration CTA above the fold",
+    "IQPC or portal brand logo",
+    "Privacy policy link in footer"
+  ],
+  "tone": "Professional, energetic, benefit-led. No exclamation-mark stacking, no unverifiable superlatives."
+}

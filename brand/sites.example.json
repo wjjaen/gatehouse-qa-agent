@@ -1,0 +1,17 @@
+[
+  {
+    "url": "https://staging.example.com/workx-2026",
+    "portal": "WorkX",
+    "brand": "brand/example-portal.json"
+  },
+  {
+    "url": "https://staging.example.com/cx-summit",
+    "portal": "CX Network",
+    "brand": "brand/example-portal.json"
+  },
+  {
+    "url": "https://staging.example.com/pharma-forum",
+    "portal": "Pharma IQ",
+    "brand": "brand/example-portal.json"
+  }
+]

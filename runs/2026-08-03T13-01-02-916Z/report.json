@@ -1,0 +1,88 @@
+{
+  "url": "https://jamesportfolio.site/",
+  "portal": null,
+  "run": "2026-08-03T13-01-02-916Z",
+  "outDir": "runs/2026-08-03T13-01-02-916Z",
+  "verdict": "BLOCK",
+  "reason": "1 critical conversion issue(s): MISSING_ANALYTICS",
+  "score": null,
+  "agents": [
+    {
+      "id": "design",
+      "label": "Design QA",
+      "score": null,
+      "summary": null,
+      "findings": [],
+      "report_md": "",
+      "error": "400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"},\"request_id\":\"req_011CdfrjJA5X6MXAJgMNMSaB\"}"
+    },
+    {
+      "id": "brand",
+      "label": "Brand Compliance",
+      "score": null,
+      "summary": null,
+      "findings": [],
+      "report_md": "",
+      "error": "400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"},\"request_id\":\"req_011CdfrjLHpJpiLq8pUjwUi3\"}"
+    },
+    {
+      "id": "seo",
+      "label": "SEO Audit",
+      "score": null,
+      "summary": null,
+      "findings": [],
+      "report_md": "",
+      "error": "400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"},\"request_id\":\"req_011CdfrjLyjbTsQqKHb9jG3P\"}"
+    }
+  ],
+  "conversion": {
+    "analytics_found": [],
+    "analytics_missing": [
+      "GA4 / Google Tag Manager",
+      "Meta Pixel",
+      "LinkedIn Insight Tag"
+    ],
+    "ctas": [
+      {
+        "tag": "a",
+        "text": "→UX/UI Design2024Taking IQPC Conference Registration From Phone and Email to Onl",
+        "href": "/work/iqpc-conference-registration-checkout",
+        "status": 200,
+        "ok": true
+      }
+    ],
+    "utm_propagation": "not_tested",
+    "issues": [
+      {
+        "severity": "critical",
+        "code": "MISSING_ANALYTICS",
+        "detail": "GA4 / Google Tag Manager not detected — conversions from this page cannot be measured/attributed for that channel."
+      },
+      {
+        "severity": "major",
+        "code": "MISSING_PIXEL",
+        "detail": "Meta Pixel not detected — conversions from this page cannot be measured/attributed for that channel."
+      },
+      {
+        "severity": "major",
+        "code": "MISSING_PIXEL",
+        "detail": "LinkedIn Insight Tag not detected — conversions from this page cannot be measured/attributed for that channel."
+      }
+    ]
+  },
+  "perf": {
+    "available": false,
+    "note": "Skipped via --skip-perf"
+  },
+  "regression": {
+    "first_run": false,
+    "previous_date": "2026-08-02T20:10:20.174Z",
+    "previous_score": 36,
+    "score_delta": -36,
+    "previous_verdict": "BLOCK",
+    "verdict_changed": false,
+    "regressed": true
+  },
+  "axe": [],
+  "hasApiKey": true
+}

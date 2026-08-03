@@ -1,0 +1,844 @@
+{
+  "url": "https://www.cxnetwork.com/events-customer-experience-exchange-retail-uk",
+  "portal": null,
+  "run": "2026-07-22T18-12-08-894Z",
+  "outDir": "runs/2026-07-22T18-12-08-894Z",
+  "verdict": "BLOCK",
+  "reason": "3 critical/serious accessibility violation(s) (axe-core)",
+  "score": 43,
+  "agents": [
+    {
+      "id": "design",
+      "label": "Design QA",
+      "score": 52,
+      "summary": "The CX Retail Exchange UK microsite is functional and contains most required elements, but presents as a template-assembled page rather than a designed one. Brand color inconsistencies (cyan/pink CTAs instead of the configured accent #FF5A36), an uncontrolled type scale mixing Raleway with no evidence of Archivo/Inter, and visibly uneven spacing throughout the page all undercut the professional tone the event warrants. Mobile stacking is broadly intact but several sections lose hierarchy and touch targets feel cramped.",
+      "findings": [
+        {
+          "severity": "major",
+          "location": "Layout & grid · Featured article / two-column split section, desktop (~400px from top)",
+          "issue": "The left image column and right text column are not vertically aligned at their tops — the image bleeds lower than the text block, and the two halves sit at different vertical anchors, breaking the grid row.",
+          "recommendation": "Apply `align-items: stretch` or `align-items: start` consistently to the flex/grid row container so both columns share the same top edge.",
+          "fix_prompt": "In the two-column section that contains the event photo on the left and 'Powering Personalisation' body text on the right, add `align-items: start` to the parent row container and ensure both columns use the same top padding value (e.g. 48px) so they share a common top edge."
+        },
+        {
+          "severity": "major",
+          "location": "Layout & grid · Past Sponsors grid, desktop",
+          "issue": "Sponsor logos are sized inconsistently — some logos (e.g. 'Labs', 'Profound') render at very large text sizes while others (e.g. 'SIERRA', 'Simple AI') use actual image assets, creating a visually jagged, non-grid-aligned row.",
+          "recommendation": "Constrain all sponsor logos to a uniform container height (e.g. 48px) with object-fit: contain and center-align them vertically within a consistent grid column.",
+          "fix_prompt": "In the 'Our Past Sponsors' section, set a fixed height of 48px and width of auto on every sponsor logo `<img>` element, add `object-fit: contain` and `display: block; margin: auto` so all logos are uniformly sized and vertically centered within their grid cells."
+        },
+        {
+          "severity": "minor",
+          "location": "Layout & grid · Photo Gallery section, desktop (near bottom)",
+          "issue": "The photo grid mixes a wide left image with a narrow right column of two stacked images, and the 'Request your invite' CTA card floats without clear grid anchoring — its right edge does not align to the section container boundary.",
+          "recommendation": "Define a 3 or 4-column CSS grid for the gallery and place the CTA card as a proper grid cell so all edges align to the grid tracks.",
+          "fix_prompt": "Convert the Photo Gallery section to a CSS grid with `grid-template-columns: 2fr 1fr 1fr` and place the CTA card in the third column spanning both rows so its edges align to the grid, removing any absolute or ad-hoc positioning."
+        },
+        {
+          "severity": "major",
+          "location": "Typography · Global / entire page",
+          "issue": "The brand config specifies Archivo for headings and Inter for body text. The page CSS loads and applies Raleway for both headings and body copy. No evidence of Archivo or Inter is present in the stylesheet.",
+          "recommendation": "Import Archivo and Inter from Google Fonts and update the CSS custom properties: `--primary-font: 'Archivo', sans-serif` and `--secondary-font: 'Inter', sans-serif`.",
+          "fix_prompt": "In the `<style data-dynamic>` block, replace the @import for Raleway with `@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;800&family=Inter:wght@400;600&display=swap')` and update `--primary-font: 'Archivo', sans-serif` and `--secondary-font: 'Inter', sans-serif`."
+        },
+        {
+          "severity": "major",
+          "location": "Typography · Hero section, desktop — event date/location line",
+          "issue": "The date and location text ('30 June – 1 July 2027, London, UK') renders at a size that appears nearly equal to the value-proposition subheadline below it, flattening the heading hierarchy in the most critical section of the page.",
+          "recommendation": "Differentiate the date/location line by using a smaller weight or size (e.g. 14–16px, regular weight) relative to the event name (48px) and subheadline (20–24px).",
+          "fix_prompt": "For the element with class `.cta-event-date` inside the hero, set `font-size: 15px; font-weight: 400; letter-spacing: 0.05em; text-transform: uppercase` to visually subordinate it to the event name and value proposition headlines."
+        },
+        {
+          "severity": "major",
+          "location": "Typography · Body content sections (e.g. 'Secure Your Place' banner, 'Wondering what's in store?' section)",
+          "issue": "Heading sizes throughout the mid-page sections appear to use 4–5 different arbitrary sizes that do not map to the defined type scale [12,14,16,20,24,32,48,64]px — several section headings look visually equivalent to body text, destroying hierarchy.",
+          "recommendation": "Audit all heading elements and assign sizes strictly from the brand type scale: H1=48px, H2=32px, H3=24px, H4=20px, body=16px, captions=14px.",
+          "fix_prompt": "Add a global style rule: `h1 { font-size: 48px } h2 { font-size: 32px } h3 { font-size: 24px } h4 { font-size: 20px } p, li { font-size: 16px; line-height: 1.6 } .caption, small { font-size: 14px }` and remove all inline font-size overrides that deviate from these values."
+        },
+        {
+          "severity": "minor",
+          "location": "Typography · Speaker cards, desktop",
+          "issue": "Speaker name and job title are rendered in nearly the same font size and weight, making it hard to distinguish name from title at a glance.",
+          "recommendation": "Set speaker name to 16px/700 weight and title to 13px/400 weight in a muted colour (#555) to create clear name-to-title separation.",
+          "fix_prompt": "In the speaker card component, apply `font-size: 16px; font-weight: 700; color: #1A1A1A` to the name element and `font-size: 13px; font-weight: 400; color: #555555` to the title/company element."
+        },
+        {
+          "severity": "major",
+          "location": "Spacing & rhythm · Mid-page sections (Benefits, Sponsorship, Article rows), desktop",
+          "issue": "Vertical spacing between sections is inconsistent — some sections feel tightly packed (the 'Benefits of Attending' and 'Benefits of Sponsoring' headings have almost no top margin from the preceding video strip), while others have large unexplained voids (the quote/testimonial pink section).",
+          "recommendation": "Apply a consistent inter-section gap of 64px or 96px (from the brand spacing scale) using section padding, and remove ad-hoc margins that create irregular rhythm.",
+          "fix_prompt": "Add a global CSS rule: `.page-section { padding-top: 64px; padding-bottom: 64px; }` and apply the class `page-section` to every major section container, removing existing inconsistent inline padding/margin overrides."
+        },
+        {
+          "severity": "major",
+          "location": "Spacing & rhythm · 'Secure Your Place' pink CTA banner, desktop",
+          "issue": "The banner text is cramped against the left edge with insufficient left padding, while the CTA button on the right has excessive surrounding whitespace — padding is asymmetric and not drawn from the spacing scale.",
+          "recommendation": "Set symmetric horizontal padding of 48px on both sides of the banner container and ensure the button has equal top/bottom padding (13px per the existing btn rule).",
+          "fix_prompt": "On the 'Secure Your Place' banner container element, set `padding: 32px 48px` and ensure the inner flexbox has `align-items: center; justify-content: space-between` so text and button are evenly distributed with consistent padding on both sides."
+        },
+        {
+          "severity": "minor",
+          "location": "Spacing & rhythm · Speaker grid, desktop",
+          "issue": "The gap between speaker cards is noticeably smaller than the gap between the speaker grid and the 'View Past Speakers' CTA button below it — proximity grouping is inconsistent.",
+          "recommendation": "Set card-to-card gap to 24px and card-grid-to-CTA gap to 32px so the CTA reads as belonging to the section but with a clear hierarchical separation.",
+          "fix_prompt": "On the speakers grid container, set `gap: 24px; margin-bottom: 32px` and ensure the 'View Past Speakers' button sits directly below with `margin-top: 0` (relying on the grid's margin-bottom for spacing)."
+        },
+        {
+          "severity": "major",
+          "location": "Visual hierarchy · Hero section, desktop",
+          "issue": "There are three CTA buttons in the hero ('Request Your Invite', 'Download Post Event Report', 'Become a Sponsor') rendered at similar visual weights. The primary registration CTA should be dominant; the secondary and tertiary CTAs compete with it equally.",
+          "recommendation": "Style 'Request Your Invite' as the filled accent button (#FF5A36 background, white text), 'Download Post Event Report' as a ghost/outline button, and 'Become a Sponsor' as a text link or tertiary ghost to establish clear CTA priority.",
+          "fix_prompt": "In the hero CTA row, add class `btn-primary` only to the 'Request Your Invite' button with `background-color: #FF5A36; color: #ffffff; border: none`, change 'Download Post Event Report' to `btn-outline` with `border: 2px solid #ffffff; background: transparent; color: #ffffff`, and change 'Become a Sponsor' to a plain text link styled `color: #ffffff; text-decoration: underline; font-weight: 600`."
+        },
+        {
+          "severity": "major",
+          "location": "Visual hierarchy · Mid-page CTA buttons (multiple sections)",
+          "issue": "CTAs throughout the page use cyan (#00c9ff), pink (#ff3fb1), and magenta colours that are not in the brand palette. These arbitrary colours create a fairground effect and dilute the visual weight hierarchy.",
+          "recommendation": "Replace all CTA button colours with the brand accent #FF5A36 for primary actions and #0A2540 for secondary actions, removing the cyan and pink values from the CSS variables.",
+          "fix_prompt": "In the `:root` CSS block, change `--primary-color: #FF5A36`, `--primary-color-hover: #e04a28`, `--secondary-color: #0A2540`, `--secondary-color-hover: #0d3360`. Remove the cyan and pink values entirely so all buttons inherit the correct brand palette."
+        },
+        {
+          "severity": "minor",
+          "location": "Visual hierarchy · Article/blog card row near bottom, desktop",
+          "issue": "'READ NOW' links on the three article cards are styled identically to section headings in weight, making it ambiguous which text is a heading and which is a CTA.",
+          "recommendation": "Style 'READ NOW' as a small caps or underlined link at 13–14px rather than a bold block that matches heading weight.",
+          "fix_prompt": "On all `.read-now` or equivalent CTA link elements in the article cards, apply `font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #FF5A36; text-decoration: underline` to differentiate them from headings."
+        },
+        {
+          "severity": "major",
+          "location": "Consistency · CTA buttons, global",
+          "issue": "Buttons across the page use at least five different background colours (cyan, pink, magenta, dark navy, white/outline) with no apparent rule governing which colour is used where. This is not a consistent component system.",
+          "recommendation": "Define a maximum of three button variants (primary, secondary, ghost) and enforce them globally, as noted in the Visual Hierarchy axis.",
+          "fix_prompt": "Audit every `<a class='btn'>` and `<button>` element on the page and replace colour-specific inline styles or ad-hoc classes with one of three canonical classes: `btn-primary` (accent fill), `btn-secondary` (dark fill), or `btn-ghost` (transparent with border). Delete any CSS classes not mapping to these three variants."
+        },
+        {
+          "severity": "major",
+          "location": "Consistency · Section background treatments, global",
+          "issue": "The page alternates between white, light grey, dark gradient, pink/magenta, and a gradient purple-to-pink background — at least 6 distinct background treatments with no discernible system. This creates a garish patchwork appearance.",
+          "recommendation": "Limit background treatments to three: white (#FFFFFF), light grey (#F5F6F7), and brand dark (#0A2540). Reserve gradient or accent backgrounds for one hero section only.",
+          "fix_prompt": "Replace all section `background` declarations that use pink, magenta, cyan, or purple gradient values with either `background: #ffffff`, `background: #F5F6F7`, or `background: #0A2540` depending on whether the section needs light, subtle, or dark treatment. Remove the pink and gradient background values entirely."
+        },
+        {
+          "severity": "minor",
+          "location": "Consistency · Speaker cards vs. article cards, desktop",
+          "issue": "Speaker cards use circular portrait crops while article cards use rectangular image crops — this is acceptable — but the card container border-radius, shadow, and padding differ between speaker cards and sponsor cards in a way that makes them look like they came from different component libraries.",
+          "recommendation": "Define a single card token (e.g. border-radius: 8px, box-shadow: 0 2px 8px rgba(0,0,0,0.08), padding: 16px) and apply it uniformly to all card-type components.",
+          "fix_prompt": "Create a CSS class `.event-card { border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); padding: 16px; background: #ffffff; }` and apply it to all card elements (speaker cards, article cards, sponsor cards), removing conflicting individual card styles."
+        },
+        {
+          "severity": "major",
+          "location": "Responsive integrity · Past Sponsors grid, mobile",
+          "issue": "On mobile, sponsor logos that are rendered as large text strings ('Labs', 'Profound') wrap awkwardly and appear disproportionately large relative to the image-based logos beside them, disrupting the sponsor row layout.",
+          "recommendation": "Ensure all sponsor entries are image assets at a consistent container height (40px) so they stack cleanly in a 2- or 3-column grid on mobile.",
+          "fix_prompt": "In the sponsors section, wrap each sponsor in a `<div style='width:50%; padding:12px; display:flex; align-items:center; justify-content:center;'>` for mobile (using a 2-column flex-wrap layout) and enforce `max-height: 40px; width: auto; object-fit: contain` on every sponsor `<img>`, converting any text-only sponsors to logo image assets."
+        },
+        {
+          "severity": "major",
+          "location": "Responsive integrity · 'Benefits of Attending' and 'Benefits of Sponsoring' sections, mobile",
+          "issue": "On mobile these two sections stack vertically as expected, but both heading texts ('Benefits of Attending a CX Retail Exchange' and 'Benefits of Sponsoring a CX Retail Exchange') are cut to approximately the same visual weight as the body text below — there is no mobile-specific heading size reduction, causing both to feel like the same level.",
+          "recommendation": "Ensure H2/H3 elements in these sections still render visibly larger than body text on mobile — a minimum of 24px for section headings vs. 15-16px for body text.",
+          "fix_prompt": "Add a responsive rule: `@media (max-width: 768px) { .benefits-section h2 { font-size: 24px; line-height: 1.3; margin-bottom: 16px; } .benefits-section p { font-size: 15px; line-height: 1.6; } }` replacing `.benefits-section` with the actual section class name."
+        },
+        {
+          "severity": "minor",
+          "location": "Responsive integrity · Hero, mobile",
+          "issue": "On mobile the hero CTA buttons stack vertically which is correct, but the 'Download Post Event Report' button text appears to be close to wrapping or is slightly cut at the right edge at 390px width.",
+          "recommendation": "Ensure hero buttons on mobile have a max-width of 100% and padding that allows the longest button label to fit on one line, or allow the label to wrap gracefully to two lines.",
+          "fix_prompt": "Add `@media (max-width: 480px) { .hero .btn { width: 100%; max-width: 100%; white-space: normal; text-align: center; padding: 12px 16px; } }` to ensure all hero CTA buttons are full-width and text wraps cleanly on narrow screens."
+        },
+        {
+          "severity": "critical",
+          "location": "Visual accessibility · Hero section — text over background image, desktop and mobile",
+          "issue": "The event name and supporting text in the hero are rendered over a photographic background image without a sufficiently dark scrim. In areas where the image is light (faces, bright clothing), the white text becomes difficult to read. The axe-core report confirms 17 nodes with contrast failures, and `.btn-primary` elements are among them.",
+          "recommendation": "Add a semi-transparent dark overlay to the hero image container: `background: linear-gradient(to bottom, rgba(10,37,64,0.65) 0%, rgba(10,37,64,0.45) 100%)` so all text achieves minimum 4.5:1 contrast against the image.",
+          "fix_prompt": "On the hero section's image container, add a pseudo-element or overlay div: `.hero-overlay { position: absolute; inset: 0; background: rgba(10, 37, 64, 0.60); z-index: 1; }` and ensure all hero text and button elements have `position: relative; z-index: 2` so they render above the scrim."
+        },
+        {
+          "severity": "critical",
+          "location": "Visual accessibility · Primary CTA buttons, global (e.g. 'Request Your Invite', 'Find Out More')",
+          "issue": "The cyan (#00c9ff) primary button colour on a white background and white text on cyan both fail WCAG AA contrast (the axe-core report confirms .btn-primary contrast failures). This makes CTA text unreadable for users with low vision.",
+          "recommendation": "Change button background to brand accent #FF5A36 with white text — this pairing achieves approximately 3.8:1 which is borderline; alternatively use #0A2540 (dark navy) background with white text which achieves >10:1.",
+          "fix_prompt": "In the CSS `:root` block, set `--primary-color: #0A2540` and `--primary-color-hover: #FF5A36`. Update `.btn-primary { background-color: var(--primary-color); color: #ffffff; }` and `.btn-primary:hover { background-color: var(--primary-color-hover); color: #ffffff; }` to ensure all primary buttons meet WCAG AA contrast."
+        },
+        {
+          "severity": "major",
+          "location": "Visual accessibility · Testimonial / quote section — pink/magenta gradient background, desktop",
+          "issue": "The quote text and attribution are rendered in white over a bright pink-to-magenta gradient. The lighter magenta areas of the gradient likely fall below 4.5:1 contrast ratio for normal-weight body text.",
+          "recommendation": "Darken the gradient stops so the lightest point is no lighter than #C2185B equivalent, or add a semi-transparent dark overlay, or change text to a dark colour (#1A1A1A) if the background is lightened.",
+          "fix_prompt": "On the testimonial section, change the background to `background: linear-gradient(135deg, #8B0057 0%, #B0003A 100%)` so the gradient stays dark enough for white text to achieve at least 4.5:1 contrast throughout. Then verify with a contrast checker before publishing."
+        },
+        {
+          "severity": "major",
+          "location": "Visual accessibility · Footer — small print and links",
+          "issue": "Footer text (Privacy Policy, Cookie Policy, T&Cs links and contact details) appears to be rendered at approximately 11–12px in a mid-grey colour over a dark background. At this size WCAG requires enhanced contrast (7:1 for AAA, or ensure at least 4.5:1 at AA for small text).",
+          "recommendation": "Increase footer small text to a minimum of 14px and ensure colour contrast of footer links against the footer background is at least 4.5:1.",
+          "fix_prompt": "In the footer CSS, set `footer .footer-links a, footer .footer-small-text { font-size: 14px; color: #d0d0d0; }` and `footer { background-color: #0A2540; }` to ensure the #d0d0d0-on-#0A2540 pairing meets WCAG AA contrast for small text."
+        }
+      ],
+      "report_md": "**Layout & grid — 3/7**\n- [major] Featured article / two-column split section, desktop (~400px from top): The left image column and right text column are not vertically aligned at their tops — the image bleeds lower than the text block, and the two halves sit at different vertical anchors, breaking the grid row.\n  - Fix: Apply `align-items: stretch` or `align-items: start` consistently to the flex/grid row container so both columns share the same top edge.\n- [major] Past Sponsors grid, desktop: Sponsor logos are sized inconsistently — some logos (e.g. 'Labs', 'Profound') render at very large text sizes while others (e.g. 'SIERRA', 'Simple AI') use actual image assets, creating a visually jagged, non-grid-aligned row.\n  - Fix: Constrain all sponsor logos to a uniform container height (e.g. 48px) with object-fit: contain and center-align them vertically within a consistent grid column.\n- [minor] Photo Gallery section, desktop (near bottom): The photo grid mixes a wide left image with a narrow right column of two stacked images, and the 'Request your invite' CTA card floats without clear grid anchoring — its right edge does not align to the section container boundary.\n  - Fix: Define a 3 or 4-column CSS grid for the gallery and place the CTA card as a proper grid cell so all edges align to the grid tracks.\n**Typography — 3/7**\n- [major] Global / entire page: The brand config specifies Archivo for headings and Inter for body text. The page CSS loads and applies Raleway for both headings and body copy. No evidence of Archivo or Inter is present in the stylesheet.\n  - Fix: Import Archivo and Inter from Google Fonts and update the CSS custom properties: `--primary-font: 'Archivo', sans-serif` and `--secondary-font: 'Inter', sans-serif`.\n- [major] Hero section, desktop — event date/location line: The date and location text ('30 June – 1 July 2027, London, UK') renders at a size that appears nearly equal to the value-proposition subheadline below it, flattening the heading hierarchy in the most critical section of the page.\n  - Fix: Differentiate the date/location line by using a smaller weight or size (e.g. 14–16px, regular weight) relative to the event name (48px) and subheadline (20–24px).\n- [major] Body content sections (e.g. 'Secure Your Place' banner, 'Wondering what's in store?' section): Heading sizes throughout the mid-page sections appear to use 4–5 different arbitrary sizes that do not map to the defined type scale [12,14,16,20,24,32,48,64]px — several section headings look visually equivalent to body text, destroying hierarchy.\n  - Fix: Audit all heading elements and assign sizes strictly from the brand type scale: H1=48px, H2=32px, H3=24px, H4=20px, body=16px, captions=14px.\n- [minor] Speaker cards, desktop: Speaker name and job title are rendered in nearly the same font size and weight, making it hard to distinguish name from title at a glance.\n  - Fix: Set speaker name to 16px/700 weight and title to 13px/400 weight in a muted colour (#555) to create clear name-to-title separation.\n**Spacing & rhythm — 3/7**\n- [major] Mid-page sections (Benefits, Sponsorship, Article rows), desktop: Vertical spacing between sections is inconsistent — some sections feel tightly packed (the 'Benefits of Attending' and 'Benefits of Sponsoring' headings have almost no top margin from the preceding video strip), while others have large unexplained voids (the quote/testimonial pink section).\n  - Fix: Apply a consistent inter-section gap of 64px or 96px (from the brand spacing scale) using section padding, and remove ad-hoc margins that create irregular rhythm.\n- [major] 'Secure Your Place' pink CTA banner, desktop: The banner text is cramped against the left edge with insufficient left padding, while the CTA button on the right has excessive surrounding whitespace — padding is asymmetric and not drawn from the spacing scale.\n  - Fix: Set symmetric horizontal padding of 48px on both sides of the banner container and ensure the button has equal top/bottom padding (13px per the existing btn rule).\n- [minor] Speaker grid, desktop: The gap between speaker cards is noticeably smaller than the gap between the speaker grid and the 'View Past Speakers' CTA button below it — proximity grouping is inconsistent.\n  - Fix: Set card-to-card gap to 24px and card-grid-to-CTA gap to 32px so the CTA reads as belonging to the section but with a clear hierarchical separation.\n**Visual hierarchy — 4/7**\n- [major] Hero section, desktop: There are three CTA buttons in the hero ('Request Your Invite', 'Download Post Event Report', 'Become a Sponsor') rendered at similar visual weights. The primary registration CTA should be dominant; the secondary and tertiary CTAs compete with it equally.\n  - Fix: Style 'Request Your Invite' as the filled accent button (#FF5A36 background, white text), 'Download Post Event Report' as a ghost/outline button, and 'Become a Sponsor' as a text link or tertiary ghost to establish clear CTA priority.\n- [major] Mid-page CTA buttons (multiple sections): CTAs throughout the page use cyan (#00c9ff), pink (#ff3fb1), and magenta colours that are not in the brand palette. These arbitrary colours create a fairground effect and dilute the visual weight hierarchy.\n  - Fix: Replace all CTA button colours with the brand accent #FF5A36 for primary actions and #0A2540 for secondary actions, removing the cyan and pink values from the CSS variables.\n- [minor] Article/blog card row near bottom, desktop: 'READ NOW' links on the three article cards are styled identically to section headings in weight, making it ambiguous which text is a heading and which is a CTA.\n  - Fix: Style 'READ NOW' as a small caps or underlined link at 13–14px rather than a bold block that matches heading weight.\n**Consistency — 3/7**\n- [major] CTA buttons, global: Buttons across the page use at least five different background colours (cyan, pink, magenta, dark navy, white/outline) with no apparent rule governing which colour is used where. This is not a consistent component system.\n  - Fix: Define a maximum of three button variants (primary, secondary, ghost) and enforce them globally, as noted in the Visual Hierarchy axis.\n- [major] Section background treatments, global: The page alternates between white, light grey, dark gradient, pink/magenta, and a gradient purple-to-pink background — at least 6 distinct background treatments with no discernible system. This creates a garish patchwork appearance.\n  - Fix: Limit background treatments to three: white (#FFFFFF), light grey (#F5F6F7), and brand dark (#0A2540). Reserve gradient or accent backgrounds for one hero section only.\n- [minor] Speaker cards vs. article cards, desktop: Speaker cards use circular portrait crops while article cards use rectangular image crops — this is acceptable — but the card container border-radius, shadow, and padding differ between speaker cards and sponsor cards in a way that makes them look like they came from different component libraries.\n  - Fix: Define a single card token (e.g. border-radius: 8px, box-shadow: 0 2px 8px rgba(0,0,0,0.08), padding: 16px) and apply it uniformly to all card-type components.\n**Responsive integrity — 4/7**\n- [major] Past Sponsors grid, mobile: On mobile, sponsor logos that are rendered as large text strings ('Labs', 'Profound') wrap awkwardly and appear disproportionately large relative to the image-based logos beside them, disrupting the sponsor row layout.\n  - Fix: Ensure all sponsor entries are image assets at a consistent container height (40px) so they stack cleanly in a 2- or 3-column grid on mobile.\n- [major] 'Benefits of Attending' and 'Benefits of Sponsoring' sections, mobile: On mobile these two sections stack vertically as expected, but both heading texts ('Benefits of Attending a CX Retail Exchange' and 'Benefits of Sponsoring a CX Retail Exchange') are cut to approximately the same visual weight as the body text below — there is no mobile-specific heading size reduction, causing both to feel like the same level.\n  - Fix: Ensure H2/H3 elements in these sections still render visibly larger than body text on mobile — a minimum of 24px for section headings vs. 15-16px for body text.\n- [minor] Hero, mobile: On mobile the hero CTA buttons stack vertically which is correct, but the 'Download Post Event Report' button text appears to be close to wrapping or is slightly cut at the right edge at 390px width.\n  - Fix: Ensure hero buttons on mobile have a max-width of 100% and padding that allows the longest button label to fit on one line, or allow the label to wrap gracefully to two lines.\n**Visual accessibility — 3/7**\n- [critical] Hero section — text over background image, desktop and mobile: The event name and supporting text in the hero are rendered over a photographic background image without a sufficiently dark scrim. In areas where the image is light (faces, bright clothing), the white text becomes difficult to read. The axe-core report confirms 17 nodes with contrast failures, and `.btn-primary` elements are among them.\n  - Fix: Add a semi-transparent dark overlay to the hero image container: `background: linear-gradient(to bottom, rgba(10,37,64,0.65) 0%, rgba(10,37,64,0.45) 100%)` so all text achieves minimum 4.5:1 contrast against the image.\n- [critical] Primary CTA buttons, global (e.g. 'Request Your Invite', 'Find Out More'): The cyan (#00c9ff) primary button colour on a white background and white text on cyan both fail WCAG AA contrast (the axe-core report confirms .btn-primary contrast failures). This makes CTA text unreadable for users with low vision.\n  - Fix: Change button background to brand accent #FF5A36 with white text — this pairing achieves approximately 3.8:1 which is borderline; alternatively use #0A2540 (dark navy) background with white text which achieves >10:1.\n- [major] Testimonial / quote section — pink/magenta gradient background, desktop: The quote text and attribution are rendered in white over a bright pink-to-magenta gradient. The lighter magenta areas of the gradient likely fall below 4.5:1 contrast ratio for normal-weight body text.\n  - Fix: Darken the gradient stops so the lightest point is no lighter than #C2185B equivalent, or add a semi-transparent dark overlay, or change text to a dark colour (#1A1A1A) if the background is lightened.\n- [major] Footer — small print and links: Footer text (Privacy Policy, Cookie Policy, T&Cs links and contact details) appears to be rendered at approximately 11–12px in a mid-grey colour over a dark background. At this size WCAG requires enhanced contrast (7:1 for AAA, or ensure at least 4.5:1 at AA for small text).\n  - Fix: Increase footer small text to a minimum of 14px and ensure colour contrast of footer links against the footer background is at least 4.5:1.",
+      "extra": {
+        "axes": [
+          {
+            "name": "Layout & grid",
+            "score": 3,
+            "findings": [
+              {
+                "severity": "major",
+                "location": "Featured article / two-column split section, desktop (~400px from top)",
+                "issue": "The left image column and right text column are not vertically aligned at their tops — the image bleeds lower than the text block, and the two halves sit at different vertical anchors, breaking the grid row.",
+                "recommendation": "Apply `align-items: stretch` or `align-items: start` consistently to the flex/grid row container so both columns share the same top edge.",
+                "fix_prompt": "In the two-column section that contains the event photo on the left and 'Powering Personalisation' body text on the right, add `align-items: start` to the parent row container and ensure both columns use the same top padding value (e.g. 48px) so they share a common top edge."
+              },
+              {
+                "severity": "major",
+                "location": "Past Sponsors grid, desktop",
+                "issue": "Sponsor logos are sized inconsistently — some logos (e.g. 'Labs', 'Profound') render at very large text sizes while others (e.g. 'SIERRA', 'Simple AI') use actual image assets, creating a visually jagged, non-grid-aligned row.",
+                "recommendation": "Constrain all sponsor logos to a uniform container height (e.g. 48px) with object-fit: contain and center-align them vertically within a consistent grid column.",
+                "fix_prompt": "In the 'Our Past Sponsors' section, set a fixed height of 48px and width of auto on every sponsor logo `<img>` element, add `object-fit: contain` and `display: block; margin: auto` so all logos are uniformly sized and vertically centered within their grid cells."
+              },
+              {
+                "severity": "minor",
+                "location": "Photo Gallery section, desktop (near bottom)",
+                "issue": "The photo grid mixes a wide left image with a narrow right column of two stacked images, and the 'Request your invite' CTA card floats without clear grid anchoring — its right edge does not align to the section container boundary.",
+                "recommendation": "Define a 3 or 4-column CSS grid for the gallery and place the CTA card as a proper grid cell so all edges align to the grid tracks.",
+                "fix_prompt": "Convert the Photo Gallery section to a CSS grid with `grid-template-columns: 2fr 1fr 1fr` and place the CTA card in the third column spanning both rows so its edges align to the grid, removing any absolute or ad-hoc positioning."
+              }
+            ]
+          },
+          {
+            "name": "Typography",
+            "score": 3,
+            "findings": [
+              {
+                "severity": "major",
+                "location": "Global / entire page",
+                "issue": "The brand config specifies Archivo for headings and Inter for body text. The page CSS loads and applies Raleway for both headings and body copy. No evidence of Archivo or Inter is present in the stylesheet.",
+                "recommendation": "Import Archivo and Inter from Google Fonts and update the CSS custom properties: `--primary-font: 'Archivo', sans-serif` and `--secondary-font: 'Inter', sans-serif`.",
+                "fix_prompt": "In the `<style data-dynamic>` block, replace the @import for Raleway with `@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;800&family=Inter:wght@400;600&display=swap')` and update `--primary-font: 'Archivo', sans-serif` and `--secondary-font: 'Inter', sans-serif`."
+              },
+              {
+                "severity": "major",
+                "location": "Hero section, desktop — event date/location line",
+                "issue": "The date and location text ('30 June – 1 July 2027, London, UK') renders at a size that appears nearly equal to the value-proposition subheadline below it, flattening the heading hierarchy in the most critical section of the page.",
+                "recommendation": "Differentiate the date/location line by using a smaller weight or size (e.g. 14–16px, regular weight) relative to the event name (48px) and subheadline (20–24px).",
+                "fix_prompt": "For the element with class `.cta-event-date` inside the hero, set `font-size: 15px; font-weight: 400; letter-spacing: 0.05em; text-transform: uppercase` to visually subordinate it to the event name and value proposition headlines."
+              },
+              {
+                "severity": "major",
+                "location": "Body content sections (e.g. 'Secure Your Place' banner, 'Wondering what's in store?' section)",
+                "issue": "Heading sizes throughout the mid-page sections appear to use 4–5 different arbitrary sizes that do not map to the defined type scale [12,14,16,20,24,32,48,64]px — several section headings look visually equivalent to body text, destroying hierarchy.",
+                "recommendation": "Audit all heading elements and assign sizes strictly from the brand type scale: H1=48px, H2=32px, H3=24px, H4=20px, body=16px, captions=14px.",
+                "fix_prompt": "Add a global style rule: `h1 { font-size: 48px } h2 { font-size: 32px } h3 { font-size: 24px } h4 { font-size: 20px } p, li { font-size: 16px; line-height: 1.6 } .caption, small { font-size: 14px }` and remove all inline font-size overrides that deviate from these values."
+              },
+              {
+                "severity": "minor",
+                "location": "Speaker cards, desktop",
+                "issue": "Speaker name and job title are rendered in nearly the same font size and weight, making it hard to distinguish name from title at a glance.",
+                "recommendation": "Set speaker name to 16px/700 weight and title to 13px/400 weight in a muted colour (#555) to create clear name-to-title separation.",
+                "fix_prompt": "In the speaker card component, apply `font-size: 16px; font-weight: 700; color: #1A1A1A` to the name element and `font-size: 13px; font-weight: 400; color: #555555` to the title/company element."
+              }
+            ]
+          },
+          {
+            "name": "Spacing & rhythm",
+            "score": 3,
+            "findings": [
+              {
+                "severity": "major",
+                "location": "Mid-page sections (Benefits, Sponsorship, Article rows), desktop",
+                "issue": "Vertical spacing between sections is inconsistent — some sections feel tightly packed (the 'Benefits of Attending' and 'Benefits of Sponsoring' headings have almost no top margin from the preceding video strip), while others have large unexplained voids (the quote/testimonial pink section).",
+                "recommendation": "Apply a consistent inter-section gap of 64px or 96px (from the brand spacing scale) using section padding, and remove ad-hoc margins that create irregular rhythm.",
+                "fix_prompt": "Add a global CSS rule: `.page-section { padding-top: 64px; padding-bottom: 64px; }` and apply the class `page-section` to every major section container, removing existing inconsistent inline padding/margin overrides."
+              },
+              {
+                "severity": "major",
+                "location": "'Secure Your Place' pink CTA banner, desktop",
+                "issue": "The banner text is cramped against the left edge with insufficient left padding, while the CTA button on the right has excessive surrounding whitespace — padding is asymmetric and not drawn from the spacing scale.",
+                "recommendation": "Set symmetric horizontal padding of 48px on both sides of the banner container and ensure the button has equal top/bottom padding (13px per the existing btn rule).",
+                "fix_prompt": "On the 'Secure Your Place' banner container element, set `padding: 32px 48px` and ensure the inner flexbox has `align-items: center; justify-content: space-between` so text and button are evenly distributed with consistent padding on both sides."
+              },
+              {
+                "severity": "minor",
+                "location": "Speaker grid, desktop",
+                "issue": "The gap between speaker cards is noticeably smaller than the gap between the speaker grid and the 'View Past Speakers' CTA button below it — proximity grouping is inconsistent.",
+                "recommendation": "Set card-to-card gap to 24px and card-grid-to-CTA gap to 32px so the CTA reads as belonging to the section but with a clear hierarchical separation.",
+                "fix_prompt": "On the speakers grid container, set `gap: 24px; margin-bottom: 32px` and ensure the 'View Past Speakers' button sits directly below with `margin-top: 0` (relying on the grid's margin-bottom for spacing)."
+              }
+            ]
+          },
+          {
+            "name": "Visual hierarchy",
+            "score": 4,
+            "findings": [
+              {
+                "severity": "major",
+                "location": "Hero section, desktop",
+                "issue": "There are three CTA buttons in the hero ('Request Your Invite', 'Download Post Event Report', 'Become a Sponsor') rendered at similar visual weights. The primary registration CTA should be dominant; the secondary and tertiary CTAs compete with it equally.",
+                "recommendation": "Style 'Request Your Invite' as the filled accent button (#FF5A36 background, white text), 'Download Post Event Report' as a ghost/outline button, and 'Become a Sponsor' as a text link or tertiary ghost to establish clear CTA priority.",
+                "fix_prompt": "In the hero CTA row, add class `btn-primary` only to the 'Request Your Invite' button with `background-color: #FF5A36; color: #ffffff; border: none`, change 'Download Post Event Report' to `btn-outline` with `border: 2px solid #ffffff; background: transparent; color: #ffffff`, and change 'Become a Sponsor' to a plain text link styled `color: #ffffff; text-decoration: underline; font-weight: 600`."
+              },
+              {
+                "severity": "major",
+                "location": "Mid-page CTA buttons (multiple sections)",
+                "issue": "CTAs throughout the page use cyan (#00c9ff), pink (#ff3fb1), and magenta colours that are not in the brand palette. These arbitrary colours create a fairground effect and dilute the visual weight hierarchy.",
+                "recommendation": "Replace all CTA button colours with the brand accent #FF5A36 for primary actions and #0A2540 for secondary actions, removing the cyan and pink values from the CSS variables.",
+                "fix_prompt": "In the `:root` CSS block, change `--primary-color: #FF5A36`, `--primary-color-hover: #e04a28`, `--secondary-color: #0A2540`, `--secondary-color-hover: #0d3360`. Remove the cyan and pink values entirely so all buttons inherit the correct brand palette."
+              },
+              {
+                "severity": "minor",
+                "location": "Article/blog card row near bottom, desktop",
+                "issue": "'READ NOW' links on the three article cards are styled identically to section headings in weight, making it ambiguous which text is a heading and which is a CTA.",
+                "recommendation": "Style 'READ NOW' as a small caps or underlined link at 13–14px rather than a bold block that matches heading weight.",
+                "fix_prompt": "On all `.read-now` or equivalent CTA link elements in the article cards, apply `font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #FF5A36; text-decoration: underline` to differentiate them from headings."
+              }
+            ]
+          },
+          {
+            "name": "Consistency",
+            "score": 3,
+            "findings": [
+              {
+                "severity": "major",
+                "location": "CTA buttons, global",
+                "issue": "Buttons across the page use at least five different background colours (cyan, pink, magenta, dark navy, white/outline) with no apparent rule governing which colour is used where. This is not a consistent component system.",
+                "recommendation": "Define a maximum of three button variants (primary, secondary, ghost) and enforce them globally, as noted in the Visual Hierarchy axis.",
+                "fix_prompt": "Audit every `<a class='btn'>` and `<button>` element on the page and replace colour-specific inline styles or ad-hoc classes with one of three canonical classes: `btn-primary` (accent fill), `btn-secondary` (dark fill), or `btn-ghost` (transparent with border). Delete any CSS classes not mapping to these three variants."
+              },
+              {
+                "severity": "major",
+                "location": "Section background treatments, global",
+                "issue": "The page alternates between white, light grey, dark gradient, pink/magenta, and a gradient purple-to-pink background — at least 6 distinct background treatments with no discernible system. This creates a garish patchwork appearance.",
+                "recommendation": "Limit background treatments to three: white (#FFFFFF), light grey (#F5F6F7), and brand dark (#0A2540). Reserve gradient or accent backgrounds for one hero section only.",
+                "fix_prompt": "Replace all section `background` declarations that use pink, magenta, cyan, or purple gradient values with either `background: #ffffff`, `background: #F5F6F7`, or `background: #0A2540` depending on whether the section needs light, subtle, or dark treatment. Remove the pink and gradient background values entirely."
+              },
+              {
+                "severity": "minor",
+                "location": "Speaker cards vs. article cards, desktop",
+                "issue": "Speaker cards use circular portrait crops while article cards use rectangular image crops — this is acceptable — but the card container border-radius, shadow, and padding differ between speaker cards and sponsor cards in a way that makes them look like they came from different component libraries.",
+                "recommendation": "Define a single card token (e.g. border-radius: 8px, box-shadow: 0 2px 8px rgba(0,0,0,0.08), padding: 16px) and apply it uniformly to all card-type components.",
+                "fix_prompt": "Create a CSS class `.event-card { border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); padding: 16px; background: #ffffff; }` and apply it to all card elements (speaker cards, article cards, sponsor cards), removing conflicting individual card styles."
+              }
+            ]
+          },
+          {
+            "name": "Responsive integrity",
+            "score": 4,
+            "findings": [
+              {
+                "severity": "major",
+                "location": "Past Sponsors grid, mobile",
+                "issue": "On mobile, sponsor logos that are rendered as large text strings ('Labs', 'Profound') wrap awkwardly and appear disproportionately large relative to the image-based logos beside them, disrupting the sponsor row layout.",
+                "recommendation": "Ensure all sponsor entries are image assets at a consistent container height (40px) so they stack cleanly in a 2- or 3-column grid on mobile.",
+                "fix_prompt": "In the sponsors section, wrap each sponsor in a `<div style='width:50%; padding:12px; display:flex; align-items:center; justify-content:center;'>` for mobile (using a 2-column flex-wrap layout) and enforce `max-height: 40px; width: auto; object-fit: contain` on every sponsor `<img>`, converting any text-only sponsors to logo image assets."
+              },
+              {
+                "severity": "major",
+                "location": "'Benefits of Attending' and 'Benefits of Sponsoring' sections, mobile",
+                "issue": "On mobile these two sections stack vertically as expected, but both heading texts ('Benefits of Attending a CX Retail Exchange' and 'Benefits of Sponsoring a CX Retail Exchange') are cut to approximately the same visual weight as the body text below — there is no mobile-specific heading size reduction, causing both to feel like the same level.",
+                "recommendation": "Ensure H2/H3 elements in these sections still render visibly larger than body text on mobile — a minimum of 24px for section headings vs. 15-16px for body text.",
+                "fix_prompt": "Add a responsive rule: `@media (max-width: 768px) { .benefits-section h2 { font-size: 24px; line-height: 1.3; margin-bottom: 16px; } .benefits-section p { font-size: 15px; line-height: 1.6; } }` replacing `.benefits-section` with the actual section class name."
+              },
+              {
+                "severity": "minor",
+                "location": "Hero, mobile",
+                "issue": "On mobile the hero CTA buttons stack vertically which is correct, but the 'Download Post Event Report' button text appears to be close to wrapping or is slightly cut at the right edge at 390px width.",
+                "recommendation": "Ensure hero buttons on mobile have a max-width of 100% and padding that allows the longest button label to fit on one line, or allow the label to wrap gracefully to two lines.",
+                "fix_prompt": "Add `@media (max-width: 480px) { .hero .btn { width: 100%; max-width: 100%; white-space: normal; text-align: center; padding: 12px 16px; } }` to ensure all hero CTA buttons are full-width and text wraps cleanly on narrow screens."
+              }
+            ]
+          },
+          {
+            "name": "Visual accessibility",
+            "score": 3,
+            "findings": [
+              {
+                "severity": "critical",
+                "location": "Hero section — text over background image, desktop and mobile",
+                "issue": "The event name and supporting text in the hero are rendered over a photographic background image without a sufficiently dark scrim. In areas where the image is light (faces, bright clothing), the white text becomes difficult to read. The axe-core report confirms 17 nodes with contrast failures, and `.btn-primary` elements are among them.",
+                "recommendation": "Add a semi-transparent dark overlay to the hero image container: `background: linear-gradient(to bottom, rgba(10,37,64,0.65) 0%, rgba(10,37,64,0.45) 100%)` so all text achieves minimum 4.5:1 contrast against the image.",
+                "fix_prompt": "On the hero section's image container, add a pseudo-element or overlay div: `.hero-overlay { position: absolute; inset: 0; background: rgba(10, 37, 64, 0.60); z-index: 1; }` and ensure all hero text and button elements have `position: relative; z-index: 2` so they render above the scrim."
+              },
+              {
+                "severity": "critical",
+                "location": "Primary CTA buttons, global (e.g. 'Request Your Invite', 'Find Out More')",
+                "issue": "The cyan (#00c9ff) primary button colour on a white background and white text on cyan both fail WCAG AA contrast (the axe-core report confirms .btn-primary contrast failures). This makes CTA text unreadable for users with low vision.",
+                "recommendation": "Change button background to brand accent #FF5A36 with white text — this pairing achieves approximately 3.8:1 which is borderline; alternatively use #0A2540 (dark navy) background with white text which achieves >10:1.",
+                "fix_prompt": "In the CSS `:root` block, set `--primary-color: #0A2540` and `--primary-color-hover: #FF5A36`. Update `.btn-primary { background-color: var(--primary-color); color: #ffffff; }` and `.btn-primary:hover { background-color: var(--primary-color-hover); color: #ffffff; }` to ensure all primary buttons meet WCAG AA contrast."
+              },
+              {
+                "severity": "major",
+                "location": "Testimonial / quote section — pink/magenta gradient background, desktop",
+                "issue": "The quote text and attribution are rendered in white over a bright pink-to-magenta gradient. The lighter magenta areas of the gradient likely fall below 4.5:1 contrast ratio for normal-weight body text.",
+                "recommendation": "Darken the gradient stops so the lightest point is no lighter than #C2185B equivalent, or add a semi-transparent dark overlay, or change text to a dark colour (#1A1A1A) if the background is lightened.",
+                "fix_prompt": "On the testimonial section, change the background to `background: linear-gradient(135deg, #8B0057 0%, #B0003A 100%)` so the gradient stays dark enough for white text to achieve at least 4.5:1 contrast throughout. Then verify with a contrast checker before publishing."
+              },
+              {
+                "severity": "major",
+                "location": "Footer — small print and links",
+                "issue": "Footer text (Privacy Policy, Cookie Policy, T&Cs links and contact details) appears to be rendered at approximately 11–12px in a mid-grey colour over a dark background. At this size WCAG requires enhanced contrast (7:1 for AAA, or ensure at least 4.5:1 at AA for small text).",
+                "recommendation": "Increase footer small text to a minimum of 14px and ensure colour contrast of footer links against the footer background is at least 4.5:1.",
+                "fix_prompt": "In the footer CSS, set `footer .footer-links a, footer .footer-small-text { font-size: 14px; color: #d0d0d0; }` and `footer { background-color: #0A2540; }` to ensure the #d0d0d0-on-#0A2540 pairing meets WCAG AA contrast for small text."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "brand",
+      "label": "Brand Compliance",
+      "score": 20,
+      "summary": "The CX Retail Exchange UK microsite is built for the CXNetwork/IQPC portal and bears no meaningful relationship to the WorkX 2026 brand configuration supplied — it uses a completely different event identity, color palette (cyan/magenta/pink instead of #0A2540/#FF5A36), and font stack (Raleway instead of Archivo/Inter). Beyond the brand-identity mismatch, several required elements are either missing or ambiguous, and tone-of-voice issues are present. The score reflects that this page, as submitted, cannot be considered compliant with the provided brand configuration.",
+      "findings": [
+        {
+          "severity": "major",
+          "location": "Rendered CSS (computed styles)",
+          "issue": "Off-palette color #212529 is used on 247 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+          "recommendation": "Replace #212529 with the nearest approved brand token.",
+          "fix_prompt": "Find every use of the color #212529 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+          "deterministic": true
+        },
+        {
+          "severity": "major",
+          "location": "Rendered CSS (computed styles)",
+          "issue": "Off-palette color #212121 is used on 182 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+          "recommendation": "Replace #212121 with the nearest approved brand token.",
+          "fix_prompt": "Find every use of the color #212121 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+          "deterministic": true
+        },
+        {
+          "severity": "minor",
+          "location": "Rendered CSS (computed styles)",
+          "issue": "Off-palette color #222222 is used on 89 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+          "recommendation": "Replace #222222 with the nearest approved brand token.",
+          "fix_prompt": "Find every use of the color #222222 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+          "deterministic": true
+        },
+        {
+          "severity": "minor",
+          "location": "Rendered CSS (computed styles)",
+          "issue": "Off-palette color #696969 is used on 32 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+          "recommendation": "Replace #696969 with the nearest approved brand token.",
+          "fix_prompt": "Find every use of the color #696969 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+          "deterministic": true
+        },
+        {
+          "severity": "minor",
+          "location": "Rendered CSS (computed styles)",
+          "issue": "Off-palette color #0D6EFD is used on 28 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+          "recommendation": "Replace #0D6EFD with the nearest approved brand token.",
+          "fix_prompt": "Find every use of the color #0D6EFD in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+          "deterministic": true
+        },
+        {
+          "severity": "major",
+          "location": "Rendered CSS (computed styles)",
+          "issue": "Non-brand font stack \"Raleway, sans-serif\" is used on 835 elements. Brand fonts: Archivo, sans-serif (headings), Inter, sans-serif (body).",
+          "recommendation": "Load and apply the brand font families.",
+          "fix_prompt": "Replace the font stack \"Raleway, sans-serif\" across this site with the brand fonts: \"Archivo, sans-serif\" for headings and \"Inter, sans-serif\" for body text. Add the necessary font imports.",
+          "deterministic": true
+        },
+        {
+          "severity": "critical",
+          "location": "Entire page",
+          "issue": "The microsite is for 'CX Retail Exchange UK' — a completely different event from the configured event 'WorkX 2026'. The event name, branding, color palette, and typography are all misaligned with the supplied brand configuration. This is not a cosmetic issue; the wrong event identity has been applied to the template.",
+          "recommendation": "Confirm whether this page was submitted against the correct brand configuration. If the intent is WorkX 2026, the entire event identity, copy, hero imagery, and color tokens must be replaced with WorkX 2026 assets and the #0A2540/#FF5A36 palette.",
+          "fix_prompt": "Replace all instances of 'CX Retail Exchange' and related sub-branding with 'WorkX 2026'. Update hero headline, page title, meta og:title, og:description, and schema 'name' fields to 'WorkX 2026'. Update startDate/endDate in JSON-LD to match the correct 2026 event dates."
+        },
+        {
+          "severity": "critical",
+          "location": "Global CSS / :root variables",
+          "issue": "The primary color token is set to '#00c9ff' (cyan) and secondary to '#ff3fb1' (magenta/pink). These are not the configured brand colors (#0A2540 primary, #FF5A36 accent). The entire page renders in the wrong palette, including hero backgrounds, section strips, and CTAs.",
+          "recommendation": "Update CSS custom properties: set --primary-color to #0A2540, --accent-color to #FF5A36, and --background to #FFFFFF. Replace all cyan and magenta/pink background sections with the correct palette.",
+          "fix_prompt": "In the :root block of the dynamic styles, change --primary-color to #0A2540, add --accent-color: #FF5A36, set --secondary-color to #0A2540, and update --primary-color-hover and --secondary-color-hover accordingly. Find all inline background-color, background, and color declarations that reference #00c9ff, #ff3fb1, #00B7B0, and replace them with the correct tokens."
+        },
+        {
+          "severity": "critical",
+          "location": "Global typography / :root variables",
+          "issue": "The font stack is set to 'Raleway' for both --primary-font and --secondary-font. The brand configuration requires Archivo (headings) and Inter (body). Raleway is not in the approved type scale.",
+          "recommendation": "Replace Raleway with Archivo for headings and Inter for body copy across all CSS declarations.",
+          "fix_prompt": "In the Google Fonts @import URL, add 'Archivo:wght@400;700;800' and 'Inter:wght@400;600' to the families list. In the :root block, set --primary-font: 'Archivo', sans-serif and --secondary-font: 'Inter', sans-serif. Remove the standalone Raleway @import lines."
+        },
+        {
+          "severity": "major",
+          "location": "Hero section — CTA buttons",
+          "issue": "The hero contains three CTA buttons side by side: 'Request Your Invite', 'Download Post Event Report', and 'Become a Sponsor'. The accent color is being applied to all three equally, conflating primary registration action with secondary actions. Accent (#FF5A36 equivalent here, though wrongly colored) should be reserved for the single primary CTA only.",
+          "recommendation": "Style only the primary registration CTA ('Request Your Invite') with the accent color. Render 'Download Post Event Report' and 'Become a Sponsor' as secondary/ghost-style buttons in the primary brand color.",
+          "fix_prompt": "In the hero button group, add class btn-primary (accent-styled) only to the 'Request Your Invite' anchor. Change 'Download Post Event Report' and 'Become a Sponsor' to btn-outline or btn-secondary styling using the primary dark color (#0A2540) with a white border, so the accent CTA reads as the clear primary action."
+        },
+        {
+          "severity": "major",
+          "location": "Mid-page banner — 'Secure Your Place at the CX Retail Exchange UK'",
+          "issue": "This full-width pink/magenta banner section uses the off-brand secondary color as a prominent background, not as a CTA highlight. This is accent-color overuse; large background fills violate the rule that accent is reserved for CTAs and key highlights only.",
+          "recommendation": "Replace the pink banner background with the primary dark color (#0A2540) or white, and limit any accent-color use to the CTA button within it.",
+          "fix_prompt": "Find the section element containing 'Secure Your Place at the CX Retail Exchange UK'. Remove the pink/magenta background-color style and replace with background-color: #0A2540; color: #FFFFFF. Ensure the CTA button inside retains the accent color (#FF5A36)."
+        },
+        {
+          "severity": "major",
+          "location": "Community testimonial strip — 'A Five Star Event!'",
+          "issue": "The phrase 'A Five Star Event!' is an unverifiable superlative and uses an exclamation mark in a heading. The brand tone prohibits exclamation-mark stacking and unverifiable superlatives.",
+          "recommendation": "Replace with a specific, verifiable testimonial attribution or a neutral descriptor. If it is a direct attendee quote, attribute it clearly with name and title. Remove the exclamation mark from the section heading itself.",
+          "fix_prompt": "Change the section heading 'A Five Star Event!' to 'What Attendees Say' or quote the testimonial directly with attribution (e.g., '\"Insightful and practical\" — [Name], [Title], [Company]'). Remove the standalone exclamation-mark headline."
+        },
+        {
+          "severity": "major",
+          "location": "Hero — date/year discrepancy",
+          "issue": "The hero copy states '30 June – 1 July 2027' but the brand config event is WorkX 2026, and even within this page the schema startDate is '2027-06-30'. The year shown (2027) conflicts with the configured event year (2026) in the brand config.",
+          "recommendation": "Reconcile the event year across all surfaces: hero copy, page title, schema JSON-LD startDate/endDate, and meta description.",
+          "fix_prompt": "Perform a find-and-replace for '2027' across the HTML and JSON-LD blocks. Update hero date string, schema 'startDate', 'endDate', and 'validFrom' fields to the correct event year and dates as confirmed by the event team."
+        },
+        {
+          "severity": "major",
+          "location": "Logo — navbar and hero area",
+          "issue": "The CX Retail Exchange logo is placed directly over the hero photographic background without a visible scrim or sufficient contrast buffer. Brand rules require a scrim when placing any logo over busy imagery.",
+          "recommendation": "Add a semi-transparent dark overlay (scrim) behind the logo in the hero, or reposition the logo to a clear dark bar area where sufficient contrast is guaranteed.",
+          "fix_prompt": "On the hero container, add a pseudo-element or overlay div: position: absolute; top: 0; left: 0; width: 100%; height: 80px; background: rgba(10,37,64,0.65); z-index: 1; and ensure the nav/logo sits above it at z-index: 2."
+        },
+        {
+          "severity": "major",
+          "location": "Footer — venue detail",
+          "issue": "The footer contact block shows an address ('1st Floor, 129 Wilton Road, SW1V 1JZ, London') which is IQPC's office address, not the event venue. No specific event venue name is stated anywhere on the page beyond 'London, UK', which is insufficient for attendee planning.",
+          "recommendation": "Add the specific event venue name and address in the hero or a dedicated location section, clearly distinguished from the IQPC office contact address.",
+          "fix_prompt": "In the hero subheading or below the event date line, add a venue line: '<span class=\"event-venue\">Venue Name, Street, London, UK</span>' styled in the body font at 16px. Ensure it is not the IQPC office address."
+        },
+        {
+          "severity": "minor",
+          "location": "Sponsor logo grid — 'Our Past Sponsors'",
+          "issue": "The section heading 'Our Past Sponsors' labels these as past sponsors, which may undermine the event's forward-looking, benefit-led tone if the listed companies are not confirmed for the upcoming edition. This could also be misleading to prospective sponsors.",
+          "recommendation": "If these sponsors are confirmed for WorkX 2026/the upcoming event, relabel to 'Our Sponsors' or 'Partnering Organisations'. If historical only, add a brief qualifying line: 'Selected organisations from previous editions'.",
+          "fix_prompt": "Change the h2/h3 text 'Our Past Sponsors' to 'Our Sponsors' if current, or add a subtitle element beneath: '<p class=\"sponsor-qualifier\">From previous editions of CX Retail Exchange UK</p>'."
+        },
+        {
+          "severity": "minor",
+          "location": "Meta description and OG description",
+          "issue": "The meta description uses 'UK's leading invitation-only event' — 'UK's leading' is an unverifiable superlative that violates the brand tone rule against unverifiable superlatives.",
+          "recommendation": "Replace 'UK's leading' with a specific, verifiable descriptor such as 'The UK's senior-level, invitation-only' or simply remove the superlative.",
+          "fix_prompt": "In the <meta name=\"description\"> and <meta property=\"og:description\"> tags, replace the string \"UK's leading invitation-only event\" with \"an invitation-only event for senior retail customer experience professionals in the UK\"."
+        }
+      ],
+      "report_md": "**Required elements**\n- ✓ Event name and dates in the hero — Hero shows 'CX Retail Exchange' and '30 June – 1 July 2027, London, UK'. However the event name does not match the configured event 'WorkX 2026', and the structured data startDate is '2027-06-30' while the hero copy reads '30 June – 1 July 2027' — neither matches the brand config year of 2026.\n- ✓ Venue / location — Hero states 'London, UK' but no specific venue name or address is given on the visible page. Structured data lists only 'London, UK' with no street address.\n- ✓ Primary registration CTA above the fold — 'Request Your Invite' CTA button is visible in the hero area above the fold on both desktop and mobile.\n- ✓ IQPC or portal brand logo — IQPC logo appears in the footer ('In Partnership With' area) and the favicon references iqpc_favicon.ico. However the IQPC logo is very small and subordinate; the dominant logo is CX Retail Exchange, not the configured portal brand.\n- ✓ Privacy policy link in footer — Footer HTML includes a 'Privacy Policy' link visible in the footer navigation row ('CX Home | Privacy Policy | About | Cookie Policy | Terms').\n\n**Token scan (deterministic)**\n- [major] Off-palette color #212529 is used on 247 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.\n- [major] Off-palette color #212121 is used on 182 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.\n- [minor] Off-palette color #222222 is used on 89 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.\n- [minor] Off-palette color #696969 is used on 32 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.\n- [minor] Off-palette color #0D6EFD is used on 28 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.\n- [major] Non-brand font stack \"Raleway, sans-serif\" is used on 835 elements. Brand fonts: Archivo, sans-serif (headings), Inter, sans-serif (body).\n\n**Findings**\n- [critical] Entire page: The microsite is for 'CX Retail Exchange UK' — a completely different event from the configured event 'WorkX 2026'. The event name, branding, color palette, and typography are all misaligned with the supplied brand configuration. This is not a cosmetic issue; the wrong event identity has been applied to the template.\n  - Fix: Confirm whether this page was submitted against the correct brand configuration. If the intent is WorkX 2026, the entire event identity, copy, hero imagery, and color tokens must be replaced with WorkX 2026 assets and the #0A2540/#FF5A36 palette.\n- [critical] Global CSS / :root variables: The primary color token is set to '#00c9ff' (cyan) and secondary to '#ff3fb1' (magenta/pink). These are not the configured brand colors (#0A2540 primary, #FF5A36 accent). The entire page renders in the wrong palette, including hero backgrounds, section strips, and CTAs.\n  - Fix: Update CSS custom properties: set --primary-color to #0A2540, --accent-color to #FF5A36, and --background to #FFFFFF. Replace all cyan and magenta/pink background sections with the correct palette.\n- [critical] Global typography / :root variables: The font stack is set to 'Raleway' for both --primary-font and --secondary-font. The brand configuration requires Archivo (headings) and Inter (body). Raleway is not in the approved type scale.\n  - Fix: Replace Raleway with Archivo for headings and Inter for body copy across all CSS declarations.\n- [major] Hero section — CTA buttons: The hero contains three CTA buttons side by side: 'Request Your Invite', 'Download Post Event Report', and 'Become a Sponsor'. The accent color is being applied to all three equally, conflating primary registration action with secondary actions. Accent (#FF5A36 equivalent here, though wrongly colored) should be reserved for the single primary CTA only.\n  - Fix: Style only the primary registration CTA ('Request Your Invite') with the accent color. Render 'Download Post Event Report' and 'Become a Sponsor' as secondary/ghost-style buttons in the primary brand color.\n- [major] Mid-page banner — 'Secure Your Place at the CX Retail Exchange UK': This full-width pink/magenta banner section uses the off-brand secondary color as a prominent background, not as a CTA highlight. This is accent-color overuse; large background fills violate the rule that accent is reserved for CTAs and key highlights only.\n  - Fix: Replace the pink banner background with the primary dark color (#0A2540) or white, and limit any accent-color use to the CTA button within it.\n- [major] Community testimonial strip — 'A Five Star Event!': The phrase 'A Five Star Event!' is an unverifiable superlative and uses an exclamation mark in a heading. The brand tone prohibits exclamation-mark stacking and unverifiable superlatives.\n  - Fix: Replace with a specific, verifiable testimonial attribution or a neutral descriptor. If it is a direct attendee quote, attribute it clearly with name and title. Remove the exclamation mark from the section heading itself.\n- [major] Hero — date/year discrepancy: The hero copy states '30 June – 1 July 2027' but the brand config event is WorkX 2026, and even within this page the schema startDate is '2027-06-30'. The year shown (2027) conflicts with the configured event year (2026) in the brand config.\n  - Fix: Reconcile the event year across all surfaces: hero copy, page title, schema JSON-LD startDate/endDate, and meta description.\n- [major] Logo — navbar and hero area: The CX Retail Exchange logo is placed directly over the hero photographic background without a visible scrim or sufficient contrast buffer. Brand rules require a scrim when placing any logo over busy imagery.\n  - Fix: Add a semi-transparent dark overlay (scrim) behind the logo in the hero, or reposition the logo to a clear dark bar area where sufficient contrast is guaranteed.\n- [major] Footer — venue detail: The footer contact block shows an address ('1st Floor, 129 Wilton Road, SW1V 1JZ, London') which is IQPC's office address, not the event venue. No specific event venue name is stated anywhere on the page beyond 'London, UK', which is insufficient for attendee planning.\n  - Fix: Add the specific event venue name and address in the hero or a dedicated location section, clearly distinguished from the IQPC office contact address.\n- [minor] Sponsor logo grid — 'Our Past Sponsors': The section heading 'Our Past Sponsors' labels these as past sponsors, which may undermine the event's forward-looking, benefit-led tone if the listed companies are not confirmed for the upcoming edition. This could also be misleading to prospective sponsors.\n  - Fix: If these sponsors are confirmed for WorkX 2026/the upcoming event, relabel to 'Our Sponsors' or 'Partnering Organisations'. If historical only, add a brief qualifying line: 'Selected organisations from previous editions'.\n- [minor] Meta description and OG description: The meta description uses 'UK's leading invitation-only event' — 'UK's leading' is an unverifiable superlative that violates the brand tone rule against unverifiable superlatives.\n  - Fix: Replace 'UK's leading' with a specific, verifiable descriptor such as 'The UK's senior-level, invitation-only' or simply remove the superlative.",
+      "extra": {
+        "required_elements": [
+          {
+            "element": "Event name and dates in the hero",
+            "present": true,
+            "note": "Hero shows 'CX Retail Exchange' and '30 June – 1 July 2027, London, UK'. However the event name does not match the configured event 'WorkX 2026', and the structured data startDate is '2027-06-30' while the hero copy reads '30 June – 1 July 2027' — neither matches the brand config year of 2026."
+          },
+          {
+            "element": "Venue / location",
+            "present": true,
+            "note": "Hero states 'London, UK' but no specific venue name or address is given on the visible page. Structured data lists only 'London, UK' with no street address."
+          },
+          {
+            "element": "Primary registration CTA above the fold",
+            "present": true,
+            "note": "'Request Your Invite' CTA button is visible in the hero area above the fold on both desktop and mobile."
+          },
+          {
+            "element": "IQPC or portal brand logo",
+            "present": true,
+            "note": "IQPC logo appears in the footer ('In Partnership With' area) and the favicon references iqpc_favicon.ico. However the IQPC logo is very small and subordinate; the dominant logo is CX Retail Exchange, not the configured portal brand."
+          },
+          {
+            "element": "Privacy policy link in footer",
+            "present": true,
+            "note": "Footer HTML includes a 'Privacy Policy' link visible in the footer navigation row ('CX Home | Privacy Policy | About | Cookie Policy | Terms')."
+          }
+        ],
+        "token_scan": [
+          {
+            "severity": "major",
+            "location": "Rendered CSS (computed styles)",
+            "issue": "Off-palette color #212529 is used on 247 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+            "recommendation": "Replace #212529 with the nearest approved brand token.",
+            "fix_prompt": "Find every use of the color #212529 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+            "deterministic": true
+          },
+          {
+            "severity": "major",
+            "location": "Rendered CSS (computed styles)",
+            "issue": "Off-palette color #212121 is used on 182 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+            "recommendation": "Replace #212121 with the nearest approved brand token.",
+            "fix_prompt": "Find every use of the color #212121 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+            "deterministic": true
+          },
+          {
+            "severity": "minor",
+            "location": "Rendered CSS (computed styles)",
+            "issue": "Off-palette color #222222 is used on 89 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+            "recommendation": "Replace #222222 with the nearest approved brand token.",
+            "fix_prompt": "Find every use of the color #222222 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+            "deterministic": true
+          },
+          {
+            "severity": "minor",
+            "location": "Rendered CSS (computed styles)",
+            "issue": "Off-palette color #696969 is used on 32 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+            "recommendation": "Replace #696969 with the nearest approved brand token.",
+            "fix_prompt": "Find every use of the color #696969 in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+            "deterministic": true
+          },
+          {
+            "severity": "minor",
+            "location": "Rendered CSS (computed styles)",
+            "issue": "Off-palette color #0D6EFD is used on 28 elements. Approved palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000.",
+            "recommendation": "Replace #0D6EFD with the nearest approved brand token.",
+            "fix_prompt": "Find every use of the color #0D6EFD in this site's styles and replace it with the closest approved brand color from this palette: #0A2540, #FF5A36, #FFFFFF, #1A1A1A, #000000. Keep contrast WCAG AA compliant.",
+            "deterministic": true
+          },
+          {
+            "severity": "major",
+            "location": "Rendered CSS (computed styles)",
+            "issue": "Non-brand font stack \"Raleway, sans-serif\" is used on 835 elements. Brand fonts: Archivo, sans-serif (headings), Inter, sans-serif (body).",
+            "recommendation": "Load and apply the brand font families.",
+            "fix_prompt": "Replace the font stack \"Raleway, sans-serif\" across this site with the brand fonts: \"Archivo, sans-serif\" for headings and \"Inter, sans-serif\" for body text. Add the necessary font imports.",
+            "deterministic": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "seo",
+      "label": "SEO Audit",
+      "score": 62,
+      "summary": "The page has a functioning Event schema and reasonable meta description copy, but the title tag is critically short and keyword-thin (21 chars, no year, no location signal), which hurts click-through for intent-specific queries. The meta description is nearly three times the safe length at 449 characters, meaning Google will truncate it unpredictably and the opening value proposition is buried. The H1 avoids the event name entirely, creating a keyword coherence gap between headline, title, and metadata that dilutes topical relevance signals.",
+      "findings": [
+        {
+          "severity": "minor",
+          "location": "Document <head> / structure",
+          "issue": "Meta description is 449 chars (will truncate).",
+          "recommendation": "Trim to ≤160 characters.",
+          "fix_prompt": "Trim this page's meta description to 160 characters or fewer without losing the value proposition.",
+          "deterministic": true
+        },
+        {
+          "severity": "critical",
+          "location": "<title> tag",
+          "issue": "Title is only 21 characters and omits the event year (2027), city (London), and primary topic keywords ('retail CX conference'). It provides no differentiation from a brand name lookup and will not match high-value discovery queries such as 'retail customer experience conference UK 2027' or 'CX event London 2027'.",
+          "recommendation": "Expand to 50–60 characters, include the year, location, and a descriptive keyword. Example: 'CX Retail Exchange UK 2027 | Retail CX Conference London'.",
+          "fix_prompt": "Rewrite the <title> tag to be between 50 and 60 characters. Include the event name 'CX Retail Exchange UK', the year '2027', the city 'London', and a secondary keyword such as 'Retail CX Conference'. Do not use exclamation marks or unverifiable superlatives."
+        },
+        {
+          "severity": "critical",
+          "location": "<meta name='description'> and og:description",
+          "issue": "The meta description is 449 characters — approximately three times the ~155-character display limit. Google will auto-truncate at a sentence boundary that may exclude the most compelling differentiators (AI-driven CX, invitation-only, roundtables). The same oversized text is also used for og:description, which will truncate poorly on social cards.",
+          "recommendation": "Reduce to 150–160 characters. Lead with the strongest differentiator (invitation-only, London, 2027), include 'retail CX' and one unique benefit to drive the click.",
+          "fix_prompt": "Rewrite the meta description to between 150 and 160 characters. Open with the event's clearest differentiator (invitation-only, senior retail CX leaders, London 2027), include the keywords 'retail CX', 'loyalty', and 'AI', and end with an implicit CTA. No exclamation marks or unverifiable superlatives."
+        },
+        {
+          "severity": "major",
+          "location": "H1 tag",
+          "issue": "The H1 ('The Exclusive, Invitation-only Event for CX, CS, & Digital Retail Leaders in the UK') does not contain the event name 'CX Retail Exchange UK' or the year/city. This breaks keyword coherence between the title tag, schema name field, and on-page headline, weakening topical authority signals and making it harder for Google to confirm what the page is definitively about.",
+          "recommendation": "Revise the H1 to include the event name and, if design permits, the year and location. The descriptor phrase can follow as a subheading. Example H1: 'CX Retail Exchange UK 2027' with an H2 subhead describing the audience.",
+          "fix_prompt": "Update the H1 so it contains the exact event name 'CX Retail Exchange UK' and the year '2027'. Move the current H1 text ('The Exclusive, Invitation-only Event for CX, CS, & Digital Retail Leaders in the UK') to an H2 or a styled paragraph directly beneath the H1. Keep the tone professional and benefit-led."
+        },
+        {
+          "severity": "major",
+          "location": "Event JSON-LD — offers.highPrice / offers.lowPrice",
+          "issue": "Both highPrice and lowPrice are empty strings in the AggregateOffer block. An empty string is not a valid schema value; it can cause Google's Rich Results validator to flag a price-related warning and suppress price display in event rich results.",
+          "recommendation": "If pricing is not yet confirmed, remove the highPrice and lowPrice properties entirely rather than publishing empty strings. Set offerCount to the correct number of offer types or remove it if unknown.",
+          "fix_prompt": "In the Event JSON-LD, remove the 'highPrice' and 'lowPrice' keys from the AggregateOffer object if their values are empty strings. Also correct 'offerCount' to reflect the actual number of offer tiers, or remove it. Do not add invented prices."
+        },
+        {
+          "severity": "major",
+          "location": "Event JSON-LD — offers.availability URL",
+          "issue": "The offer availability value is set to 'https://www.cxnetwork.com/events-customer-experience-exchange-retail-uk/InStock', which is a page URL rather than the required schema.org vocabulary value (e.g., 'https://schema.org/InStock'). This will fail structured data validation.",
+          "recommendation": "Replace the availability value with the correct schema.org URI: 'https://schema.org/InStock'.",
+          "fix_prompt": "In the Event JSON-LD offers block, change the 'availability' value from 'https://www.cxnetwork.com/events-customer-experience-exchange-retail-uk/InStock' to 'https://schema.org/InStock'."
+        },
+        {
+          "severity": "major",
+          "location": "Event JSON-LD — @id",
+          "issue": "The event @id is 'https://www.iqpc.com#event', which points to the IQPC corporate domain rather than the canonical URL of this specific event page. This breaks entity disambiguation and prevents Google from correctly associating structured data with this URL.",
+          "recommendation": "Set @id to the canonical event URL with a fragment: 'https://www.cxnetwork.com/events-customer-experience-exchange-retail-uk#event'.",
+          "fix_prompt": "In the Event JSON-LD, change the '@id' value to 'https://www.cxnetwork.com/events-customer-experience-exchange-retail-uk#event' to match the canonical page URL."
+        },
+        {
+          "severity": "major",
+          "location": "Event JSON-LD — location.url and location address fields",
+          "issue": "The venue URL, streetAddress, and postalCode are all empty strings. While the city is provided, absence of a full address and venue name (beyond 'London, UK') reduces the richness of event rich results and may cause a venue-related warning in Search Console.",
+          "recommendation": "Add the specific venue name and address if available on the page. If not stated on the page, remove the empty string fields rather than publishing blank properties.",
+          "fix_prompt": "In the Event JSON-LD location block, remove any keys whose values are empty strings ('url', 'streetAddress', 'postalCode', 'telephone'). If the venue name and address are visible anywhere in the page content, populate them accurately; do not invent values."
+        },
+        {
+          "severity": "major",
+          "location": "WebSite JSON-LD",
+          "issue": "The WebSite schema block sets 'url' to 'https://www.iqpc.com' but the page lives on 'https://www.cxnetwork.com'. This cross-domain mismatch can confuse Google's entity graph and incorrectly associates the website entity with IQPC rather than CX Network.",
+          "recommendation": "Update the WebSite JSON-LD 'url' and '@id' to 'https://www.cxnetwork.com' and rename the entity 'name' to 'CX Network' consistently.",
+          "fix_prompt": "In the WebSite JSON-LD block, change 'url' to 'https://www.cxnetwork.com' and '@id' to 'https://www.cxnetwork.com#website'. Ensure 'name' reads 'CX Network' (not 'CX Retail Exchange UK') to reflect the site-level entity rather than the individual event."
+        },
+        {
+          "severity": "minor",
+          "location": "robots meta",
+          "issue": "No robots meta tag is present (value is null in the deterministic check). While the site is presumably indexable via default behaviour, the absence of an explicit 'index, follow' directive is a minor hygiene gap, especially for a high-value event landing page.",
+          "recommendation": "Add <meta name='robots' content='index, follow'> to the <head> to make crawl intent explicit.",
+          "fix_prompt": "Add the following tag inside the <head> element: <meta name='robots' content='index, follow'>."
+        },
+        {
+          "severity": "minor",
+          "location": "og:type",
+          "issue": "og:type is set to 'website' rather than a more specific type. While Open Graph does not have a native 'event' type, using 'website' misses an opportunity; for social sharing of event pages some platforms recognise custom namespaced types.",
+          "recommendation": "This is low priority; if the platform supports it, consider switching to og:type 'event' using the events Open Graph namespace. Otherwise, retain 'website' as a safe fallback.",
+          "fix_prompt": "If the publishing platform supports the Open Graph events namespace, update og:type to reference an event type. If not, this item can be left as 'website' and deprioritised."
+        },
+        {
+          "severity": "minor",
+          "location": "Performer array in Event JSON-LD",
+          "issue": "Several performer entries contain duplicate names (e.g., Richard Lim appears five times, Jonathan George three times, Lee Lobb twice) and many have empty URL strings. Duplicates add unnecessary payload and empty URL strings are noise in the schema graph.",
+          "recommendation": "Deduplicate the performer array programmatically so each person appears only once. Remove the 'url' key from any performer object where the value is an empty string.",
+          "fix_prompt": "Deduplicate the 'performer' array in the Event JSON-LD so each named person appears only once. For any performer object where 'url' is an empty string, remove the 'url' key entirely rather than publishing an empty value."
+        }
+      ],
+      "report_md": "**Structural checks (deterministic)**\n- Title: \"CX Retail Exchange UK\" (21 chars)\n- Meta description: 449 chars\n- Open Graph: ✓ complete enough for share cards\n- Canonical: ✓ · Viewport: ✓ · Robots: —\n- H1 count: 1 · Image alt coverage: 96% of 84\n- Event structured data (JSON-LD): ✓ present\n\n**Findings**\n- [minor] Meta description is 449 chars (will truncate).\n  - Fix: Trim to ≤160 characters.\n- [critical] Title is only 21 characters and omits the event year (2027), city (London), and primary topic keywords ('retail CX conference'). It provides no differentiation from a brand name lookup and will not match high-value discovery queries such as 'retail customer experience conference UK 2027' or 'CX event London 2027'.\n  - Fix: Expand to 50–60 characters, include the year, location, and a descriptive keyword. Example: 'CX Retail Exchange UK 2027 | Retail CX Conference London'.\n- [critical] The meta description is 449 characters — approximately three times the ~155-character display limit. Google will auto-truncate at a sentence boundary that may exclude the most compelling differentiators (AI-driven CX, invitation-only, roundtables). The same oversized text is also used for og:description, which will truncate poorly on social cards.\n  - Fix: Reduce to 150–160 characters. Lead with the strongest differentiator (invitation-only, London, 2027), include 'retail CX' and one unique benefit to drive the click.\n- [major] The H1 ('The Exclusive, Invitation-only Event for CX, CS, & Digital Retail Leaders in the UK') does not contain the event name 'CX Retail Exchange UK' or the year/city. This breaks keyword coherence between the title tag, schema name field, and on-page headline, weakening topical authority signals and making it harder for Google to confirm what the page is definitively about.\n  - Fix: Revise the H1 to include the event name and, if design permits, the year and location. The descriptor phrase can follow as a subheading. Example H1: 'CX Retail Exchange UK 2027' with an H2 subhead describing the audience.\n- [major] Both highPrice and lowPrice are empty strings in the AggregateOffer block. An empty string is not a valid schema value; it can cause Google's Rich Results validator to flag a price-related warning and suppress price display in event rich results.\n  - Fix: If pricing is not yet confirmed, remove the highPrice and lowPrice properties entirely rather than publishing empty strings. Set offerCount to the correct number of offer types or remove it if unknown.\n- [major] The offer availability value is set to 'https://www.cxnetwork.com/events-customer-experience-exchange-retail-uk/InStock', which is a page URL rather than the required schema.org vocabulary value (e.g., 'https://schema.org/InStock'). This will fail structured data validation.\n  - Fix: Replace the availability value with the correct schema.org URI: 'https://schema.org/InStock'.\n- [major] The event @id is 'https://www.iqpc.com#event', which points to the IQPC corporate domain rather than the canonical URL of this specific event page. This breaks entity disambiguation and prevents Google from correctly associating structured data with this URL.\n  - Fix: Set @id to the canonical event URL with a fragment: 'https://www.cxnetwork.com/events-customer-experience-exchange-retail-uk#event'.\n- [major] The venue URL, streetAddress, and postalCode are all empty strings. While the city is provided, absence of a full address and venue name (beyond 'London, UK') reduces the richness of event rich results and may cause a venue-related warning in Search Console.\n  - Fix: Add the specific venue name and address if available on the page. If not stated on the page, remove the empty string fields rather than publishing blank properties.\n- [major] The WebSite schema block sets 'url' to 'https://www.iqpc.com' but the page lives on 'https://www.cxnetwork.com'. This cross-domain mismatch can confuse Google's entity graph and incorrectly associates the website entity with IQPC rather than CX Network.\n  - Fix: Update the WebSite JSON-LD 'url' and '@id' to 'https://www.cxnetwork.com' and rename the entity 'name' to 'CX Network' consistently.\n- [minor] No robots meta tag is present (value is null in the deterministic check). While the site is presumably indexable via default behaviour, the absence of an explicit 'index, follow' directive is a minor hygiene gap, especially for a high-value event landing page.\n  - Fix: Add <meta name='robots' content='index, follow'> to the <head> to make crawl intent explicit.\n- [minor] og:type is set to 'website' rather than a more specific type. While Open Graph does not have a native 'event' type, using 'website' misses an opportunity; for social sharing of event pages some platforms recognise custom namespaced types.\n  - Fix: This is low priority; if the platform supports it, consider switching to og:type 'event' using the events Open Graph namespace. Otherwise, retain 'website' as a safe fallback.\n- [minor] Several performer entries contain duplicate names (e.g., Richard Lim appears five times, Jonathan George three times, Lee Lobb twice) and many have empty URL strings. Duplicates add unnecessary payload and empty URL strings are noise in the schema graph.\n  - Fix: Deduplicate the performer array programmatically so each person appears only once. Remove the 'url' key from any performer object where the value is an empty string.\n\n**Improved metadata (ready to apply)**\n- Title: CX Retail Exchange UK 2027 | Retail CX Conference London\n- Meta description: Join 200+ senior retail CX leaders in London, June 2027. Invitation-only sessions on loyalty, personalisation & AI-driven CX. Request your place today.",
+      "extra": {
+        "checks": {
+          "title": "CX Retail Exchange UK",
+          "title_length": 21,
+          "meta_description": "Discover the UK’s leading invitation-only event for senior retail customer experience professionals. Held annually in London, this exclusive forum offers strategic insights into loyalty, personalisation, and AI-driven CX innovation. Attendees benefit from expert-led sessions, interactive roundtables, and curated one-to-one meetings with solution providers. Ideal for retail leaders seeking to elevate customer engagement and drive business growth.",
+          "meta_description_length": 449,
+          "canonical": "https://www.cxnetwork.com/events-customer-experience-exchange-retail-uk",
+          "og": {
+            "title": "CX Retail Exchange UK",
+            "description": "Discover the UK’s leading invitation-only event for senior retail customer experience professionals. Held annually in London, this exclusive forum offers strategic insights into loyalty, personalisation, and AI-driven CX innovation. Attendees benefit from expert-led sessions, interactive roundtables, and curated one-to-one meetings with solution providers. Ideal for retail leaders seeking to elevate customer engagement and drive business growth.",
+            "image": "https://eco-cdn.iqpc.com/eco/images/logos/2nsUk7VIrtoJq6fxF0c4eJ5v737kPBFxwOac6MSv.png"
+          },
+          "viewport_meta": true,
+          "robots_meta": null,
+          "h1_count": 1,
+          "h1s": [
+            "The Exclusive, Invitation-only Event for CX, CS, & Digital Retail Leaders in the UK"
+          ],
+          "image_alt_coverage_pct": 96,
+          "images_total": 84,
+          "has_event_schema": true
+        },
+        "improved_meta": {
+          "title": "CX Retail Exchange UK 2027 | Retail CX Conference London",
+          "meta_description": "Join 200+ senior retail CX leaders in London, June 2027. Invitation-only sessions on loyalty, personalisation & AI-driven CX. Request your place today.",
+          "og_title": "CX Retail Exchange UK 2027 — London's Invitation-Only Retail CX Event",
+          "og_description": "Senior retail CX leaders meet in London, June 2027 for invitation-only keynotes, roundtables & curated supplier meetings. Explore loyalty, AI & personalisation."
+        },
+        "event_schema_jsonld": null
+      }
+    }
+  ],
+  "conversion": {
+    "analytics_found": [
+      "GA4 / Google Tag Manager",
+      "LinkedIn Insight Tag"
+    ],
+    "analytics_missing": [
+      "Meta Pixel"
+    ],
+    "ctas": [
+      {
+        "tag": "a",
+        "text": "JOIN US IN LONDON",
+        "href": "https://www.cxnetwork.com/events-customer-experience-exchange-retail-uk/downloads/request-an-invitation",
+        "status": 200,
+        "ok": true
+      },
+      {
+        "tag": "a",
+        "text": "REQUEST YOUR INVITE",
+        "href": "https://www.cxnetwork.com/events-customer-experience-exchange-retail-uk/downloads/request-an-invitation",
+        "status": 200,
+        "ok": true
+      },
+      {
+        "tag": "a",
+        "text": "REQUEST AN INVITATION",
+        "href": "https://www.cxnetwork.com/events-customer-experience-exchange-retail-uk/downloads/request-an-invitation",
+        "status": 200,
+        "ok": true
+      },
+      {
+        "tag": "a",
+        "text": "JOIN US IN EUROPE",
+        "href": "https://www.cxnetwork.com/events-customer-experience-exchange-retail-europe",
+        "status": 200,
+        "ok": true
+      },
+      {
+        "tag": "a",
+        "text": "JOIN US IN ATLANTA",
+        "href": "https://www.cxnetwork.com/events-customer-experience-exchange-retail-us",
+        "status": 200,
+        "ok": true
+      },
+      {
+        "tag": "a",
+        "text": "REQUEST YOUR INVITE",
+        "href": "https://www.cxnetwork.com/events-customer-experience-exchange-retail-uk/downloads/request-an-invitation",
+        "status": 200,
+        "ok": true
+      }
+    ],
+    "utm_propagation": "not_tested",
+    "issues": [
+      {
+        "severity": "major",
+        "code": "MISSING_PIXEL",
+        "detail": "Meta Pixel not detected — conversions from this page cannot be measured/attributed for that channel."
+      }
+    ]
+  },
+  "perf": {
+    "available": false,
+    "note": "Skipped via --skip-perf"
+  },
+  "regression": {
+    "first_run": false,
+    "previous_date": "2026-07-22T16:47:55.900Z",
+    "previous_score": 44,
+    "score_delta": -1,
+    "previous_verdict": "BLOCK",
+    "verdict_changed": false,
+    "regressed": false
+  },
+  "axe": [
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "affected_nodes": 17,
+      "example_target": ".aos-animate.btn-primary[role=\"button\"]"
+    },
+    {
+      "id": "heading-order",
+      "impact": "moderate",
+      "description": "Ensure the order of headings is semantically correct",
+      "affected_nodes": 5,
+      "example_target": ".cta-event-date"
+    },
+    {
+      "id": "image-alt",
+      "impact": "critical",
+      "description": "Ensure <img> elements have alternative text or a role of none or presentation",
+      "affected_nodes": 1,
+      "example_target": ".d-md-block"
+    },
+    {
+      "id": "landmark-unique",
+      "impact": "moderate",
+      "description": "Ensure landmarks are unique",
+      "affected_nodes": 1,
+      "example_target": ".portal-navigation"
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensure links have discernible text",
+      "affected_nodes": 3,
+      "example_target": "a:nth-child(4)"
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensure all page content is contained by landmarks",
+      "affected_nodes": 29,
+      "example_target": ".header-container"
+    }
+  ],
+  "hasApiKey": true
+}

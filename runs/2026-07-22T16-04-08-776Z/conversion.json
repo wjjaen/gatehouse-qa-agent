@@ -1,0 +1,32 @@
+{
+  "analytics_found": [],
+  "analytics_missing": [
+    "GA4 / Google Tag Manager",
+    "Meta Pixel",
+    "LinkedIn Insight Tag"
+  ],
+  "ctas": [],
+  "utm_propagation": "not_tested",
+  "issues": [
+    {
+      "severity": "critical",
+      "code": "MISSING_ANALYTICS",
+      "detail": "GA4 / Google Tag Manager not detected — conversions from this page cannot be measured/attributed for that channel."
+    },
+    {
+      "severity": "major",
+      "code": "MISSING_PIXEL",
+      "detail": "Meta Pixel not detected — conversions from this page cannot be measured/attributed for that channel."
+    },
+    {
+      "severity": "major",
+      "code": "MISSING_PIXEL",
+      "detail": "LinkedIn Insight Tag not detected — conversions from this page cannot be measured/attributed for that channel."
+    },
+    {
+      "severity": "critical",
+      "code": "NO_REGISTRATION_CTA",
+      "detail": "No registration/booking call-to-action was found on the page. The primary conversion path is missing."
+    }
+  ]
+}

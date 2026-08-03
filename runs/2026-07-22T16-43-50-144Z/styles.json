@@ -1,0 +1,110 @@
+{
+  "colors": [
+    {
+      "value": "#212529",
+      "elements": 247
+    },
+    {
+      "value": "#212121",
+      "elements": 182
+    },
+    {
+      "value": "#FFFFFF",
+      "elements": 164
+    },
+    {
+      "value": "#222222",
+      "elements": 89
+    },
+    {
+      "value": "#000000",
+      "elements": 61
+    },
+    {
+      "value": "#696969",
+      "elements": 32
+    },
+    {
+      "value": "#0D6EFD",
+      "elements": 28
+    },
+    {
+      "value": "#0B3952",
+      "elements": 14
+    },
+    {
+      "value": "#555555",
+      "elements": 14
+    },
+    {
+      "value": "#3860BE",
+      "elements": 13
+    },
+    {
+      "value": "#333333",
+      "elements": 12
+    },
+    {
+      "value": "#00C9FF",
+      "elements": 10
+    },
+    {
+      "value": "#27455C",
+      "elements": 8
+    },
+    {
+      "value": "#666666",
+      "elements": 7
+    },
+    {
+      "value": "#FF3FB1",
+      "elements": 6
+    },
+    {
+      "value": "#F8F9FA",
+      "elements": 5
+    },
+    {
+      "value": "#28324E",
+      "elements": 5
+    },
+    {
+      "value": "#E9E9E9",
+      "elements": 4
+    },
+    {
+      "value": "#073763",
+      "elements": 3
+    },
+    {
+      "value": "#0084FF",
+      "elements": 3
+    }
+  ],
+  "fonts": [
+    {
+      "value": "Raleway, sans-serif",
+      "elements": 835
+    },
+    {
+      "value": "\"Font Awesome 6 Brands\"",
+      "elements": 2
+    },
+    {
+      "value": "system-ui, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+      "elements": 2
+    },
+    {
+      "value": "\"Font Awesome 6 Free\"",
+      "elements": 1
+    },
+    {
+      "value": "\"Times New Roman\"",
+      "elements": 1
+    },
+    {
+      "value": "\"Open Sans Pro\", sans-serif",
+      "elements": 1
+    }
+  ]
+}

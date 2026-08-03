@@ -1,0 +1,40 @@
+{
+  "analytics_found": [
+    "GA4 / Google Tag Manager",
+    "LinkedIn Insight Tag"
+  ],
+  "analytics_missing": [
+    "Meta Pixel"
+  ],
+  "ctas": [
+    {
+      "tag": "a",
+      "text": "Request an Invite",
+      "href": "https://www.iqpc.com/events-corporate-counsel-and-compliance-exchange-usa/downloads/request-an-invitation",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "tag": "a",
+      "text": "REQUEST YOUR INVITE",
+      "href": "https://www.iqpc.com/events-corporate-counsel-and-compliance-exchange-usa/downloads/request-an-invitation",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "tag": "a",
+      "text": "REQUEST AN INVITE",
+      "href": "https://www.iqpc.com/events-corporate-counsel-and-compliance-exchange-usa/downloads/request-an-invitation",
+      "status": 200,
+      "ok": true
+    }
+  ],
+  "utm_propagation": "not_tested",
+  "issues": [
+    {
+      "severity": "major",
+      "code": "MISSING_PIXEL",
+      "detail": "Meta Pixel not detected — conversions from this page cannot be measured/attributed for that channel."
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "colors": [
+    {
+      "value": "#212121",
+      "elements": 370
+    },
+    {
+      "value": "#212529",
+      "elements": 282
+    },
+    {
+      "value": "#FFFFFF",
+      "elements": 150
+    },
+    {
+      "value": "#222222",
+      "elements": 94
+    },
+    {
+      "value": "#000000",
+      "elements": 63
+    },
+    {
+      "value": "#FFD230",
+      "elements": 50
+    },
+    {
+      "value": "#696969",
+      "elements": 32
+    },
+    {
+      "value": "#111111",
+      "elements": 19
+    },
+    {
+      "value": "#333333",
+      "elements": 16
+    },
+    {
+      "value": "#555555",
+      "elements": 14
+    },
+    {
+      "value": "#3860BE",
+      "elements": 13
+    },
+    {
+      "value": "#0081FF",
+      "elements": 12
+    },
+    {
+      "value": "#083352",
+      "elements": 9
+    },
+    {
+      "value": "#F7F5FF",
+      "elements": 8
+    },
+    {
+      "value": "#27455C",
+      "elements": 8
+    },
+    {
+      "value": "#666666",
+      "elements": 6
+    },
+    {
+      "value": "#E9E9E9",
+      "elements": 4
+    },
+    {
+      "value": "#0B3952",
+      "elements": 3
+    },
+    {
+      "value": "#0B5394",
+      "elements": 3
+    },
+    {
+      "value": "#F8F9FA",
+      "elements": 2
+    }
+  ],
+  "fonts": [
+    {
+      "value": "Raleway, sans-serif",
+      "elements": 1090
+    },
+    {
+      "value": "system-ui, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+      "elements": 2
+    },
+    {
+      "value": "\"Font Awesome 6 Free\"",
+      "elements": 1
+    },
+    {
+      "value": "\"Times New Roman\"",
+      "elements": 1
+    },
+    {
+      "value": "\"Open Sans Pro\", sans-serif",
+      "elements": 1
+    }
+  ]
+}

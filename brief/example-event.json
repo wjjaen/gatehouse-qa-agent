@@ -1,0 +1,21 @@
+{
+  "event_name": "WorkX 2026",
+  "tagline_direction": "The future of work, built by the people doing the work",
+  "dates": "August 10-12, 2026",
+  "venue": "Hotel Nikko San Francisco",
+  "city": "San Francisco, CA",
+  "audience": "Heads of Workplace Experience, HR Technology leaders, CHROs, Facilities and Real Estate executives",
+  "topics": [
+    "AI-augmented workplace design",
+    "Hybrid work operating models",
+    "Employee experience measurement",
+    "Workplace technology stacks"
+  ],
+  "key_benefits": [
+    "Benchmark against peer organizations solving the same problems",
+    "Hands-on workshops, not just keynotes",
+    "Curated 1:1 networking with vetted peers"
+  ],
+  "registration_url": "https://example.com/workx-2026/register",
+  "notes": "Do not invent speaker names, attendee counts, or prices — none are confirmed for public use yet."
+}
