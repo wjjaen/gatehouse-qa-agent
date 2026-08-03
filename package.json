@@ -9,7 +9,8 @@
     "qa": "node agent.js",
     "batch": "node batch.js",
     "content": "node content-gen.js",
-    "guardrails": "node generate-guardrails.js"
+    "guardrails": "node generate-guardrails.js",
+    "postinstall": "npx playwright install chromium"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.40.0",

@@ -336,9 +336,20 @@ function renderHtml(data, RAILWAY_URL = '') {
   <footer class="note" id="foot"></footer>
 </main>
 
-<div id="scanner-status" style="display:none;position:fixed;top:20px;right:20px;background:var(--ink);border:1px solid var(--line);border-radius:12px;padding:16px 20px;box-shadow:0 10px 30px rgba(10,37,64,0.16);z-index:99999;align-items:center;gap:12px;">
-  <div style="width:18px;height:18px;border:3px solid var(--accent);border-top-color:transparent;border-radius:50%;animation:spin 0.8s linear infinite;"></div>
-  <span id="scanner-status-text" style="font-size:13.5px;color:#fff;font-weight:600;font-family:var(--body);">Running QA agents...</span>
+<div id="scanner-status" style="display:none;position:fixed;top:20px;right:20px;max-width:340px;background:var(--ink);border:1px solid var(--line);border-radius:12px;padding:16px 20px;box-shadow:0 10px 30px rgba(10,37,64,0.16);z-index:99999;align-items:flex-start;gap:12px;">
+  <div style="flex:0 0 auto;margin-top:2px;width:18px;height:18px;border:3px solid var(--accent);border-top-color:transparent;border-radius:50%;animation:spin 0.8s linear infinite;"></div>
+  <span id="scanner-status-text" style="font-size:13.5px;color:#fff;font-weight:600;font-family:var(--body);word-break:break-word;">Running QA agents...</span>
+</div>
+
+<div id="confirm-modal" style="display:none;position:fixed;inset:0;background:rgba(10,37,64,0.45);z-index:100000;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:var(--card);border-radius:14px;padding:24px;max-width:380px;width:100%;box-shadow:0 20px 50px rgba(10,37,64,0.3);">
+    <div style="font-family:var(--display);font-size:17px;color:var(--ink);margin-bottom:8px;">Delete site data?</div>
+    <div id="confirm-modal-body" style="font-size:13.5px;color:var(--muted);line-height:1.5;margin-bottom:20px;word-break:break-word;"></div>
+    <div style="display:flex;justify-content:flex-end;gap:10px;">
+      <button type="button" id="confirm-modal-cancel" style="font-size:13px;font-weight:600;padding:8px 14px;border-radius:8px;color:var(--muted);">Cancel</button>
+      <button type="button" id="confirm-modal-ok" style="font-size:13px;font-weight:700;padding:8px 14px;border-radius:8px;background:var(--block);color:#fff;">Delete</button>
+    </div>
+  </div>
 </div>
 <style>
   @keyframes spin { to { transform: rotate(360deg); } }
@@ -557,8 +568,34 @@ function copyFix(i,btn){
   const done=()=>{btn.classList.add('done');btn.textContent='✓ Copied';setTimeout(()=>{btn.classList.remove('done');btn.textContent='⧉ Copy prompt';},1600);};
   navigator.clipboard.writeText(text).then(done).catch(()=>{const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();done();});
 }
+function confirmModal(message){
+  const modal = document.getElementById('confirm-modal');
+  const body = document.getElementById('confirm-modal-body');
+  const okBtn = document.getElementById('confirm-modal-ok');
+  const cancelBtn = document.getElementById('confirm-modal-cancel');
+  body.textContent = message;
+  modal.style.display = 'flex';
+  return new Promise((resolve) => {
+    const cleanup = (result) => {
+      modal.style.display = 'none';
+      okBtn.removeEventListener('click', onOk);
+      cancelBtn.removeEventListener('click', onCancel);
+      modal.removeEventListener('click', onOverlay);
+      document.removeEventListener('keydown', onKey);
+      resolve(result);
+    };
+    const onOk = () => cleanup(true);
+    const onCancel = () => cleanup(false);
+    const onOverlay = (e) => { if (e.target === modal) cleanup(false); };
+    const onKey = (e) => { if (e.key === 'Escape') cleanup(false); };
+    okBtn.addEventListener('click', onOk);
+    cancelBtn.addEventListener('click', onCancel);
+    modal.addEventListener('click', onOverlay);
+    document.addEventListener('keydown', onKey);
+  });
+}
 async function deleteSite(url){
-  if(!confirm('Delete all run data for '+url+'?')) return;
+  if(!(await confirmModal('Delete all run data for '+url+'?'))) return;
   try {
     const res = await fetch(getApiUrl('/api/delete'), {
       method: 'POST',
@@ -672,7 +709,7 @@ document.getElementById('scanner-form').addEventListener('submit', async (e) => 
     }, 1500);
     urlEl.value = '';
   } catch (err) {
-    statusTextEl.textContent = 'Error: ' + err.message;
+    statusTextEl.textContent = 'Error: ' + String(err.message).split('\\n')[0];
     setTimeout(() => {
       statusEl.style.display = 'none';
     }, 5000);
