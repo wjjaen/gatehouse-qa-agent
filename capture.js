@@ -69,7 +69,7 @@ export async function capture(url, outDir) {
   await page.waitForTimeout(2_000);
 
   const desktopShot = path.join(outDir, 'desktop.png');
-  await page.screenshot({ path: desktopShot, fullPage: true });
+  await page.screenshot({ path: desktopShot, fullPage: true, timeout: 60_000 });
   if (await capImageDimensions(context, desktopShot))
     console.log('  → Desktop screenshot captured (downscaled to fit 8000px API limit)');
   else
@@ -131,7 +131,7 @@ export async function capture(url, outDir) {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.waitForTimeout(750);
   const mobileShot = path.join(outDir, 'mobile.png');
-  await page.screenshot({ path: mobileShot, fullPage: true });
+  await page.screenshot({ path: mobileShot, fullPage: true, timeout: 60_000 });
   if (await capImageDimensions(context, mobileShot))
     console.log('  → Mobile screenshot captured (downscaled to fit 8000px API limit)');
   else
