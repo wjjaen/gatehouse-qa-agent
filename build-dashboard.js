@@ -434,7 +434,7 @@ function renderLeadership(){
       +'<td><span class="swatches">'+sw+'</span></td>'
       +'<td>'+deltaCell+'</td>'
       +'<td>'+vChip(s.verdict)+'</td>'
-      +'<td style="text-align:center;"><button type="button" class="delbtn" title="Delete site" onclick="event.stopPropagation(); event.preventDefault(); deleteSite(\''+esc(s.url)+'\')">🗑</button></td></tr>';
+      +'<td style="text-align:center;"><button type="button" class="delbtn" title="Delete site" onclick="event.stopPropagation(); event.preventDefault(); deleteSite(\\''+esc(s.url)+'\\')">🗑</button></td></tr>';
   }).join('');
   return '<div class="grid g3">'
     +'<div class="card pad"><div class="label">Brand Health Index</div>'
