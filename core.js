@@ -19,7 +19,11 @@ const AGENTS = { design: designQA, brand: brandCompliance, seo: seoAudit };
 const WEIGHTS = { design: 0.4, brand: 0.35, seo: 0.25 };
 const HTML_CHAR_LIMIT = 25_000;
 const SCORE_REVIEW_THRESHOLD = 60;
-const HISTORY_FILE = path.join('history', 'scores.jsonl');
+// DATA_DIR points scan output (runs/, history/) at a mounted persistent disk
+// in production (e.g. Render), so results survive restarts. Defaults to the
+// project directory for local dev, where "." already behaves as before.
+const DATA_DIR = process.env.DATA_DIR || '.';
+const HISTORY_FILE = path.join(DATA_DIR, 'history', 'scores.jsonl');
 
 // ---------- verdict (CODE decides, never the LLM alone) ----------
 
@@ -181,7 +185,7 @@ export async function reviewSite(url, {
   }
 
   const runId = new Date().toISOString().replace(/[:.]/g, '-');
-  const outDir = path.join('runs', runId);
+  const outDir = path.join(DATA_DIR, 'runs', runId);
 
   console.log('[1/5] Capturing page evidence + conversion checks...');
   const cap = await capture(url, outDir);

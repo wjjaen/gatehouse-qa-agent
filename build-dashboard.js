@@ -11,10 +11,13 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-const RUNS_DIR = 'runs';
+// DATA_DIR points at a mounted persistent disk in production (e.g. Render) so
+// scan results survive restarts. Defaults to the project directory locally.
+const DATA_DIR = process.env.DATA_DIR || '.';
+const RUNS_DIR = path.join(DATA_DIR, 'runs');
 const OUT_DIR = 'dashboard';
 const OUT_FILE = path.join(OUT_DIR, 'index.html');
-const HISTORY_FILE = path.join('history', 'scores.jsonl');
+const HISTORY_FILE = path.join(DATA_DIR, 'history', 'scores.jsonl');
 
 // Scoring constants — kept in sync with core.js (WEIGHTS, SCORE_REVIEW_THRESHOLD).
 const WEIGHTS = { design: 40, brand: 35, seo: 25 };

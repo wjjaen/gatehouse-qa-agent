@@ -13,6 +13,27 @@ import { buildDashboard } from './build-dashboard.js';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// ── Persistent data dir ─────────────────────────────────────────────────────
+// On Render, DATA_DIR points at a mounted disk so runs/ and history/ survive
+// restarts instead of resetting to whatever's committed in git. The first
+// time the disk is used it's empty, so seed it from the repo's own committed
+// runs/history once — after that the disk is the source of truth and this
+// is a no-op.
+const DATA_DIR = process.env.DATA_DIR || '.';
+if (DATA_DIR !== '.') {
+  fs.mkdirSync(DATA_DIR, { recursive: true });
+  const seedRuns = path.join(DATA_DIR, 'runs');
+  const seedHistoryDir = path.join(DATA_DIR, 'history');
+  if (!fs.existsSync(seedRuns) && fs.existsSync('runs')) {
+    console.log(`[Server] Seeding ${seedRuns} from committed runs/`);
+    fs.cpSync('runs', seedRuns, { recursive: true });
+  }
+  if (!fs.existsSync(seedHistoryDir) && fs.existsSync('history')) {
+    console.log(`[Server] Seeding ${seedHistoryDir} from committed history/`);
+    fs.cpSync('history', seedHistoryDir, { recursive: true });
+  }
+}
+
 // ── CORS ─────────────────────────────────────────────────────────────────────
 // Allow requests from the Bluehost static site and local dev environments.
 const ALLOWED_ORIGINS = [
@@ -80,7 +101,7 @@ app.post('/api/delete', async (req, res) => {
 
   try {
     console.log(`[Server] Request to delete site: ${url}`);
-    const RUNS_DIR = 'runs';
+    const RUNS_DIR = path.join(DATA_DIR, 'runs');
     if (fs.existsSync(RUNS_DIR)) {
       for (const d of fs.readdirSync(RUNS_DIR)) {
         const reportPath = path.join(RUNS_DIR, d, 'report.json');
