@@ -47,7 +47,13 @@ async function capImageDimensions(context, filePath, maxEdge = 7600) {
 export async function capture(url, outDir) {
   fs.mkdirSync(outDir, { recursive: true });
 
-  const browser = await chromium.launch();
+  // Container-safe launch flags. --disable-dev-shm-usage is the important one:
+  // constrained containers (Render, Docker) often cap /dev/shm at ~64MB, and
+  // Chromium silently dies (no error, no exception — just gone) when it fills
+  // up on a media-heavy page. This makes Chromium spill to /tmp instead.
+  const browser = await chromium.launch({
+    args: ['--disable-dev-shm-usage', '--disable-gpu', '--no-sandbox'],
+  });
   const context = await browser.newContext({
     viewport: { width: 1440, height: 900 },
     // Present as a normal desktop Chrome. Playwright's default headless UA
