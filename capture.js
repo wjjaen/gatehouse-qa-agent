@@ -9,6 +9,29 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { checkConversion } from './conversion.js';
 
+// Anthropic's 8000px image limit, and the ceiling we render at. Capping the
+// viewport to this height BEFORE screenshotting (rather than rendering the
+// full page and shrinking after) keeps Chromium's peak memory bounded — full
+// page render + resize was pushing very long marketing pages past a 512MB
+// container's memory limit and getting Chromium silently OOM-killed.
+const MAX_CAPTURE_HEIGHT = 7600;
+
+// Screenshot up to MAX_CAPTURE_HEIGHT tall instead of the entire page. For a
+// page shorter than that, behaves identically to a full-page screenshot;
+// content below the cap on very long pages goes uncaptured rather than
+// risking an OOM crash that captures nothing at all.
+async function boundedScreenshot(page, filePath, timeout) {
+  const contentHeight = await page.evaluate(() =>
+    Math.max(document.documentElement.scrollHeight, document.body.scrollHeight)
+  );
+  const viewport = page.viewportSize();
+  const captureHeight = Math.min(contentHeight, MAX_CAPTURE_HEIGHT);
+  if (captureHeight !== viewport.height) {
+    await page.setViewportSize({ width: viewport.width, height: captureHeight });
+  }
+  await page.screenshot({ path: filePath, timeout });
+}
+
 // Anthropic rejects any image whose longest edge exceeds 8000px. Long marketing
 // pages easily exceed that when captured full-page, so downscale in place using
 // the already-open browser (a blank tab + canvas) — no extra image dependency.
@@ -99,7 +122,7 @@ export async function capture(url, outDir) {
   await page.waitForTimeout(2_000);
 
   const desktopShot = path.join(outDir, 'desktop.png');
-  await page.screenshot({ path: desktopShot, fullPage: true, timeout: 60_000 });
+  await boundedScreenshot(page, desktopShot, 60_000);
   if (await capImageDimensions(context, desktopShot))
     console.log('  → Desktop screenshot captured (downscaled to fit 8000px API limit)');
   else
@@ -161,7 +184,7 @@ export async function capture(url, outDir) {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.waitForTimeout(750);
   const mobileShot = path.join(outDir, 'mobile.png');
-  await page.screenshot({ path: mobileShot, fullPage: true, timeout: 60_000 });
+  await boundedScreenshot(page, mobileShot, 60_000);
   if (await capImageDimensions(context, mobileShot))
     console.log('  → Mobile screenshot captured (downscaled to fit 8000px API limit)');
   else
