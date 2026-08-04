@@ -65,6 +65,30 @@ export async function capture(url, outDir) {
   });
   const page = await context.newPage();
 
+  // Block video/audio and known video-embed platforms. These are by far the
+  // biggest memory driver for headless Chromium on a constrained instance,
+  // and aren't needed for design/brand/SEO/accessibility QA — the <iframe>
+  // element itself still renders and is still evaluated by axe-core; only
+  // its heavy inner player app (which can pull Chromium's memory past a
+  // 512MB container limit and get silently OOM-killed) is skipped.
+  const VIDEO_EMBED_HOSTS = [
+    'youtube.com', 'youtube-nocookie.com', 'ytimg.com',
+    'vimeo.com', 'player.vimeo.com',
+    'wistia.com', 'wistia.net',
+    'brightcove.com', 'brightcove.net',
+  ];
+  await page.route('**/*', (route) => {
+    const req = route.request();
+    if (req.resourceType() === 'media') return route.abort();
+    try {
+      const host = new URL(req.url()).hostname;
+      if (VIDEO_EMBED_HOSTS.some((h) => host === h || host.endsWith('.' + h))) {
+        return route.abort();
+      }
+    } catch {}
+    return route.continue();
+  });
+
   console.log(`  → Loading ${url}`);
   // Load the DOM, then give the network a chance to settle — but don't REQUIRE
   // it: marketing pages run trackers/chat/ad scripts that keep the connection
