@@ -4,7 +4,7 @@
 // 2. LLM review: logo usage, tone of voice, accent discipline, and the
 //    required-elements checklist — judged from screenshots.
 
-import { b64, callClaudeJSON } from '../lib.js';
+import { callClaudeJSON, screenshotBlocks } from '../lib.js';
 
 export const id = 'brand';
 export const label = 'Brand Compliance';
@@ -115,10 +115,8 @@ organization if published (wrong/distorted logo, off-brand messaging that
 misrepresents the event, missing legally required elements).`;
 
   const content = [
-    { type: 'text', text: 'Desktop screenshot (1440px viewport, full page):' },
-    { type: 'image', source: { type: 'base64', media_type: 'image/png', data: b64(ctx.desktopShot) } },
-    { type: 'text', text: 'Mobile screenshot (390px viewport, full page):' },
-    { type: 'image', source: { type: 'base64', media_type: 'image/png', data: b64(ctx.mobileShot) } },
+    ...screenshotBlocks('Desktop screenshot (1440px viewport)', ctx.desktopTiles, ctx.desktopShot),
+    ...screenshotBlocks('Mobile screenshot (390px viewport)', ctx.mobileTiles, ctx.mobileShot),
     {
       type: 'text',
       text: `Page HTML for copy/tone review (truncated):\n\n${ctx.htmlExcerpt}\n\nPerform the brand compliance review now.`,

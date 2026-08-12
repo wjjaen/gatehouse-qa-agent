@@ -203,6 +203,8 @@ export async function reviewSite(url, {
     client, url, brandRaw, brandObj,
     desktopShot: cap.desktopShot,
     mobileShot: cap.mobileShot,
+    desktopTiles: cap.desktopTiles,
+    mobileTiles: cap.mobileTiles,
     html: cap.html,
     htmlExcerpt: cap.html.slice(0, HTML_CHAR_LIMIT),
     axeSummary,
@@ -210,23 +212,33 @@ export async function reviewSite(url, {
     styleAudit: cap.styleAudit,
   };
 
-  const agentResults = [];
+  let agentResults = [];
   if (!hasApiKey) {
     console.log('[3/5] Skipping gate agents (no API key)...');
   } else {
-    console.log(`[3/5] Running gate agents: ${agents.join(', ')}...`);
-    for (const key of agents) {
+    // The gate agents all read the same immutable ctx and never read each
+    // other's output, so run them concurrently — serially they were ~90% of
+    // total scan wall time (three long generations back to back) purely
+    // because of the await in the loop.
+    console.log(`[3/5] Running gate agents in parallel: ${agents.join(', ')}...`);
+    const known = agents.filter((key) => {
+      if (AGENTS[key]) return true;
+      console.warn(`  ! Unknown agent "${key}" — skipping`);
+      return false;
+    });
+    agentResults = await Promise.all(known.map(async (key) => {
       const mod = AGENTS[key];
-      if (!mod) { console.warn(`  ! Unknown agent "${key}" — skipping`); continue; }
+      const startedAt = Date.now();
       try {
-        console.log(`  → ${mod.label}`);
-        agentResults.push(await mod.run(ctx));
+        const result = await mod.run(ctx);
+        console.log(`  ✓ ${mod.label} (${((Date.now() - startedAt) / 1000).toFixed(1)}s)`);
+        return result;
       } catch (err) {
         if (err.raw) fs.writeFileSync(path.join(outDir, `${key}-raw-response.txt`), err.raw);
         console.error(`  ✗ ${mod.label} failed: ${err.message}`);
-        agentResults.push({ id: key, label: mod.label, score: null, summary: null, findings: [], report_md: '', error: err.message });
+        return { id: key, label: mod.label, score: null, summary: null, findings: [], report_md: '', error: err.message };
       }
-    }
+    }));
   }
 
   console.log('[4/5] Verdict, regression check...');

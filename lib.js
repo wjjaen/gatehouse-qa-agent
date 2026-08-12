@@ -6,6 +6,24 @@ export const MODEL = 'claude-sonnet-4-6';
 
 export const b64 = (file) => fs.readFileSync(file).toString('base64');
 
+// Build the labelled image blocks for one viewport. capture.js slices each
+// full-page screenshot into top-to-bottom tiles so the API's 1568px long-edge
+// resize doesn't squash a 7600px-tall page into an unreadable sliver; label
+// each tile with its position so the agent knows what it's looking at.
+// Falls back to the single full-page shot if no tiles were produced.
+export function screenshotBlocks(label, tiles, fallbackShot) {
+  const paths = tiles?.length ? tiles : [fallbackShot];
+  return paths.flatMap((file, i) => [
+    {
+      type: 'text',
+      text: paths.length > 1
+        ? `${label} — section ${i + 1} of ${paths.length}, top to bottom:`
+        : `${label}:`,
+    },
+    { type: 'image', source: { type: 'base64', media_type: 'image/png', data: b64(file) } },
+  ]);
+}
+
 export function parseJsonResponse(text) {
   const cleaned = text
     .replace(/^```(?:json)?\s*/i, '')

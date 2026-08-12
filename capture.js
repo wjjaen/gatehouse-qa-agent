@@ -16,6 +16,78 @@ import { checkConversion } from './conversion.js';
 // container's memory limit and getting Chromium silently OOM-killed.
 const MAX_CAPTURE_HEIGHT = 7600;
 
+// The full-page PNGs above are evidence for humans; they are the WRONG thing to
+// send to the review agents. The API resizes any image to fit 1568px on its
+// long edge, so a 1440x7600 capture lands as a ~297px-wide sliver — the design
+// agent was scoring a page it could not read, while we uploaded 8.6MB of base64
+// to do it. Slicing the capture into page-height tiles instead means each tile
+// arrives at roughly its native width, and the whole set is a fraction of the
+// bytes.
+const API_MAX_EDGE = 1568;      // API resizes anything larger
+const API_MAX_PIXELS = 1_150_000; // ...and anything above ~1.15MP
+const API_TILE_HEIGHT = 1600;   // ≈ 1.8 desktop viewports per tile
+// Tile budget per viewport. A 1440px-wide tile costs ~1.15MP (the API's per-
+// image ceiling), so desktop is kept to 3; a 390px-wide mobile tile is a
+// fraction of that, so mobile can afford more tiles — which it needs, since a
+// tall narrow capture is squeezed hardest by the 1568px long-edge rule.
+const API_MAX_TILES = { desktop: 3, mobile: 5 };
+
+// Slice filePath into at most API_MAX_TILES top-to-bottom tiles, each pre-scaled
+// to what the API would resize it to anyway (so we upload those bytes, not 5x
+// them). Tiles grow taller on long pages rather than dropping the bottom of the
+// page: the whole capture is always covered, and page length trades against
+// per-tile resolution instead of against coverage. Returns the written tile
+// paths, top of page first.
+async function sliceForApi(context, filePath, outPrefix, maxTiles) {
+  const b64 = fs.readFileSync(filePath).toString('base64');
+  const tmp = await context.newPage();
+  try {
+    const dataUrls = await tmp.evaluate(
+      async ({ b64, minTileHeight, maxTiles, maxEdge, maxPixels }) => {
+        const img = new Image();
+        await new Promise((res, rej) => {
+          img.onload = res;
+          img.onerror = rej;
+          img.src = 'data:image/png;base64,' + b64;
+        });
+        const w = img.naturalWidth, h = img.naturalHeight;
+        // Cover the full height within the tile budget; short pages keep the
+        // preferred tile height rather than being split into slivers.
+        const tileHeight = Math.max(minTileHeight, Math.ceil(h / maxTiles));
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const out = [];
+        for (let i = 0; i < maxTiles; i += 1) {
+          const top = i * tileHeight;
+          if (top >= h) break;
+          const sh = Math.min(tileHeight, h - top);
+          // Fit the tile inside BOTH API limits; never upscale a short tile.
+          const scale = Math.min(1, maxEdge / Math.max(w, sh), Math.sqrt(maxPixels / (w * sh)));
+          canvas.width = Math.max(1, Math.round(w * scale));
+          canvas.height = Math.max(1, Math.round(sh * scale));
+          ctx.drawImage(img, 0, top, w, sh, 0, 0, canvas.width, canvas.height);
+          out.push(canvas.toDataURL('image/png'));
+        }
+        return out;
+      },
+      {
+        b64,
+        minTileHeight: API_TILE_HEIGHT,
+        maxTiles,
+        maxEdge: API_MAX_EDGE,
+        maxPixels: API_MAX_PIXELS,
+      }
+    );
+    return dataUrls.map((dataUrl, i) => {
+      const tilePath = `${outPrefix}-${i + 1}.png`;
+      fs.writeFileSync(tilePath, Buffer.from(dataUrl.split(',')[1], 'base64'));
+      return tilePath;
+    });
+  } finally {
+    await tmp.close();
+  }
+}
+
 // Screenshot up to MAX_CAPTURE_HEIGHT tall instead of the entire page. For a
 // page shorter than that, behaves identically to a full-page screenshot;
 // content below the cap on very long pages goes uncaptured rather than
@@ -128,6 +200,10 @@ export async function capture(url, outDir) {
   else
     console.log('  → Desktop screenshot captured');
 
+  const desktopTiles = await sliceForApi(
+    context, desktopShot, path.join(outDir, 'desktop-tile'), API_MAX_TILES.desktop);
+  console.log(`  → Desktop sliced into ${desktopTiles.length} review tile(s)`);
+
   // Raw rendered HTML (scripts intact for analytics detection).
   const rawHtml = await page.content();
 
@@ -190,6 +266,13 @@ export async function capture(url, outDir) {
   else
     console.log('  → Mobile screenshot captured');
 
+  const mobileTiles = await sliceForApi(
+    context, mobileShot, path.join(outDir, 'mobile-tile'), API_MAX_TILES.mobile);
+  console.log(`  → Mobile sliced into ${mobileTiles.length} review tile(s)`);
+
   await browser.close();
-  return { desktopShot, mobileShot, html, axeResults, conversion, styleAudit };
+  return {
+    desktopShot, mobileShot, desktopTiles, mobileTiles,
+    html, axeResults, conversion, styleAudit,
+  };
 }

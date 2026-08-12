@@ -3,7 +3,7 @@
 // hierarchy, consistency, responsive integrity.
 
 import fs from 'node:fs';
-import { b64, callClaudeJSON } from '../lib.js';
+import { callClaudeJSON, screenshotBlocks } from '../lib.js';
 
 export const id = 'design';
 export const label = 'Design QA';
@@ -40,10 +40,8 @@ Respond with ONLY a raw JSON object — no markdown fences, no preamble — matc
 Include all 7 axes even when a score is high and findings are empty.`;
 
   const content = [
-    { type: 'text', text: 'Desktop screenshot (1440px viewport, full page):' },
-    { type: 'image', source: { type: 'base64', media_type: 'image/png', data: b64(ctx.desktopShot) } },
-    { type: 'text', text: 'Mobile screenshot (390px viewport, full page):' },
-    { type: 'image', source: { type: 'base64', media_type: 'image/png', data: b64(ctx.mobileShot) } },
+    ...screenshotBlocks('Desktop screenshot (1440px viewport)', ctx.desktopTiles, ctx.desktopShot),
+    ...screenshotBlocks('Mobile screenshot (390px viewport)', ctx.mobileTiles, ctx.mobileShot),
     {
       type: 'text',
       text: `Rendered page HTML (scripts removed, truncated):\n\n${ctx.htmlExcerpt}\n\nDeterministic results for context — do NOT re-report these; focus on what only visual review reveals.\nAccessibility (axe-core):\n${JSON.stringify(ctx.axeSummary, null, 2)}\nConversion instrumentation issues:\n${JSON.stringify(ctx.conversion.issues, null, 2)}\n\nPerform the design QA review now.`,
