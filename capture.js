@@ -139,8 +139,9 @@ async function capImageDimensions(context, filePath, maxEdge = 7600) {
   }
 }
 
-export async function capture(url, outDir) {
+export async function capture(url, outDir, onProgress = () => {}) {
   fs.mkdirSync(outDir, { recursive: true });
+  onProgress('Launching browser');
 
   // Container-safe launch flags. --disable-dev-shm-usage is the important one:
   // constrained containers (Render, Docker) often cap /dev/shm at ~64MB, and
@@ -185,6 +186,7 @@ export async function capture(url, outDir) {
   });
 
   console.log(`  → Loading ${url}`);
+  onProgress('Loading page');
   // Load the DOM, then give the network a chance to settle — but don't REQUIRE
   // it: marketing pages run trackers/chat/ad scripts that keep the connection
   // busy forever, so 'networkidle' can never fire. Wait for it opportunistically
@@ -193,6 +195,7 @@ export async function capture(url, outDir) {
   await page.waitForLoadState('networkidle', { timeout: 10_000 }).catch(() => {});
   await page.waitForTimeout(2_000);
 
+  onProgress('Capturing desktop screenshot');
   const desktopShot = path.join(outDir, 'desktop.png');
   await boundedScreenshot(page, desktopShot, 60_000);
   if (await capImageDimensions(context, desktopShot))
@@ -208,6 +211,7 @@ export async function capture(url, outDir) {
   const rawHtml = await page.content();
 
   console.log('  → Running conversion instrumentation checks');
+  onProgress('Checking analytics + registration CTAs');
   const conversion = await checkConversion(page, rawHtml, url);
   fs.writeFileSync(path.join(outDir, 'conversion.json'), JSON.stringify(conversion, null, 2));
 
@@ -252,11 +256,13 @@ export async function capture(url, outDir) {
   fs.writeFileSync(path.join(outDir, 'page.html'), html);
 
   console.log('  → Running axe-core accessibility scan');
+  onProgress('Running accessibility scan');
   const axeResults = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag22aa', 'best-practice'])
     .analyze();
   fs.writeFileSync(path.join(outDir, 'axe.json'), JSON.stringify(axeResults, null, 2));
 
+  onProgress('Capturing mobile screenshot');
   await page.setViewportSize({ width: 390, height: 844 });
   await page.waitForTimeout(750);
   const mobileShot = path.join(outDir, 'mobile.png');

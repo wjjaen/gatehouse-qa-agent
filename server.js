@@ -7,6 +7,7 @@
 import express from 'express';
 import path from 'node:path';
 import fs from 'node:fs';
+import { randomUUID } from 'node:crypto';
 import { reviewSite } from './core.js';
 import { buildDashboard } from './build-dashboard.js';
 
@@ -71,7 +72,80 @@ app.get('/api/data', async (req, res) => {
   }
 });
 
+// ── Background scan jobs ──────────────────────────────────────────────────────
+// A scan takes minutes, which is far too long to hold an HTTP connection open —
+// the browser sat on one fetch with no progress and no way to recover if the
+// connection dropped. Instead POST /api/scan/start returns a job id straight
+// away and the client polls /api/scan/status/:jobId for the current stage.
+//
+// Jobs live in memory on purpose: there is one instance, and a scan does not
+// outlive it. A restart mid-scan loses the job, and polling then 404s — which
+// the client reports rather than hanging forever.
+const jobs = new Map();
+const JOB_TTL_MS = 30 * 60 * 1000;
+
+function runScanJob(jobId, url, portal) {
+  const job = jobs.get(jobId);
+  const setStage = (stage) => {
+    const j = jobs.get(jobId);
+    if (j) j.stage = stage;
+  };
+
+  (async () => {
+    try {
+      console.log(`[Server] Job ${jobId}: QA scan for ${url} (Portal: ${portal || 'None'})`);
+      await reviewSite(url, {
+        brandPath: 'brand/example-portal.json',
+        portal: portal || null,
+        agents: ['design', 'brand', 'seo'],
+        skipPerf: true,
+        onProgress: setStage,
+      });
+
+      setStage('Rebuilding leaderboard');
+      job.result = await buildDashboard();
+      job.status = 'done';
+      job.stage = 'Complete';
+      console.log(`[Server] Job ${jobId}: complete`);
+    } catch (err) {
+      console.error(`[Server] Job ${jobId} failed:`, err);
+      job.status = 'error';
+      job.message = err.message;
+    } finally {
+      job.finishedAt = Date.now();
+      setTimeout(() => jobs.delete(jobId), JOB_TTL_MS).unref?.();
+    }
+  })();
+}
+
+// ── POST /api/scan/start ──────────────────────────────────────────────────────
+app.post('/api/scan/start', (req, res) => {
+  const { url, portal } = req.body;
+  if (!url) return res.status(400).json({ message: 'URL is required' });
+
+  const jobId = randomUUID();
+  jobs.set(jobId, { status: 'running', stage: 'Starting scan', startedAt: Date.now() });
+  runScanJob(jobId, url, portal);
+  res.status(202).json({ jobId });
+});
+
+// ── GET /api/scan/status/:jobId ───────────────────────────────────────────────
+app.get('/api/scan/status/:jobId', (req, res) => {
+  const job = jobs.get(req.params.jobId);
+  if (!job) return res.status(404).json({ message: 'Unknown or expired job' });
+
+  res.json({
+    status: job.status,
+    stage: job.stage,
+    elapsedMs: (job.finishedAt ?? Date.now()) - job.startedAt,
+    ...(job.status === 'done' ? { result: job.result } : {}),
+    ...(job.status === 'error' ? { message: job.message } : {}),
+  });
+});
+
 // ── POST /api/scan ────────────────────────────────────────────────────────────
+// Legacy blocking scan, kept so an un-updated dashboard build keeps working.
+// Safe to delete once every client is on /api/scan/start.
 app.post('/api/scan', async (req, res) => {
   const { url, portal } = req.body;
   if (!url) return res.status(400).json({ message: 'URL is required' });

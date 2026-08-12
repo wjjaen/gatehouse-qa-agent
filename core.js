@@ -178,6 +178,9 @@ export async function reviewSite(url, {
   portal = null,
   skipPerf = false,
   agents = ['design', 'brand', 'seo'],
+  // Called with a short human-readable stage label as the scan advances, so a
+  // caller driving a UI can show real progress instead of one frozen message.
+  onProgress = () => {},
 } = {}) {
   const hasApiKey = Boolean(process.env.ANTHROPIC_API_KEY);
   if (!hasApiKey) {
@@ -188,10 +191,11 @@ export async function reviewSite(url, {
   const outDir = path.join(DATA_DIR, 'runs', runId);
 
   console.log('[1/5] Capturing page evidence + conversion checks...');
-  const cap = await capture(url, outDir);
+  const cap = await capture(url, outDir, onProgress);
   const axeSummary = summarizeAxe(cap.axeResults);
 
   console.log(skipPerf ? '[2/5] Skipping Lighthouse (--skip-perf)' : '[2/5] Running Lighthouse...');
+  if (!skipPerf) onProgress('Running Lighthouse');
   const perf = skipPerf
     ? { available: false, note: 'Skipped via --skip-perf' }
     : await runLighthouse(url, outDir);
@@ -226,16 +230,25 @@ export async function reviewSite(url, {
       console.warn(`  ! Unknown agent "${key}" — skipping`);
       return false;
     });
+    let done = 0;
+    const reportProgress = () =>
+      onProgress(`Reviewing design, brand & SEO (${done}/${known.length} agents done)`);
+    reportProgress();
+
     agentResults = await Promise.all(known.map(async (key) => {
       const mod = AGENTS[key];
       const startedAt = Date.now();
       try {
         const result = await mod.run(ctx);
         console.log(`  ✓ ${mod.label} (${((Date.now() - startedAt) / 1000).toFixed(1)}s)`);
+        done += 1;
+        reportProgress();
         return result;
       } catch (err) {
         if (err.raw) fs.writeFileSync(path.join(outDir, `${key}-raw-response.txt`), err.raw);
         console.error(`  ✗ ${mod.label} failed: ${err.message}`);
+        done += 1;
+        reportProgress();
         return { id: key, label: mod.label, score: null, summary: null, findings: [], report_md: '', error: err.message };
       }
     }));
@@ -265,6 +278,7 @@ export async function reviewSite(url, {
   appendHistory(historyEntry);
 
   console.log('[5/5] Writing reports + fix prompts...');
+  onProgress('Writing report + fix prompts');
   const result = { url, portal, run: runId, outDir, ...verdictInfo, score, agents: agentResults, conversion: cap.conversion, perf, regression, axe: axeSummary, hasApiKey };
   fs.writeFileSync(path.join(outDir, 'report.json'), JSON.stringify(result, null, 2));
   const reportPath = writeMarkdownReport(outDir, url, agentResults, score, verdictInfo, axeSummary, cap.conversion, perf, regression, hasApiKey);
