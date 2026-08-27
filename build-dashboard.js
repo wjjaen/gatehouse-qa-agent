@@ -68,7 +68,12 @@ function loadRuns() {
     if (fs.existsSync(stylePath)) styles = JSON.parse(fs.readFileSync(stylePath, 'utf8'));
     byUrl.set(report.url, { report, styles });
   }
-  return [...byUrl.values()];
+  // Newest scan first. A Map preserves *insertion* order, so without this the
+  // list is ordered by each site's first-ever scan — rescanning a site left it
+  // where it was, and a brand-new site landed at the bottom. Run ids are
+  // fixed-width timestamps, so comparing them as strings compares them
+  // chronologically.
+  return [...byUrl.values()].sort((a, b) => String(b.report.run).localeCompare(String(a.report.run)));
 }
 
 // Trend: mean BHI per calendar day from history (only real if >1 distinct day).
