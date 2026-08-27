@@ -8,8 +8,10 @@ import express from 'express';
 import path from 'node:path';
 import fs from 'node:fs';
 import { randomUUID } from 'node:crypto';
+import Anthropic from '@anthropic-ai/sdk';
 import { reviewSite } from './core.js';
 import { buildDashboard } from './build-dashboard.js';
+import { loadRunContext, buildSystem, streamReply, CHAT_MODEL } from './chat.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -165,6 +167,71 @@ app.post('/api/scan', async (req, res) => {
   } catch (err) {
     console.error('[Server] Audit scan failed:', err);
     res.status(500).json({ message: err.message });
+  }
+});
+
+// ── POST /api/chat ────────────────────────────────────────────────────────────
+// Grounded chat over one scan. Streams over SSE rather than using the job/poll
+// pattern the scans use: a reply takes seconds, not minutes, and text appearing
+// as it generates is the whole point.
+//
+// Stateless by design — the client sends the full message history each turn
+// along with the run id, and the server rebuilds the grounding from disk. No
+// session store, nothing to expire, and it survives a restart mid-conversation.
+app.post('/api/chat', async (req, res) => {
+  const { run, messages, mode } = req.body;
+
+  if (!process.env.ANTHROPIC_API_KEY) {
+    return res.status(503).json({ message: 'Chat unavailable — no API key configured on the server.' });
+  }
+  if (!run) return res.status(400).json({ message: 'run is required' });
+  if (!Array.isArray(messages) || messages.length === 0) {
+    return res.status(400).json({ message: 'messages is required' });
+  }
+
+  let ctx;
+  try {
+    ctx = loadRunContext(run);
+  } catch (err) {
+    return res.status(404).json({ message: err.message });
+  }
+
+  // Headers must go out before the first token, and nothing may buffer in
+  // between, or the stream arrives as one lump at the end.
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+  res.setHeader('X-Accel-Buffering', 'no');
+  res.flushHeaders?.();
+
+  const send = (payload) => res.write(`data: ${JSON.stringify(payload)}\n\n`);
+
+  try {
+    const client = new Anthropic();
+    const { usage } = await streamReply(client, {
+      system: buildSystem(ctx, mode),
+      messages: messages.map((m) => ({ role: m.role, content: m.content })),
+      onDelta: (text) => send({ type: 'delta', text }),
+    });
+
+    console.log(
+      `[Server] Chat (${mode || 'chat'}) on ${ctx.url} — ` +
+      `in ${usage.input_tokens} / cached ${usage.cache_read_input_tokens ?? 0} / out ${usage.output_tokens}`
+    );
+    send({ type: 'done' });
+  } catch (err) {
+    console.error('[Server] Chat failed:', err);
+    // The stream is already open, so the error has to travel as an event —
+    // an HTTP status code is no longer available to us here. Send something a
+    // marketer can act on and keep the provider's raw JSON in the server log.
+    const friendly = err.status === 401
+      ? 'The server\'s API key was rejected — it may have expired.'
+      : err.status === 429
+        ? 'Rate limited by the API. Wait a moment and try again.'
+        : 'The assistant failed to respond. Check the service logs.';
+    send({ type: 'error', message: friendly });
+  } finally {
+    res.end();
   }
 });
 
