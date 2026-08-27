@@ -208,11 +208,13 @@ app.post('/api/chat', async (req, res) => {
 
   try {
     const client = new Anthropic();
-    const { usage } = await streamReply(client, {
+    const { usage, followups } = await streamReply(client, {
       system: buildSystem(ctx, mode),
       messages: messages.map((m) => ({ role: m.role, content: m.content })),
       onDelta: (text) => send({ type: 'delta', text }),
     });
+
+    if (followups.length) send({ type: 'followups', items: followups });
 
     console.log(
       `[Server] Chat (${mode || 'chat'}) on ${ctx.url} — ` +

@@ -49,7 +49,11 @@ export function loadRunContext(runId) {
       score: a.score,
       summary: a.summary,
       error: a.error ?? undefined,
-      findings: (a.findings || []).map((f) => ({
+      // The id is the finding's position in this agent's list, and the report
+      // view tags the matching card with the same id — that pairing is what
+      // lets a citation in an answer scroll to the evidence behind it.
+      findings: (a.findings || []).map((f, idx) => ({
+        id: `${a.id}-${idx}`,
         severity: f.severity,
         location: f.location,
         issue: f.issue,
@@ -120,6 +124,16 @@ ${SHARED_RULES}
   typographic inconsistency every time.
 - Prose, not bullet walls, unless the answer is genuinely a list.
 - Never output a code block of fixes; the report already generates those.
+- Light formatting only: **bold** for the thing that matters most, and "- " for
+  a genuine list. Nothing else.
+
+## Citing findings
+When you refer to a specific finding, cite it inline as [[id|short label]],
+using that finding's id from the scan data — e.g. "the [[design-3|carousel
+overflowing on mobile]] is the one blocking launch". The reader's report is
+open beside this conversation and the citation takes them straight to it. Cite
+only when pointing at one specific finding; never cite a general statement, and
+never write an id that isn't in the data.
 `.trim();
 
 const BRIEF_INSTRUCTIONS = `
@@ -153,10 +167,26 @@ Structure it as:
 - If the scan found nothing blocking, say so and keep the email short.
 `.trim();
 
+export const FOLLOWUP_MARK = '<<FOLLOWUPS>>';
+
+// Suggested next questions are what turn a reply into a conversation — without
+// them every turn after the first is a blank input box again. They ride out on
+// the same stream behind a marker rather than costing a second API call; the
+// server splits them off before the text reaches the browser.
+const followupRule = (mode) => `
+## After every reply
+End with a new line containing exactly this marker followed by a JSON array:
+${FOLLOWUP_MARK}["…","…"]
+${mode === 'brief'
+  ? `Two or three changes the reader might want made to the email ("Make it\nshorter", "Add the accessibility issues", "Soften the tone").`
+  : `Two or three short questions the reader would plausibly ask next, written\nin their own voice ("What does that cost us?", "Is the CX page any better?").`}
+Never mention this line, and never let it appear inside your prose.
+`.trim();
+
 export function buildSystem(ctx, mode) {
   const instructions = mode === 'brief' ? BRIEF_INSTRUCTIONS : CHAT_INSTRUCTIONS;
   return [
-    { type: 'text', text: instructions },
+    { type: 'text', text: `${instructions}\n\n${followupRule(mode)}` },
     {
       type: 'text',
       text: `## Scan results\n\n${JSON.stringify(ctx, null, 2)}`,
@@ -168,8 +198,21 @@ export function buildSystem(ctx, mode) {
   ];
 }
 
-// Stream a reply, invoking onDelta with each chunk of text as it arrives.
-// Returns the accumulated text plus usage, for logging.
+// How many characters at the end of `s` could be the start of `mark`. Deltas
+// arrive in arbitrary chunks, so the marker can straddle two of them — holding
+// back exactly this much (usually zero) keeps the marker from leaking into the
+// visible answer without stalling the stream.
+function partialMarkLength(s, mark) {
+  const max = Math.min(s.length, mark.length - 1);
+  for (let n = max; n > 0; n -= 1) {
+    if (mark.startsWith(s.slice(s.length - n))) return n;
+  }
+  return 0;
+}
+
+// Stream a reply, invoking onDelta with each chunk of visible text. Anything
+// after the follow-up marker is captured instead of streamed, and returned
+// parsed alongside usage.
 export async function streamReply(client, { system, messages, onDelta }) {
   const stream = client.messages.stream({
     model: CHAT_MODEL,
@@ -178,15 +221,52 @@ export async function streamReply(client, { system, messages, onDelta }) {
     messages,
   });
 
+  let buffer = '';       // visible text not yet safe to emit
+  let trailing = '';     // everything after the marker
+  let marked = false;
+
   for await (const event of stream) {
-    if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
-      onDelta(event.delta.text);
+    if (event.type !== 'content_block_delta' || event.delta.type !== 'text_delta') continue;
+    const chunk = event.delta.text;
+
+    if (marked) { trailing += chunk; continue; }
+
+    buffer += chunk;
+    const at = buffer.indexOf(FOLLOWUP_MARK);
+    if (at !== -1) {
+      if (at > 0) onDelta(buffer.slice(0, at));
+      trailing = buffer.slice(at + FOLLOWUP_MARK.length);
+      marked = true;
+      buffer = '';
+      continue;
+    }
+
+    const hold = partialMarkLength(buffer, FOLLOWUP_MARK);
+    if (buffer.length > hold) {
+      onDelta(buffer.slice(0, buffer.length - hold));
+      buffer = hold ? buffer.slice(buffer.length - hold) : '';
+    }
+  }
+  if (!marked && buffer) onDelta(buffer);
+
+  let followups = [];
+  if (trailing.trim()) {
+    // Tolerate the model wrapping the array in stray prose or a code fence.
+    const match = trailing.match(/\[[\s\S]*\]/);
+    try {
+      const parsed = match ? JSON.parse(match[0]) : [];
+      if (Array.isArray(parsed)) {
+        followups = parsed.filter((q) => typeof q === 'string' && q.trim()).slice(0, 3);
+      }
+    } catch {
+      // A malformed suggestion list is not worth failing a good answer over.
     }
   }
 
   const final = await stream.finalMessage();
   return {
     text: final.content.filter((b) => b.type === 'text').map((b) => b.text).join(''),
+    followups,
     usage: final.usage,
   };
 }
